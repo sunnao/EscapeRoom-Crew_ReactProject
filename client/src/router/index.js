@@ -4,6 +4,7 @@ import Home from '../pages/Home';
 import Login from '../pages/Login';
 import MyPage from '../pages/MyPage';
 import NotFound from '../pages/NotFound';
+import RecruitMap from '../pages/RecruitMap';
 
 const Router = () => {
   return (
@@ -11,7 +12,7 @@ const Router = () => {
       <Routes>
         <Route path='/' element={<Home />} />
         <Route path='/recruit-list' element={<Home />} />
-        <Route path='/recruit-map' element={<Home />} />
+        <Route path='/recruit-map' element={<RecruitMap />} />
         <Route path='/cafeinfo' element={<Home />} />
         <Route path='/mypage' element={<MyPage />}>
           <Route path='edit' element={<Home />} />
