@@ -1,72 +1,85 @@
 import React from 'react';
 import tw from 'tailwind-styled-components';
+import RecruitTypeIcon from '../components/recruit/RecruitTypeIcon';
+import { RegionButton } from '../components/buttons/Buttons';
+import markerBw from '../assets/images/icon/marker-bw.png';
+import markerColor from '../assets/images/icon/marker-color.png';
 
 const BackGround = tw.div`
-  w-screen h-screen flex justify-center items-center
+  w-screen h-screen flex justify-center items-center flex-col bg-cover
 `;
 
 const RecruitMap = () => {
   return (
-    <div>
-      <BackGround
-        style={{ backgroundImage: 'url(/images/bg1.png)' }}></BackGround>
-      <LocationSelectionBar />
-      <MarkerDescription />
-      <ViewSelectionBar />
-      <BanggaCharacter />
-      <MapContainer />
+    <BackGround className='flex-col' style={{ backgroundImage: 'url(images/backgrounds/bg3.png)' }}>
+      <UpperPart>
+        <RecruitTypeIcon></RecruitTypeIcon>
+        <RegionButtonsContainer>
+          <RegionButton title={'홍대'}></RegionButton>
+          <RegionButton title={'강남'}></RegionButton>
+          <RegionButton title={'건대'}></RegionButton>
+        </RegionButtonsContainer>
+        <MarkerDescriptions className='flex'>
+          <Marker src={markerColor} alt='marker-color' description={'모집중'}></Marker>
+          <Marker src={markerBw} alt='marker-bw' description={'모집완료'}></Marker>
+        </MarkerDescriptions>
+      </UpperPart>
+      <LowerPart className='flex'>
+        <BanggaCharacter />
+        <MapContainer />
+        <InputContainer>지도입니다</InputContainer>
+      </LowerPart>
+    </BackGround>
+  );
+};
+
+const Marker = (props) => {
+  return (
+    <div className='flex flex-col mx-1 h-10'>
+      <img src={props.src} alt={props.alt} className='w-10'></img>
+      <div>{props.description}</div>
     </div>
   );
 };
 
-const LocationSelectionBar = () => {
-  <div>
-    <button>홍대</button>
-    <button>강남</button>
-    <button>건대</button>
-  </div>;
-};
-
-const ViewSelectionBar = () => {
-  <div>
-    <div>
-      <img></img>
-      <div>List</div>
-    </div>
-    <div>
-      <img></img>
-      <div>Map</div>
-    </div>
-  </div>;
-};
-
 const MapContainer = () => {
-  <div>
+  return (
     <div>
-      <div></div>
+      <div>
+        <div></div>
+        <div></div>
+      </div>
       <div></div>
     </div>
-    <div></div>
-  </div>;
+  );
 };
 
 const BanggaCharacter = () => {
-  <div>
-    <img></img>
-  </div>;
+  return (
+    <div>
+      <img></img>
+    </div>
+  );
 };
 
-const MarkerDescription = () => {
-  <div>
-    <div>
-      <img></img>
-      <div>모집중</div>
-    </div>
-    <div>
-      <img></img>
-      <div>모집완료</div>
-    </div>
-  </div>;
-};
+const UpperPart = tw.div`
+  flex
+`;
+
+const LowerPart = tw.div`
+  flex
+`;
+
+const MarkerDescriptions = tw.div`
+  flex-row
+`;
+
+const RegionButtonsContainer = tw.div`
+  flex
+`;
+
+const InputContainer = tw.div`
+  w-[500px] h-[500px] bg-white
+`;
 
 export default RecruitMap;
