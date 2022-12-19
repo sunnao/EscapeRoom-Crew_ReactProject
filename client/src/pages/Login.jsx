@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
 import { showForgotAtom } from '../recoil/login';
 import Forgot from '../modals/Forgot';
+import { isValidEmail } from '../utils/validator';
 
 const Login = () => {
   const navigate = useNavigate();
@@ -18,12 +19,10 @@ const Login = () => {
     e.preventDefault();
     navigate('/register');
   };
-  const isEmailValid = (email) => {
-    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-  };
-  const handleSubmit = async (e) => {
+
+  const onSubmit = async (e) => {
     e.preventDefault();
-    if (!isEmailValid(email)) {
+    if (!isValidEmail(email)) {
       setError('이메일 형식이 올바른지 확인해주세요');
       return;
     }
@@ -52,10 +51,11 @@ const Login = () => {
     <div
       className='h-screen flex items-center justify-center'
       style={{ backgroundImage: 'url(/images/backgrounds/bg1.png)' }}>
-      <form className='bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4' onSubmit={handleSubmit}>
-        <label>이메일:</label>
-        <input
-          className='
+      <form className='bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4' onSubmit={onSubmit}>
+        <label>
+          이메일:
+          <input
+            className='
             shadow
             border
             rounded
@@ -64,13 +64,16 @@ const Login = () => {
             px-3
             text-gray-700
             '
-          type='email'
-          onChange={(e) => setEmail(e.target.value)}
-        />
+            type='email'
+            onChange={(e) => setEmail(e.target.value)}
+          />
+        </label>
+
         <br />
-        <label>비밀번호:</label>
-        <input
-          className='
+        <label>
+          비밀번호:
+          <input
+            className='
             shadow
             border
             rounded
@@ -79,9 +82,11 @@ const Login = () => {
             px-3
             text-gray-700
             '
-          type='password'
-          onChange={(e) => setPassword(e.target.value)}
-        />
+            type='password'
+            onChange={(e) => setPassword(e.target.value)}
+          />
+        </label>
+
         <br />
         {error && <p className='text-red-500'>{error}</p>}
         <div className='flex items-center justify-between'>

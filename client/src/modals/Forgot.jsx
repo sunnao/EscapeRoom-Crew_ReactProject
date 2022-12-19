@@ -21,7 +21,7 @@ const Forgot = () => {
       <div className='text-2xl text-center mx-auto'>
         <div className='mt-[20%]'>회원가입한 이메일 정보를 입력해주세요</div>
         <div>
-          <EmailInput placeholder='이메일을 입력해주세요' type='text' />
+          <EmailInput placeholder='이메일을 입력해주세요' type='email' required />
         </div>
         <div className='flex justify-right mt-[15%]'>
           <button className='bg-gray-200 ml-auto px-4 py-2 rounded-[10px]' onClick={onCancelBtn}>
