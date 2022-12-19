@@ -9,14 +9,11 @@ import { useNavigate } from 'react-router-dom';
 import { useRecoilState, useSetRecoilState } from 'recoil';
 import { showRegisterProfileAtom, showAddProfileIconAtom, profileImgAtom } from '../recoil/register';
 const RegisterProfile = () => {
-  //변수 모음
-  /**radio type input들의 정보를 담은 변수 */
   const userRadioInputData = [
     { name: '성별', options: ['남자', '여자'] },
     { name: '나이', options: ['10대', '20대', '30대 이상'] },
     { name: '선호 지역', options: ['강남', '건대', '홍대'] },
   ];
-  /**select type input들의 정보를 담은 변수 */
   const userSelectInputData = [
     {
       name: 'MBTI',
@@ -83,17 +80,14 @@ const RegisterProfile = () => {
   const [showAddProfileIcon, setShowAddProfileIcon] = useRecoilState(showAddProfileIconAtom);
   const [profileImg, setProfileImg] = useRecoilState(profileImgAtom);
   const [tempProfileImg, setTempProfileImg] = useState(null);
-  //함수 모음
   const navigate = useNavigate();
-  /**취소버튼 클릭시 모달창을 닫아주는 함수 */
   const onCancelBtn = () => {
     setShowRegisterProfile(false);
   };
 
-  /**완료버튼 클릭시 인풋값들이 올바르게 입력되었는지 체킹하고 올바르면 모달을 닫고 홈화면으로 이동해주는 함수 */
   const onCompleteBtn = () => {
     setShowRegisterProfile(false);
-    navigate('/');
+    navigate('/login');
   };
 
   const onChangeProfileImg = (e) => {
@@ -110,7 +104,7 @@ const RegisterProfile = () => {
     setShowAddProfileIcon(false);
   };
 
-  const customStyle = {
+  const modalStyle = {
     content: {
       top: '35%',
       left: '50%',
@@ -144,20 +138,25 @@ const RegisterProfile = () => {
             <FontAwesomeIcon icon={faPen} />
           </button>
         </div>
-        <Modal style={customStyle} isOpen={showAddProfileIcon} onRequestClose={() => setShowAddProfileIcon(false)}>
+        <Modal style={modalStyle} isOpen={showAddProfileIcon} onRequestClose={() => setShowAddProfileIcon(false)}>
           <h2>프로필 사진을 업로드하세요</h2>
           {tempProfileImg && (
             <img className='rounded-full' src={URL.createObjectURL(tempProfileImg)} alt='uploaded image' />
           )}
           <form onSubmit={onSubmitProfileImg}>
             <input type='file' onChange={onChangeProfileImg} />
-            <button type='submit'>저장하기</button>
-            <button onClick={onCancelProfileImg}>취소하기</button>
+            <div className='w-full flex justify-between'>
+              <button className='ml-auto border border-black' type='submit'>
+                저장하기
+              </button>
+              <button className='ml-2 border border-black' onClick={onCancelProfileImg}>
+                취소하기
+              </button>
+            </div>
           </form>
         </Modal>
       </div>
       <div className='mx-auto mt-[1%]'>닉네임</div>
-
       <div className='mx-auto mt-[1%] w-full text-center'>
         <input className='border rounded-full pl-[5%] w-4/5' type='text' placeholder='한 줄 소개' />
       </div>
