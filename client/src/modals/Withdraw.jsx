@@ -1,7 +1,16 @@
 import React from 'react';
 import tw from 'tailwind-styled-components';
-
+import { useNavigate } from 'react-router-dom';
 const Withdraw = ({ setShowWithdraw }) => {
+  const navigate = useNavigate();
+  const onWithdraw = () => {
+    const yes = confirm('정말 탈퇴를 진행하시겠습니까?');
+    {
+      yes ? (alert('탈퇴가 완료되었습니다'), navigate('/')) : alert('탈퇴가 취소되었습니다');
+    }
+    setShowWithdraw(false);
+  };
+
   return (
     <WithdrawModal>
       <div className='w-[90%] h-[90%] mx-auto my-auto flex flex-col text-center'>
@@ -35,7 +44,7 @@ const Withdraw = ({ setShowWithdraw }) => {
             <option value=''>직접입력</option>
           </select>
         </div>
-        <WithdrawBtn>탈퇴하기</WithdrawBtn>
+        <WithdrawBtn onClick={onWithdraw}>탈퇴하기</WithdrawBtn>
       </div>
     </WithdrawModal>
   );

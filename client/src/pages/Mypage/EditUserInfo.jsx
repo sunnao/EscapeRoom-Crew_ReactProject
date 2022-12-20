@@ -95,12 +95,13 @@ const EditUserInfo = () => {
   ];
   return (
     <BackgroundScroll img={'bg3'} className='relative'>
-      {showWithdraw && <Withdraw setShowWithdraw={setShowWithdraw} />}
       <div className='w-full h-[5%]'></div>
       <div className='h-[15%] justify-center items-center flex flex-col'>
         <EditProfileIcon showAddProfileIcon={showAddProfileIcon} setShowAddProfileIcon={setShowAddProfileIcon} />
         <UserProfile setShowAddProfileIcon={setShowAddProfileIcon} />
       </div>
+      {showWithdraw && <Withdraw setShowWithdraw={setShowWithdraw} />}
+
       <div className='h-[80%] w-1/2 flex flex-col mx-auto justify-center items-center'>
         <EditBox title={'기본정보 수정'} data={USER_BASIC_DATA}>
           <button className='text-gray-500 underline hover:text-black' onClick={() => setShowWithdraw(true)}>
@@ -144,21 +145,28 @@ const EditProfileIcon = ({ showAddProfileIcon, setShowAddProfileIcon }) => {
       bottom: 'auto',
       marginRight: '-50%',
       transform: 'translate(-50%, -50%)',
-      width: '20%', // specify desired width
-      height: '60%', // specify desired height
+      width: '26%',
+      height: '62%',
+      'border-radius': '50px',
+      background: '#D0DBF6',
     },
   };
+  const [tempProfileImg, setTempProfileImg] = useState(false);
   return (
     <Modal style={modalStyle} isOpen={showAddProfileIcon} onRequestClose={() => setShowAddProfileIcon(false)}>
-      <h2>프로필 사진을 업로드하세요</h2>
-      <img className='rounded-full' alt='uploaded image' />
+      <h2 className='text-center text-xl'>프로필 사진을 업로드하세요</h2>
+      <div className='w-3/4 h-3/4 flex items-center mx-auto'>
+        {tempProfileImg ? (
+          <img className='rounded-full w-full h-3/4' src={URL.createObjectURL(tempProfileImg)} alt='uploaded image' />
+        ) : (
+          <div className='rounded-full bg-gray-400 w-full h-3/4'></div>
+        )}
+      </div>
       <form>
-        <input type='file' />
-        <div className='w-full flex justify-between'>
-          <button className='ml-auto border border-black' type='submit'>
-            저장하기
-          </button>
-          <button className='ml-2 border border-black'>취소하기</button>
+        <input type='file' onChange={(e) => setTempProfileImg(e.target.files[0])} />
+        <div className='w-full flex justify-center mt-4'>
+          <EditBtn type='submit'>저장하기</EditBtn>
+          <EditBtn>취소하기</EditBtn>
         </div>
       </form>
     </Modal>
