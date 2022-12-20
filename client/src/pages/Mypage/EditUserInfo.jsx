@@ -1,24 +1,53 @@
 import React from 'react';
-import Background from '../../components/common/Background';
+import BackgroundScroll from '../../components/common/BackgroundScroll';
 import tw from 'tailwind-styled-components';
 import Withdraw from '../../modals/Withdraw';
 import { useState } from 'react';
+import { useRecoilState } from 'recoil';
+import { profileImgAtom } from '../../recoil/register';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPen } from '@fortawesome/free-solid-svg-icons';
+import Modal from 'react-modal';
 
 const EditUserInfo = () => {
   const [showWithdraw, setShowWithdraw] = useState(false);
+  const [showAddProfileIcon, setShowAddProfileIcon] = useState(false);
+
+  const modalStyle = {
+    content: {
+      top: '35%',
+      left: '50%',
+      right: 'auto',
+      bottom: 'auto',
+      marginRight: '-50%',
+      transform: 'translate(-50%, -50%)',
+      width: '20%', // specify desired width
+      height: '60%', // specify desired height
+    },
+  };
   return (
-    <Background img={'bg3'}>
+    <BackgroundScroll img={'bg3'}>
       <div className='w-full h-[80%] my-auto relative'>
         {showWithdraw && <Withdraw setShowWithdraw={setShowWithdraw} />}
-        <div className='h-[20%] items-center flex flex-col'>
-          <div className='w-[90px] h-[90px] rounded-full bg-gray-300'>
-            <img className='w-full h-full rounded-full' />
-          </div>
-          <div>유저닉네임</div>
+        <Modal style={modalStyle} isOpen={showAddProfileIcon} onRequestClose={() => setShowAddProfileIcon(false)}>
+          <h2>프로필 사진을 업로드하세요</h2>
+          <img className='rounded-full' alt='uploaded image' />
+          <form>
+            <input type='file' />
+            <div className='w-full flex justify-between'>
+              <button className='ml-auto border border-black' type='submit'>
+                저장하기
+              </button>
+              <button className='ml-2 border border-black'>취소하기</button>
+            </div>
+          </form>
+        </Modal>
+        <div className='h-1/3 items-center flex flex-col'>
+          <UserProfile setShowAddProfileIcon={setShowAddProfileIcon} />
         </div>
-        <div className='flex h-4/5 '>
+        <div className='flex mx-auto justify-center '>
           <EditBox>
-            <EditTitle>회원정보 수정</EditTitle>
+            <EditTitle>기본정보 수정</EditTitle>
             <EditBasicInfo setShowWithdraw={setShowWithdraw} />
           </EditBox>
           <EditBox>
@@ -27,7 +56,27 @@ const EditUserInfo = () => {
           </EditBox>
         </div>
       </div>
-    </Background>
+    </BackgroundScroll>
+  );
+};
+
+const UserProfile = ({ setShowAddProfileIcon }) => {
+  const [profileImg, setProfileImg] = useRecoilState(profileImgAtom);
+  return (
+    <>
+      <div className='w-[120px] h-[120px] rounded-full bg-gray-300 relative'>
+        {profileImg && (
+          <img className='w-full h-full rounded-full' src={URL.createObjectURL(profileImg)} alt='uploaded image' />
+        )}
+        <div className='absolute w-10 h-10  top-0 left-[90%]'>
+          <button onClick={() => setShowAddProfileIcon(true)}>
+            <FontAwesomeIcon icon={faPen} />
+          </button>
+        </div>
+      </div>
+
+      <div>유저닉네임</div>
+    </>
   );
 };
 
@@ -174,13 +223,13 @@ const InputBox = ({ inputData, handleChange }) => (
 );
 
 const EditBox = tw.div`
-  w-2/5 mx-auto h-4/5
+  w-2/5 
 `;
 const EditTitle = tw.div`
   border-b border-black text-xl w-[90%] mx-auto
 `;
 const EditInputContainer = tw.div`
-  w-4/5 h-[90%]  mx-auto mt-4 rounded-3xl bg-[#f4e3f1] shadow-2xl flex flex-col justify-center
+  w-4/5 h-full  mx-auto mt-4 rounded-3xl bg-[#f4e3f1] shadow-2xl flex flex-col justify-center
 `;
 const InputName = tw.div`
   w-1/5 flex items-center

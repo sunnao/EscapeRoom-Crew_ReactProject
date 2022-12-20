@@ -24,7 +24,7 @@ const Withdraw = ({ setShowWithdraw }) => {
         </div>
         <div>
           <div className='text-lg'>비밀번호 입력</div>
-          <input type='password' className='border border-black w-3/5 rounded' />
+          <input type='password' className='pl-2 border border-black w-3/5 rounded' />
         </div>
         <div>
           <div className='text-lg'>탈퇴 사유(선택)</div>
@@ -45,6 +45,7 @@ const WithdrawModal = tw.div`
 flex
   rounded-xl border border-black  absolute w-[26%] h-[70%] top-[15%] left-[37%]
   bg-[#F2F2F2]
+  z-1
 `;
 
 const WithdrawBtn = tw.button`
