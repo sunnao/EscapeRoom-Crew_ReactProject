@@ -94,17 +94,18 @@ const EditUserInfo = () => {
     },
   ];
   return (
-    <BackgroundScroll img={'bg3'}>
-      <div className='w-full h-[5%] relative'>
-        {showWithdraw && <Withdraw setShowWithdraw={setShowWithdraw} />}
-        <EditProfileIcon showAddProfileIcon={showAddProfileIcon} setShowAddProfileIcon={setShowAddProfileIcon} />
-      </div>
+    <BackgroundScroll img={'bg3'} className='relative'>
+      {showWithdraw && <Withdraw setShowWithdraw={setShowWithdraw} />}
+      <div className='w-full h-[5%]'></div>
       <div className='h-[15%] justify-center items-center flex flex-col'>
+        <EditProfileIcon showAddProfileIcon={showAddProfileIcon} setShowAddProfileIcon={setShowAddProfileIcon} />
         <UserProfile setShowAddProfileIcon={setShowAddProfileIcon} />
       </div>
       <div className='h-[80%] w-1/2 flex flex-col mx-auto justify-center items-center'>
         <EditBox title={'기본정보 수정'} data={USER_BASIC_DATA}>
-          <button className='text-gray-500 underline hover:text-black'>탈퇴하기</button>
+          <button className='text-gray-500 underline hover:text-black' onClick={() => setShowWithdraw(true)}>
+            탈퇴하기
+          </button>
           <EditBtn>변경</EditBtn>
         </EditBox>
         <EditBox title={'추가정보 수정'} data={USER_ADD_DATA}>
