@@ -5,6 +5,7 @@ import Background from '../components/common/Background';
 import RecruitTypeIcon from '../components/recruit/RecruitTypeIcon';
 import { RegionButton } from '../components/buttons/Buttons';
 import MarkerDescription from '../components/recruit-map/MarkerDescription';
+import SearchPlace from '../components/recruit-map/SearchPlace';
 
 import markerBw from '../assets/images/icon/marker-bw.png';
 import markerColor from '../assets/images/icon/marker-color.png';
@@ -25,14 +26,16 @@ const RecruitMap = () => {
           <MarkerDescription src={markerColor} alt='marker-color' description={'모집중'}></MarkerDescription>
           <MarkerDescription src={markerBw} alt='marker-bw' description={'모집완료'}></MarkerDescription>
         </MarkerDescriptionsBox>
-        <MapContainer></MapContainer>
+        <ViewSection>
+          <SearchPlace region={'홍대'}></SearchPlace>
+        </ViewSection>
       </LowerPart>
     </Background>
   );
 };
 
-const MapContainer = tw.div`
-  w-[1250px] h-[700px] bg-white opacity-60 rounded-2xl
+const ViewSection = tw.div`
+  w-[1250px] h-[700px] bg-white bg-opacity-60 rounded-2xl
 `;
 
 const UpperPart = tw.div`
