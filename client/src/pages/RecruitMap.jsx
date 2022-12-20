@@ -1,8 +1,11 @@
 import React from 'react';
 import tw from 'tailwind-styled-components';
+
 import Background from '../components/common/Background';
 import RecruitTypeIcon from '../components/recruit/RecruitTypeIcon';
 import { RegionButton } from '../components/buttons/Buttons';
+import MarkerDescription from '../components/recruit-map/MarkerDescription';
+
 import markerBw from '../assets/images/icon/marker-bw.png';
 import markerColor from '../assets/images/icon/marker-color.png';
 
@@ -18,37 +21,19 @@ const RecruitMap = () => {
         </RegionButtonsContainer>
       </UpperPart>
       <LowerPart className='flex flex-col px-[10vw]'>
-        <MarkerDescriptions className='flex ml-auto mt-4 mb-8 drop-shadow-md'>
-          <Marker src={markerColor} alt='marker-color' description={'모집중'}></Marker>
-          <Marker src={markerBw} alt='marker-bw' description={'모집완료'}></Marker>
-        </MarkerDescriptions>
+        <MarkerDescriptionsBox className='flex ml-auto mt-4 mb-8 drop-shadow-md'>
+          <MarkerDescription src={markerColor} alt='marker-color' description={'모집중'}></MarkerDescription>
+          <MarkerDescription src={markerBw} alt='marker-bw' description={'모집완료'}></MarkerDescription>
+        </MarkerDescriptionsBox>
         <MapContainer></MapContainer>
-        <BanggaCharacter />
       </LowerPart>
     </Background>
   );
 };
 
-const Marker = (props) => {
-  return (
-    <div className='flex flex-col mx-1 h-10'>
-      <img src={props.src} alt={props.alt} className='w-10 m-auto'></img>
-      <div>{props.description}</div>
-    </div>
-  );
-};
-
-const MapContainer = () => {
-  return <div className='w-[1250px] h-[700px] bg-white opacity-60 rounded-2xl'>지도입니다</div>;
-};
-
-const BanggaCharacter = () => {
-  return (
-    <div>
-      <img></img>
-    </div>
-  );
-};
+const MapContainer = tw.div`
+  w-[1250px] h-[700px] bg-white opacity-60 rounded-2xl
+`;
 
 const UpperPart = tw.div`
   px-[10vw]
@@ -58,7 +43,7 @@ const LowerPart = tw.div`
   px-[10vw]
 `;
 
-const MarkerDescriptions = tw.div`
+const MarkerDescriptionsBox = tw.div`
   flex-row
 `;
 
