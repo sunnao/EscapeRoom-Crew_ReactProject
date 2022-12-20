@@ -13,8 +13,6 @@
     "autoprefixer": "^10.4.13",
     "eslint-plugin-prettier": "^4.2.1",
     "eslint-plugin-react": "^7.31.11",
-    "gitmoji": "^1.1.1",
-    "gitmoji-cli": "^7.0.3",
     "global": "^4.4.0",
     "immer": "^9.0.16",
     "nodemon": "^2.0.20",
