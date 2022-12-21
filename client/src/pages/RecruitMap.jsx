@@ -9,7 +9,6 @@ import { RegionButton } from '../components/buttons/Buttons';
 import MarkerDescription from '../components/recruit-map/MarkerDescription';
 import KakaoMap from '../components/recruit-map/KakaoMap';
 
-import markerBw from '../assets/images/icon/marker-bw.png';
 import markerColor from '../assets/images/icon/marker-color.png';
 
 const RecruitMap = () => {
@@ -28,7 +27,6 @@ const RecruitMap = () => {
       <LowerPart className='flex flex-col px-[10vw]'>
         <MarkerDescriptionsBox className='flex ml-auto mt-4 mb-8 drop-shadow-md'>
           <MarkerDescription src={markerColor} alt='marker-color' description={'모집중'}></MarkerDescription>
-          <MarkerDescription src={markerBw} alt='marker-bw' description={'모집완료'}></MarkerDescription>
         </MarkerDescriptionsBox>
         <ViewSection>
           <KakaoMap region={region}></KakaoMap>
