@@ -8,6 +8,7 @@ import * as validator from '../utils/validator';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Background from '../components/common/Background';
+import Navigators from '../components/common/Navigators';
 
 const Register = () => {
   const [showCelebrate, setShowCelebrate] = useRecoilState(showCelebrateAtom);
@@ -66,6 +67,7 @@ const Register = () => {
       const response = await fetch('/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
+        //todo:비밀번호 확인은 서버로 전송 X
         body: JSON.stringify({ userName, userNickname, userPhoneNum, userEmail, userPWD, userPWDConfirm }),
       });
       const result = await response.json();
@@ -85,6 +87,7 @@ const Register = () => {
 
   return (
     <Background img={'bg1'}>
+      <Navigators />
       <Title>회원가입</Title>
       <InputContainer>
         {showCelebrate && <Celebrate />}
@@ -144,7 +147,7 @@ const Title = tw.div`
   items-center
 `;
 const InputContainer = tw.div`
-  rounded-[80px] w-[30%] h-4/5 mx-auto mb-auto bg-gradient-to-r from-cyan-200 to-blue-300   
+  rounded-[80px] w-[30%] h-3/4 mx-auto mb-[2%]  bg-gradient-to-r from-cyan-200 to-blue-300   
   border 
   border-[#4497D4] 
   border-[6px] 
