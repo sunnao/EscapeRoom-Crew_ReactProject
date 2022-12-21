@@ -6,10 +6,7 @@ import { regionAtom } from '../recoil/recruit-map';
 import Background from '../components/common/Background';
 import Navigators from '../components/common/Navigators';
 import { RegionButton } from '../components/buttons/Buttons';
-import MarkerDescription from '../components/recruit-map/MarkerDescription';
 import KakaoMap from '../components/recruit-map/KakaoMap';
-
-import markerColor from '../assets/images/icon/marker-color.png';
 
 const RecruitMap = () => {
   const region = useRecoilValue(regionAtom);
@@ -24,10 +21,7 @@ const RecruitMap = () => {
           <RegionButton title={'건대'}></RegionButton>
         </RegionButtonsContainer>
       </UpperPart>
-      <LowerPart className='flex flex-col px-[10vw]'>
-        <MarkerDescriptionsBox className='flex ml-auto mt-4 mb-8 drop-shadow-md'>
-          <MarkerDescription src={markerColor} alt='marker-color' description={'모집중'}></MarkerDescription>
-        </MarkerDescriptionsBox>
+      <LowerPart className='flex flex-col px-[10vw] mt-6'>
         <ViewSection>
           <KakaoMap region={region}></KakaoMap>
         </ViewSection>
@@ -46,10 +40,6 @@ const UpperPart = tw.div`
 
 const LowerPart = tw.div`
   px-[10vw]
-`;
-
-const MarkerDescriptionsBox = tw.div`
-  flex-row
 `;
 
 const RegionButtonsContainer = tw.div`
