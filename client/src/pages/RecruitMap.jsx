@@ -7,7 +7,7 @@ import Background from '../components/common/Background';
 import Navigators from '../components/common/Navigators';
 import { RegionButton } from '../components/buttons/Buttons';
 import MarkerDescription from '../components/recruit-map/MarkerDescription';
-import SearchPlace from '../components/recruit-map/SearchPlace';
+import KakaoMap from '../components/recruit-map/KakaoMap';
 
 import markerBw from '../assets/images/icon/marker-bw.png';
 import markerColor from '../assets/images/icon/marker-color.png';
@@ -31,7 +31,7 @@ const RecruitMap = () => {
           <MarkerDescription src={markerBw} alt='marker-bw' description={'모집완료'}></MarkerDescription>
         </MarkerDescriptionsBox>
         <ViewSection>
-          <SearchPlace region={region}></SearchPlace>
+          <KakaoMap region={region}></KakaoMap>
         </ViewSection>
       </LowerPart>
     </Background>
