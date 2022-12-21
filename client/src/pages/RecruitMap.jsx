@@ -5,7 +5,6 @@ import tw from 'tailwind-styled-components';
 import { regionAtom } from '../recoil/recruit-map';
 import Background from '../components/common/Background';
 import Navigators from '../components/common/Navigators';
-import RecruitTypeIcon from '../components/recruit/RecruitTypeIcon';
 import { RegionButton } from '../components/buttons/Buttons';
 import MarkerDescription from '../components/recruit-map/MarkerDescription';
 import SearchPlace from '../components/recruit-map/SearchPlace';
@@ -20,7 +19,6 @@ const RecruitMap = () => {
     <Background img={'bg3'}>
       <Navigators />
       <UpperPart className=' flex flex-col'>
-        <RecruitTypeIcon></RecruitTypeIcon>
         <RegionButtonsContainer>
           <RegionButton title={'홍대'}></RegionButton>
           <RegionButton title={'강남'}></RegionButton>
