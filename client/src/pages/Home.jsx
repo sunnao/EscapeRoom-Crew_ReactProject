@@ -4,7 +4,9 @@ import Footer from '../components/common/Footer';
 import Navigators from '../components/common/Navigators';
 import BackgroundScroll from '../components/common/BackgroundScroll';
 import { useNavigate, Link } from 'react-router-dom';
-import { useRef, useEffect } from 'react';
+import { useState, useRef, useEffect } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faArrowDown, faArrowUp } from '@fortawesome/free-solid-svg-icons';
 
 const Home = () => {
   const navigate = useNavigate();
@@ -25,6 +27,9 @@ const Home = () => {
     if (localStorage.getItem('isMusicPlaying') === 'true') {
       audioRef.current.play();
     }
+    window.addEventListener('beforeunload', () => {
+      localStorage.setItem('isMusicPlaying', !audioRef.current.paused);
+    });
   }, []);
 
   const toggleMusic = () => {
@@ -36,56 +41,75 @@ const Home = () => {
       localStorage.setItem('isMusicPlaying', false);
     }
   };
+  const [scale, setScale] = useState(1);
 
   useEffect(() => {
-    window.addEventListener('beforeunload', () => {
-      localStorage.setItem('isMusicPlaying', !audioRef.current.paused);
-    });
+    //   const interval = setInterval(() => {
+    //     setScale((scale) => scale * 1.1);
+    //   }, 700);
+    //   const interval2 = setInterval(() => {
+    //     setScale((scale) => scale / 1.1);
+    //   }, 1400);
+
+    //   return () => clearInterval(interval);
+    // }, []);
+    const interval = setInterval(() => {
+      setScale((scale) => scale * 1.08);
+    }, 700);
+    const interval2 = setInterval(() => {
+      setScale((scale) => scale / (1.08 * 1.08));
+    }, 1400);
   }, []);
 
   return (
     <BackgroundScroll img={'bg1'}>
       <Navigators />
-      <div className='h-full w-full pb-[7%] '>
+      <div className='w-full h-[46%] '>
         <div className='h-full w-full flex flex-col '>
           <div className='w-full h-2/5 flex justify-center'>
-            <사다리꼴2>
-              <사다리꼴
+            <MatchingBtnBorder
+              style={{
+                transform: `scale(${scale})`,
+                transition: 'transform 2s',
+              }}>
+              <MatchingBtn
                 onClick={() => {
                   navigate('/login');
                 }}>
                 <div className='absolute top-[-110px] left-[60px]'>매칭 리스트 보기!</div>
-              </사다리꼴>
-            </사다리꼴2>
+              </MatchingBtn>
+            </MatchingBtnBorder>
           </div>
           <div className='w-full h-2/5 flex justify-center items-center'>
             <Link to='/login'>
-              <SmallBtn className='bg-[#3F51A2]'>로그인</SmallBtn>
+              <LoginBtn>로그인</LoginBtn>
             </Link>
             <Link to='/register'>
-              <SmallBtn className='bg-[#4497D4]'>회원가입</SmallBtn>
+              <RegisterBtn>회원가입</RegisterBtn>
             </Link>
           </div>
           <div className='w-[90%] mx-auto h-[10%] flex justify-end'>
-            <audio ref={audioRef} src='/sounds/EverybodyFalls.mp3'></audio>
-            <SmallBtn className='h-16 bg-[#DBB2E6]' onClick={toggleMusic}>
-              BGM
-            </SmallBtn>
+            <audio ref={audioRef} src='/sounds/LetsHuntAliens.mp3'></audio>
+            <BGMBtn onClick={toggleMusic}>BGM</BGMBtn>
           </div>
-          <button
-            onClick={onScrollDown}
-            className='w-[90%] text-xl font-semibold  mx-auto h-[10%] flex justify-end items-center'>
-            이용규칙 보기
-          </button>
+          <div className='h-[10%] flex justify-end items-center pr-[4%]'>
+            <ScrollBtn onClick={onScrollDown}>
+              이용수칙 안내
+              <FontAwesomeIcon icon={faArrowDown} />
+            </ScrollBtn>
+          </div>
         </div>
+      </div>
+      <div className='w-full h-[5%] flex justify-end items-center pr-[4%]'>
+        <ScrollBtn onClick={onScrollUp}>
+          메인화면으로
+          <FontAwesomeIcon icon={faArrowUp} />
+        </ScrollBtn>
       </div>
       <NoticeDiv>
         <div className='flex w-full'>
           <p className='w-[10%] h-full'></p>
           <p className='text-4xl font-semibold mx-auto'>NOTICE</p>
-          <button onClick={onScrollUp} className='w-[10%] text-xl font-semibold '>
-            메인화면으로
-          </button>
         </div>
         <p className='mt-[20px] mb-[20px]'>아래 내용으로 3번 이상 신고된 계정은 이용이 제한될 수 있습니다.</p>
         <div className='flex flex-row space-x-10'>
@@ -135,7 +159,7 @@ const NoticeCard = tw.div`
   flex flex-col items-center
 `;
 
-const 사다리꼴 = tw.button`
+const MatchingBtn = tw.button`
   w-[640px]
   border-t-[120px] 
   border-t-[#E150A9]
@@ -150,19 +174,36 @@ const 사다리꼴 = tw.button`
   hover:border-t-white
   hover:text-[#E150A9]
 `;
-const 사다리꼴2 = tw.div`
+const MatchingBtnBorder = tw.div`
   w-[660px]
   border-t-[140px] 
   border-t-white
   border-l-[25px] 
   border-r-[25px] 
   border-x-transparent
-  mt-[18%]
+  mt-[14%]
   relative
 `;
-const SmallBtn = tw.button`
+
+const LoginBtn = tw.button`
   px-4 py-2 border-8 rounded-3xl border-white
   text-white text-2xl font-bold ml-4
+  bg-[#3F51A2] hover:text-[#3F51A2] hover:border-[#3F51A2] hover:bg-white
 `;
+const RegisterBtn = tw.button`
+  px-4 py-2 border-8 rounded-3xl border-white
+  text-white text-2xl font-bold ml-4
+  bg-[#4497D4] hover:text-[#4497D4] hover:border-[#4497D4] hover:bg-white
+`;
+const BGMBtn = tw.button`
+  px-4 py-2 border-8 rounded-3xl border-white
+  text-white text-2xl font-bold ml-4
+  bg-[#DBB2E6] hover:text-[#DBB2E6] hover:border-[#DBB2E6] hover:bg-white
+`;
+const ScrollBtn = tw.button`
+  text-white text-xl font-semibold flex justify-end items-center pr-[4%]
+  px-4 py-2 border-b-8 rounded-xl border-white
+  bg-[#3F51A2] hover:text-[#3F51A2] hover:border-[#3F51A2] hover:bg-white
 
+`;
 export default Home;
