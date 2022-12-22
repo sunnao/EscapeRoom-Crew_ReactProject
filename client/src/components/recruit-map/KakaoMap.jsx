@@ -63,7 +63,7 @@ export default function KakaoMap({ region }) {
         예제랑 다르게 커스텀 오버레이 컴포넌트 위치 이상해짐 22.12.23 */}
         {/* {isOver && (
           <CustomOverlayMap position={position} xAnchor={0.3} yAnchor={0.91}>
-            <CustomOverlay cafeName={cafeName} recruitingNum={recruitingNum} />
+            <InfoWindow cafeName={cafeName} recruitingNum={recruitingNum} />
           </CustomOverlayMap>
         )} */}
       </MapMarker>
