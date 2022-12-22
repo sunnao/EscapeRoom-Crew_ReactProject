@@ -14,7 +14,7 @@ const RecruitMap = () => {
   return (
     <Background img={'bg3'}>
       <Navigators />
-      <UpperPart className=' flex flex-col'>
+      <UpperPart className='flex flex-col'>
         <RegionButtonsContainer>
           <RegionButton title={'홍대'}></RegionButton>
           <RegionButton title={'강남'}></RegionButton>
@@ -22,7 +22,7 @@ const RecruitMap = () => {
         </RegionButtonsContainer>
       </UpperPart>
       <LowerPart className='flex flex-col px-[10vw] mt-6'>
-        <ViewSection>
+        <ViewSection className='overflow-hidden'>
           <KakaoMap region={region}></KakaoMap>
         </ViewSection>
       </LowerPart>
