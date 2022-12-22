@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { Map, MapMarker, useMap } from 'react-kakao-maps-sdk';
-import { cafeMockData } from '../../constants/cafeMockData';
 import { regionCoordinate } from '../../constants/regionCoordinate';
 import { ApiUrl } from '../../constants/ApiUrl';
 import * as api from '../../utils/api';
@@ -20,14 +19,14 @@ export default function KakaoMap({ region }) {
   const BASIC_SIZE = 35;
   const OVER_SIZE = 40;
   const [target, setTarget] = useState(null);
-  const [cafeInfo, setCafeInfo] = useState(null);
+  const [cafeInfo, setCafeInfo] = useState({});
 
   useEffect(() => {
-    const cafeData = async () => {
-      const cafeInfoObj = await getCafeInfo(region);
-      setCafeInfo({ [region]: cafeInfoObj });
+    const addRegionCafeData = async () => {
+      const regionCafeInfoArr = await getCafeInfo(region);
+      setCafeInfo({ ...cafeInfo, [region]: regionCafeInfoArr });
     };
-    cafeData();
+    if (!cafeInfo[region]) addRegionCafeData();
   }, [region]);
 
   const MarkerContainer = ({ cafeId, setTarget, position, content }) => {
@@ -71,7 +70,8 @@ export default function KakaoMap({ region }) {
             key={cafe.cafeId}
             cafeId={cafe.cafeId}
             setTarget={setTarget}
-            position={{ lat: Number(cafe.lat), lng: Number(cafe.lng) }}
+            position={{ lat: Number(cafe.lng), lng: Number(cafe.lat) }}
+            // memo 소진: db상 위도 경도가 반대로 되어있어서 db에 맞춰 임시로 반대로 넣어줌 22.12.23
             content={cafe.cafeName}
           />
         ))}
