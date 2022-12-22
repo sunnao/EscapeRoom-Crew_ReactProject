@@ -70,8 +70,7 @@ export default function KakaoMap({ region }) {
             key={cafe.cafeId}
             cafeId={cafe.cafeId}
             setTarget={setTarget}
-            position={{ lat: Number(cafe.lng), lng: Number(cafe.lat) }}
-            // memo 소진: db상 위도 경도가 반대로 되어있어서 db에 맞춰 임시로 반대로 넣어줌 22.12.23
+            position={{ lat: cafe.lat, lng: cafe.lng }}
             content={cafe.cafeName}
           />
         ))}
