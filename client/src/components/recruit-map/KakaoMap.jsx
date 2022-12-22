@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Map, MapMarker, useMap } from 'react-kakao-maps-sdk';
 import { cafeMockData } from '../../constants/cafeMockData';
 import { regionCoordinate } from '../../constants/regionCoordinate';
@@ -8,7 +8,6 @@ import markerImg from '../../assets/images/icon/marker.png';
 import clickedMarkerImg from '../../assets/images/icon/marker-clicked.png';
 
 async function getCafeInfo(region) {
-  alert(ApiUrl.CAFE_INFO);
   try {
     const cafeInfoObj = await api.get(ApiUrl.CAFE_INFO, region);
     return cafeInfoObj;
@@ -17,11 +16,19 @@ async function getCafeInfo(region) {
   }
 }
 
-export default async function KakaoMap({ region }) {
+export default function KakaoMap({ region }) {
   const BASIC_SIZE = 35;
   const OVER_SIZE = 40;
   const [target, setTarget] = useState(null);
-  const cafeInfoObj = await getCafeInfo(region);
+  const [cafeInfo, setCafeInfo] = useState(null);
+
+  useEffect(() => {
+    const cafeData = async () => {
+      const cafeInfoObj = await getCafeInfo(region);
+      setCafeInfo({ [region]: cafeInfoObj });
+    };
+    cafeData();
+  }, [region]);
 
   const MarkerContainer = ({ cafeId, setTarget, position, content }) => {
     const map = useMap();
@@ -58,15 +65,16 @@ export default async function KakaoMap({ region }) {
         height: '700px',
       }}
       level={4}>
-      {cafeMockData.map((cafe) => (
-        <MarkerContainer
-          key={cafe.cafeId}
-          cafeId={cafe.cafeId}
-          setTarget={setTarget}
-          position={{ lat: cafe.lat, lng: cafe.lng }}
-          content={cafe.cafeName}
-        />
-      ))}
+      {cafeInfo?.[region] &&
+        cafeInfo[region].map((cafe) => (
+          <MarkerContainer
+            key={cafe.cafeId}
+            cafeId={cafe.cafeId}
+            setTarget={setTarget}
+            position={{ lat: Number(cafe.lat), lng: Number(cafe.lng) }}
+            content={cafe.cafeName}
+          />
+        ))}
     </Map>
   );
 }
