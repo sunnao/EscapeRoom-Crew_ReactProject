@@ -14,18 +14,20 @@ const RecruitMap = () => {
   return (
     <Background img={'bg3'}>
       <Navigators />
-      <UpperPart className='flex flex-col'>
-        <RegionButtonsContainer>
-          <RegionButton title={'홍대'}></RegionButton>
-          <RegionButton title={'강남'}></RegionButton>
-          <RegionButton title={'건대'}></RegionButton>
-        </RegionButtonsContainer>
-      </UpperPart>
-      <LowerPart className='flex flex-col px-[10vw] mt-6'>
-        <ViewSection className='overflow-hidden'>
-          <KakaoMap region={region}></KakaoMap>
-        </ViewSection>
-      </LowerPart>
+      <div className='my-auto'>
+        <UpperPart className='flex flex-col '>
+          <RegionButtonsContainer>
+            <RegionButton title={'홍대'}></RegionButton>
+            <RegionButton title={'강남'}></RegionButton>
+            <RegionButton title={'건대'}></RegionButton>
+          </RegionButtonsContainer>
+        </UpperPart>
+        <LowerPart className='flex flex-col px-[10vw] mt-8'>
+          <ViewSection className='overflow-hidden'>
+            <KakaoMap region={region}></KakaoMap>
+          </ViewSection>
+        </LowerPart>
+      </div>
     </Background>
   );
 };
