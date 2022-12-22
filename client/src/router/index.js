@@ -3,6 +3,7 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import Home from '../pages/Home';
 import Login from '../pages/Login';
 import MyPage from '../pages/MyPage';
+import MatchingList from '../pages/MatchingList';
 import NotFound from '../pages/NotFound';
 import RecruitMap from '../pages/RecruitMap';
 import Register from '../pages/Register';
@@ -18,6 +19,7 @@ const Router = () => {
         <Route path='/recruit-map' element={<RecruitMap />} />
         <Route path='/cafeinfo' element={<CafeList />} />
         <Route path='/mypage' element={<MyPage />} />
+        <Route path='/matching-list' element={<MatchingList />} />
         <Route path='/mypage/edit' element={<EditUserInfo />} />
         <Route path='/register' element={<Register />}></Route>
         <Route path='/login' element={<Login />}></Route>
