@@ -2,28 +2,37 @@ import React, { useState } from 'react';
 import { Map, MapMarker, useMap } from 'react-kakao-maps-sdk';
 import { cafeMockData } from '../../constants/cafeMockData';
 import { regionCoordinate } from '../../constants/regionCoordinate';
-import markerColor from '../../assets/images/icon/marker-color.png';
+import markerImg from '../../assets/images/icon/marker.png';
+import clickedMarkerImg from '../../assets/images/icon/marker-clicked.png';
 
 export default function KakaoMap({ region }) {
-  const MarkerContainer = ({ position, content }) => {
-    const map = useMap();
-    const [isVisible, setIsVisible] = useState(false);
+  const BASIC_SIZE = 35;
+  const OVER_SIZE = 40;
+  const [target, setTarget] = useState(null);
 
+  const MarkerContainer = ({ cafeId, setTarget, position, content }) => {
+    const map = useMap();
+    const [isOver, setIsOver] = useState(false);
+    let markerIcon = cafeId === target ? clickedMarkerImg : markerImg;
+    let markerSize = isOver ? OVER_SIZE : BASIC_SIZE;
     return (
       <MapMarker
         position={position}
         image={{
-          src: markerColor,
+          src: markerIcon,
           size: {
-            width: 35,
-            height: 35,
+            width: markerSize,
+            height: markerSize,
           },
         }}
         clickable={true}
-        onClick={(marker) => map.panTo(marker.getPosition())}
-        onMouseOver={() => setIsVisible(true)}
-        onMouseOut={() => setIsVisible(false)}>
-        {isVisible && content}
+        onClick={(marker) => {
+          map.panTo(marker.getPosition());
+          setTimeout(() => setTarget(cafeId));
+        }}
+        onMouseOver={() => setIsOver(true)}
+        onMouseOut={() => setIsOver(false)}>
+        {isOver && content}
       </MapMarker>
     );
   };
@@ -35,12 +44,14 @@ export default function KakaoMap({ region }) {
         width: '800px',
         height: '700px',
       }}
-      level={5}>
+      level={4}>
       {cafeMockData.map((cafe) => (
         <MarkerContainer
-          key={`${cafe.title}-${cafe.lat}-${cafe.lng}`}
+          key={cafe.cafeId}
+          cafeId={cafe.cafeId}
+          setTarget={setTarget}
           position={{ lat: cafe.lat, lng: cafe.lng }}
-          content={cafe.title}
+          content={cafe.cafeName}
         />
       ))}
     </Map>
