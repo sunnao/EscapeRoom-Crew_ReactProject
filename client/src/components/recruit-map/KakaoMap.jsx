@@ -2,13 +2,26 @@ import React, { useState } from 'react';
 import { Map, MapMarker, useMap } from 'react-kakao-maps-sdk';
 import { cafeMockData } from '../../constants/cafeMockData';
 import { regionCoordinate } from '../../constants/regionCoordinate';
+import { ApiUrl } from '../../constants/ApiUrl';
+import * as api from '../../utils/api';
 import markerImg from '../../assets/images/icon/marker.png';
 import clickedMarkerImg from '../../assets/images/icon/marker-clicked.png';
 
-export default function KakaoMap({ region }) {
+async function getCafeInfo(region) {
+  alert(ApiUrl.CAFE_INFO);
+  try {
+    const cafeInfoObj = await api.get(ApiUrl.CAFE_INFO, region);
+    return cafeInfoObj;
+  } catch (err) {
+    alert(err.message);
+  }
+}
+
+export default async function KakaoMap({ region }) {
   const BASIC_SIZE = 35;
   const OVER_SIZE = 40;
   const [target, setTarget] = useState(null);
+  const cafeInfoObj = await getCafeInfo(region);
 
   const MarkerContainer = ({ cafeId, setTarget, position, content }) => {
     const map = useMap();
