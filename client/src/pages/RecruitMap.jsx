@@ -1,16 +1,12 @@
 import React from 'react';
-import { useRecoilValue } from 'recoil';
 import tw from 'tailwind-styled-components';
 
-import { regionAtom } from '../recoil/recruit-map';
 import Background from '../components/common/Background';
 import Navigators from '../components/common/Navigators';
 import { RegionButton } from '../components/buttons/Buttons';
 import KakaoMap from '../components/recruit-map/KakaoMap';
 
 const RecruitMap = () => {
-  const region = useRecoilValue(regionAtom);
-
   return (
     <Background img={'bg3'}>
       <Navigators />
@@ -24,7 +20,7 @@ const RecruitMap = () => {
         </UpperPart>
         <LowerPart className='flex flex-col px-[10vw] mt-8'>
           <ViewSection className='overflow-hidden'>
-            <KakaoMap region={region}></KakaoMap>
+            <KakaoMap></KakaoMap>
           </ViewSection>
         </LowerPart>
       </div>

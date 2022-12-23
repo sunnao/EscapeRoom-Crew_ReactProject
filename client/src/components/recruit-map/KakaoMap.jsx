@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
+import { useRecoilValue } from 'recoil';
 import { Map, MapMarker, useMap, CustomOverlayMap } from 'react-kakao-maps-sdk';
 
+import { regionAtom } from '../../recoil/recruit-map';
 import { InfoWindow } from './InfoWindow';
 import { regionCoordinate } from '../../constants/regionCoordinate';
 import { ApiUrl } from '../../constants/ApiUrl';
@@ -27,7 +29,8 @@ async function getRecruitingInfo(cafeId) {
   }
 }
 
-export default function KakaoMap({ region }) {
+export default function KakaoMap() {
+  const region = useRecoilValue(regionAtom);
   const BASIC_SIZE = 40;
   const OVER_SIZE = 42;
   const [target, setTarget] = useState(null);
@@ -38,7 +41,6 @@ export default function KakaoMap({ region }) {
     const regionCafeInfoArr = await getCafeInfo(region);
     setCafeInfo({ ...cafeInfo, [region]: regionCafeInfoArr });
   };
-
   const addRecruitingData = async (cafeId) => {
     const cafeRecruitingArr = await getRecruitingInfo(cafeId);
     setRecruitingInfo({ ...recruitingInfo, [cafeId]: cafeRecruitingArr });
@@ -59,7 +61,6 @@ export default function KakaoMap({ region }) {
       map.panTo(marker.getPosition());
       setTimeout(() => setTarget(cafeId));
     };
-
     return (
       <MapMarker
         position={position}
@@ -81,7 +82,7 @@ export default function KakaoMap({ region }) {
           })
         }>
         {isOver && <InfoWindow cafeName={cafeName} recruitingNum={recruitingNum} />}
-        {/* memo 소진: 아래 주석 -> https://react-kakao-maps-sdk.jaeseokim.dev/docs/sample/overlay/customOverlay2 코드 참고
+        {/* memo 소진: 아래 주석 코드 -> https://react-kakao-maps-sdk.jaeseokim.dev/docs/sample/overlay/customOverlay2 참고
         예제랑 다르게 커스텀 오버레이 컴포넌트 위치 이상해짐 22.12.23 */}
         {/* {isOver && (
           <CustomOverlayMap position={position} xAnchor={0.3} yAnchor={0.91}>
