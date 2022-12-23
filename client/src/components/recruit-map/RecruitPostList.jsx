@@ -22,13 +22,27 @@ export default function RecruitPostList() {
     const cafeRecruitingArr = await getRecruitingInfo(cafeId);
     setRecruitingInfo({ ...recruitingInfo, [cafeId]: cafeRecruitingArr });
   };
+  const CafeDescription = () => {
+    return (
+      recruitingInfo[targetCafe] && (
+        <div className='my-3'>
+          <div className='text-lg font-semibold text-blue-4'>
+            {recruitingInfo[targetCafe]['recruitingInfo'].length}팀 모집중
+          </div>
+          <div className='text-xl font-medium'>{recruitingInfo[targetCafe]['cafeInfo'].cafeName}</div>
+          <div>{recruitingInfo[targetCafe]['cafeInfo'].address}</div>
+        </div>
+      )
+    );
+  };
+
   if (targetCafe && !recruitingInfo[targetCafe]) addRecruitingData(targetCafe);
 
   return (
     <div>
-      <div>{recruitingInfo[targetCafe] && recruitingInfo[targetCafe][0].address}</div>
+      <CafeDescription />
       {recruitingInfo[targetCafe] &&
-        recruitingInfo[targetCafe].map((recruitPost) => (
+        recruitingInfo[targetCafe]['recruitingInfo'].map((recruitPost) => (
           <RecuitPostContainer key={recruitPost.matchingPostsId} postData={recruitPost} />
         ))}
     </div>
