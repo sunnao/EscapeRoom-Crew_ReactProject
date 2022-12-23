@@ -5,6 +5,7 @@ import Login from '../pages/Login';
 import MyPage from '../pages/MyPage';
 import MatchingList from '../pages/MatchingList';
 import NotFound from '../pages/NotFound';
+import RecruitMap from '../pages/RecruitMap';
 import Register from '../pages/Register';
 import EditUserInfo from '../pages/Mypage/EditUserInfo';
 import CafeList from '../pages/CafeList';
