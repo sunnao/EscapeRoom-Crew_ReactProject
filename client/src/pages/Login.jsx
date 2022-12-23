@@ -29,30 +29,7 @@ const Login = () => {
       setError('이메일 형식이 올바른지 확인해주세요');
       return;
     }
-<<<<<<< HEAD
-
-    setError('');
-
-    try {
-      const response = await fetch('/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password }),
-      });
-      const result = await response.json();
-      if (result.success) {
-        //토근 받아서 세션에 넣는 로직 result.token
-        window.location.href = '/';
-      } else {
-        setError(response.error);
-      }
-    } catch (error) {
-      setError('로그인을 시도하는 중 에러가 발생했습니다');
-      console.error(error);
-    }
-=======
     post('/api/Users/login', { email, password });
->>>>>>> 0e18fe081e5ac094dd31a264409473e095c73f6a
   };
 
   return (

@@ -125,29 +125,6 @@ const RegisterProfile = () => {
     setShowAddProfileIcon(false);
   };
 
-<<<<<<< HEAD
-  const onSubmitUserInfo = async (e) => {
-    try {
-      const response = await fetch('/user', {
-        method: 'PATCH',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(userAddInfo),
-      });
-      const result = await response.json();
-      if (result.success) {
-        alert('추가정보가 성공적으로 입력되었습니다!');
-        //성공시 실행할 코드
-      } else {
-        setError(response.error);
-      }
-    } catch (error) {
-      setError('로그인을 시도하는 중 에러가 발생했습니다');
-      console.error(error);
-    }
-  };
-
-=======
->>>>>>> 0e18fe081e5ac094dd31a264409473e095c73f6a
   const modalStyle = {
     content: {
       top: '35%',
