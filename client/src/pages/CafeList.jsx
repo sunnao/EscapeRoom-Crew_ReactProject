@@ -1,11 +1,14 @@
 import { React, Fragment, useState } from 'react';
-// import tw from 'tailwind-styled-components';
+import tw from 'tailwind-styled-components';
 import { Listbox, Transition } from '@headlessui/react';
 import { CheckIcon, ChevronUpDownIcon } from '@heroicons/react/20/solid';
 import Background from '../components/common/Background';
 import Navigators from '../components/common/Navigators';
 import { RegionButton } from '../components/buttons/Buttons';
-import CafeData from '../mocks/cafeData.json';
+// import CafeData from '../mocks/cafeData.json';
+// import Paging from '../components/common/Pagination';
+import * as Api from '../utils/api';
+import { useEffect } from 'react';
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ');
@@ -13,7 +16,17 @@ function classNames(...classes) {
 
 const CafeList = () => {
   const REGION_DATA = ['전체', '홍대', '강남', '건대'];
-  const [list, setList] = useState(CafeData);
+  // const [list, setList] = useState(CafeData);
+  const [list, setList] = useState(null);
+
+  useEffect(() => {
+    const CafeData = async () => {
+      const data = await Api.get('/api/all');
+      console.log(data);
+      setList(data);
+    };
+  });
+
   const sortByStarRate = () => {
     const newList = [...list];
     newList.sort((a, b) => b.starRate - a.starRate);
@@ -177,6 +190,7 @@ const CafeList = () => {
             2
           </button>
         </div>
+        {/* <Paging></Paging> */}
       </div>
     </Background>
   );
