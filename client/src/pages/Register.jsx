@@ -14,12 +14,6 @@ import { useImmer } from 'use-immer';
 const Register = () => {
   const [showCelebrate, setShowCelebrate] = useRecoilState(showCelebrateAtom);
   const showRegisterProfile = useRecoilValue(showRegisterProfileAtom);
-  const [userName, setUserName] = useState(null);
-  const [userNickname, setUserNickName] = useState('');
-  const [userPhoneNum, setUserPhoneNum] = useState(null);
-  const [userEmail, setUserEmail] = useState(null);
-  const [userPWD, setUserPWD] = useState(null);
-  const [userPWDConfirm, setUserPWDConfirm] = useState(null);
   const [error, setError] = useState(null);
   const [userData, setUserData] = useImmer({});
   const USER_INPUT_DATA = [
@@ -35,13 +29,6 @@ const Register = () => {
       info: 'pwdConfirm',
     },
   ];
-  // const userData = {
-  //   user_name: userName,
-  //   nick_name: userNickname,
-  //   mobile_number: userPhoneNum,
-  //   email: userEmail,
-  //   password: userPWD,
-  // };
 
   const onSubmitRegisterBtn = (e) => {
     e.preventDefault();
