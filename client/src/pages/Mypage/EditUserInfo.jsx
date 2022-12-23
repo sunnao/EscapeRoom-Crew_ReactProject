@@ -96,7 +96,11 @@ const EditUserInfo = () => {
   ];
   return (
     <BackgroundScroll img={'bg3'} className='relative'>
+<<<<<<< HEAD
+      <div className='w-full h-[5%]'></div>
+=======
       <Navigators />
+>>>>>>> 0e18fe081e5ac094dd31a264409473e095c73f6a
       <div className='h-[15%] justify-center items-center flex flex-col'>
         <EditProfileIcon showAddProfileIcon={showAddProfileIcon} setShowAddProfileIcon={setShowAddProfileIcon} />
         <UserProfile setShowAddProfileIcon={setShowAddProfileIcon} />
