@@ -11,8 +11,17 @@ import { cafeMockData } from '../../constants/cafeMockData';
 
 async function getCafeInfo(region) {
   try {
-    const cafeInfoObj = await api.get(ApiUrl.CAFE_INFO, region);
-    return cafeInfoObj;
+    const regionCafeInfoArr = await api.get(ApiUrl.CAFE_INFO, region);
+    return regionCafeInfoArr;
+  } catch (err) {
+    alert(err.message);
+  }
+}
+
+async function getRecruitingInfo(cafeId) {
+  try {
+    const cafeRecruitingArr = await api.get(ApiUrl.RECRUITING_INFO, cafeId);
+    return cafeRecruitingArr;
   } catch (err) {
     alert(err.message);
   }
@@ -23,12 +32,19 @@ export default function KakaoMap({ region }) {
   const OVER_SIZE = 42;
   const [target, setTarget] = useState(null);
   const [cafeInfo, setCafeInfo] = useState({});
+  const [recruitingInfo, setRecruitingInfo] = useState({});
+
+  const addRegionCafeData = async () => {
+    const regionCafeInfoArr = await getCafeInfo(region);
+    setCafeInfo({ ...cafeInfo, [region]: regionCafeInfoArr });
+  };
+
+  const addRecruitingData = async (cafeId) => {
+    const cafeRecruitingArr = await getRecruitingInfo(cafeId);
+    setRecruitingInfo({ ...recruitingInfo, [cafeId]: cafeRecruitingArr });
+  };
 
   useEffect(() => {
-    const addRegionCafeData = async () => {
-      const regionCafeInfoArr = await getCafeInfo(region);
-      setCafeInfo({ ...cafeInfo, [region]: regionCafeInfoArr });
-    };
     if (!cafeInfo[region]) addRegionCafeData();
   }, [region]);
 
@@ -37,6 +53,13 @@ export default function KakaoMap({ region }) {
     const [isOver, setIsOver] = useState(false);
     let markerIcon = cafeId === target ? clickedMarkerImg : markerImg;
     let markerSize = isOver ? OVER_SIZE : BASIC_SIZE;
+
+    const onMarkerClick = (marker, cafeId) => {
+      if (!recruitingInfo[cafeId]) addRecruitingData(cafeId);
+      map.panTo(marker.getPosition());
+      setTimeout(() => setTarget(cafeId));
+    };
+
     return (
       <MapMarker
         position={position}
@@ -49,8 +72,7 @@ export default function KakaoMap({ region }) {
         }}
         clickable={true}
         onClick={(marker) => {
-          map.panTo(marker.getPosition());
-          setTimeout(() => setTarget(cafeId));
+          onMarkerClick(marker, cafeId);
         }}
         onMouseOver={() => setIsOver(true)}
         onMouseOut={() =>
@@ -77,7 +99,7 @@ export default function KakaoMap({ region }) {
         width: '800px',
         height: '700px',
       }}
-      level={4}>
+      level={5}>
       {cafeInfo?.[region] &&
         cafeInfo[region].map((cafe) => (
           <MarkerContainer
