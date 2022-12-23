@@ -66,7 +66,7 @@ export default function KakaoMap() {
         }>
         {isOver && <InfoWindow cafeName={cafeName} recruitingNum={recruitingNum} />}
         {/* memo 소진: 아래 주석 코드 -> https://react-kakao-maps-sdk.jaeseokim.dev/docs/sample/overlay/customOverlay2 참고
-        예제랑 다르게 커스텀 오버레이 컴포넌트 위치 이상해짐 22.12.23 */}
+        예제랑 다르게 커스텀 오버레이 컴포넌트 위치 이상해짐 issue #17 22.12.23 */}
         {/* {isOver && (
           <CustomOverlayMap position={position} xAnchor={0.3} yAnchor={0.91}>
             <InfoWindow cafeName={cafeName} recruitingNum={recruitingNum} />
