@@ -20,9 +20,11 @@ const RecruitMap = () => {
           </RegionButtonsContainer>
         </UpperPart>
         <LowerPart className='flex flex-col px-[10vw] mt-8'>
-          <ViewSection className='overflow-hidden flex'>
+          <ViewSection className=' overflow-hidden flex'>
             <KakaoMap></KakaoMap>
-            <RecruitPostList></RecruitPostList>
+            <RecruitListWrapper className='overflow-y-auto overflow-x-hidden'>
+              <RecruitPostList />
+            </RecruitListWrapper>
           </ViewSection>
         </LowerPart>
       </div>
@@ -44,6 +46,10 @@ const LowerPart = tw.div`
 
 const RegionButtonsContainer = tw.div`
   m-auto
+`;
+
+const RecruitListWrapper = tw.div`
+  mx-auto my-2
 `;
 
 export default RecruitMap;
