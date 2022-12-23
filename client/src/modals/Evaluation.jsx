@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import teamMember1 from '../assets/images/user-profile/동하.png';
 import teamMember2 from '../assets/images/user-profile/동현.jpg';
 import teamMember3 from '../assets/images/user-profile/선아.png';
@@ -22,10 +22,10 @@ const Evaluation = ({ selectedList, setVisible }) => {
     { nick_name: '몬스터', profile_image: teamMember5 },
     { nick_name: '김승빈', profile_image: teamMember6 },
   ];
+  const evalLevels = [1, 2, 3, 4, 5];
 
   const date = selectedList.date;
   const [YEAR, MONTH, DATE] = date.split('.');
-  const [evalResult, setEvalResult] = useImmer({});
   const [evalRes, setEvalRes] = useImmer([]);
 
   return (
@@ -51,16 +51,11 @@ const Evaluation = ({ selectedList, setVisible }) => {
                     <div>
                       <span>매너지수</span>
                       <IconContainer>
-                        {[1, 2, 3, 4, 5].map((value, i) => (
+                        {evalLevels.map((value) => (
                           <IconImg
                             src={
-                              // evalResult[member.nick_name]
-                              //   ? evalResult[member.nick_name].manner >= value
-                              //     ? fullHeart
-                              //     : emptyHeart
-                              //   : emptyHeart
                               evalRes.find((user) => user['nickName'] == member.nick_name)
-                                ? evalRes.find((user) => user['nickName'] == member.nick_name).manner >= value
+                                ? evalRes.find((user) => user['nickName'] == member.nick_name).mannerEvaluate >= value
                                   ? fullHeart
                                   : emptyHeart
                                 : emptyHeart
@@ -69,17 +64,13 @@ const Evaluation = ({ selectedList, setVisible }) => {
                             onClick={(e) => {
                               e.preventDefault();
                               const nickName = member.nick_name;
-                              const manner = value;
-                              setEvalResult((evalResult) => {
-                                evalResult[nickName] = { ...evalResult[nickName], manner };
-                              });
-                              // console.log(evalResult);
+                              const mannerEvaluate = value;
                               setEvalRes((evalRes) => {
                                 const userIndex = evalRes.findIndex((user) => user['nickName'] == nickName);
                                 {
                                   userIndex == -1
-                                    ? evalRes.push({ nickName, manner })
-                                    : (evalRes[userIndex] = { ...evalRes[userIndex], manner });
+                                    ? evalRes.push({ nickName, mannerEvaluate })
+                                    : (evalRes[userIndex] = { ...evalRes[userIndex], mannerEvaluate });
                                 }
                               });
                               console.log(evalRes);
@@ -91,16 +82,11 @@ const Evaluation = ({ selectedList, setVisible }) => {
                     <div>
                       <span>탈출레벨</span>
                       <IconContainer>
-                        {[1, 2, 3, 4, 5].map((level) => (
+                        {evalLevels.map((level) => (
                           <IconImg
                             src={
-                              // evalResult[member.nick_name]
-                              //   ? evalResult[member.nick_name].escape >= level
-                              //     ? fullKey
-                              //     : emptyKey
-                              //   : emptyKey
                               evalRes.find((user) => user['nickName'] == member.nick_name)
-                                ? evalRes.find((user) => user['nickName'] == member.nick_name).level >= level
+                                ? evalRes.find((user) => user['nickName'] == member.nick_name).escapeEvaluate >= level
                                   ? fullKey
                                   : emptyKey
                                 : emptyKey
@@ -109,17 +95,13 @@ const Evaluation = ({ selectedList, setVisible }) => {
                             onClick={(e) => {
                               e.preventDefault();
                               const nickName = member.nick_name;
-                              const escape = level;
-                              setEvalResult((evalResult) => {
-                                evalResult[nickName] = { ...evalResult[nickName], escape };
-                              });
-                              // console.log(evalResult);
+                              const escapeEvaluate = level;
                               setEvalRes((evalRes) => {
                                 const userIndex = evalRes.findIndex((user) => user['nickName'] == nickName);
                                 {
                                   userIndex == -1
-                                    ? evalRes.push({ nickName, level })
-                                    : (evalRes[userIndex] = { ...evalRes[userIndex], level });
+                                    ? evalRes.push({ nickName, escapeEvaluate })
+                                    : (evalRes[userIndex] = { ...evalRes[userIndex], escapeEvaluate });
                                 }
                               });
                               console.log(evalRes);
@@ -135,16 +117,13 @@ const Evaluation = ({ selectedList, setVisible }) => {
                     placeholder='한 줄 평 (선택)'
                     onChange={(e) => {
                       const nickName = member.nick_name;
-                      const review = e.target.value;
-                      setEvalResult((evalResult) => {
-                        evalResult[member.nick_name] = { ...evalResult[member.nick_name], review };
-                      });
+                      const shortEvaluate = e.target.value;
                       setEvalRes((evalRes) => {
                         const userIndex = evalRes.findIndex((user) => user['nickName'] == member.nick_name);
                         {
                           userIndex == -1
-                            ? evalRes.push({ nickName, review })
-                            : (evalRes[userIndex] = { ...evalRes[userIndex], review });
+                            ? evalRes.push({ nickName, shortEvaluate })
+                            : (evalRes[userIndex] = { ...evalRes[userIndex], shortEvaluate });
                         }
                       });
                     }}
