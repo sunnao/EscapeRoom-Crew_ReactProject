@@ -9,21 +9,11 @@ import { ApiUrl } from '../../constants/ApiUrl';
 import * as api from '../../utils/api';
 import markerImg from '../../assets/images/icon/marker.png';
 import clickedMarkerImg from '../../assets/images/icon/marker-clicked.png';
-import { cafeMockData } from '../../constants/cafeMockData';
 
 async function getCafeInfo(region) {
   try {
     const regionCafeInfoArr = await api.get(ApiUrl.CAFE_INFO, region);
     return regionCafeInfoArr;
-  } catch (err) {
-    alert(err.message);
-  }
-}
-
-async function getRecruitingInfo(cafeId) {
-  try {
-    const cafeRecruitingArr = await api.get(ApiUrl.RECRUITING_INFO, cafeId);
-    return cafeRecruitingArr;
   } catch (err) {
     alert(err.message);
   }
@@ -35,15 +25,10 @@ export default function KakaoMap() {
   const region = useRecoilValue(regionAtom);
   const [targetCafe, setTargetCafe] = useRecoilState(targetCafeAtom);
   const [cafeInfo, setCafeInfo] = useState({});
-  const [recruitingInfo, setRecruitingInfo] = useState({});
 
   const addRegionCafeData = async () => {
     const regionCafeInfoArr = await getCafeInfo(region);
     setCafeInfo({ ...cafeInfo, [region]: regionCafeInfoArr });
-  };
-  const addRecruitingData = async (cafeId) => {
-    const cafeRecruitingArr = await getRecruitingInfo(cafeId);
-    setRecruitingInfo({ ...recruitingInfo, [cafeId]: cafeRecruitingArr });
   };
 
   useEffect(() => {
@@ -55,9 +40,7 @@ export default function KakaoMap() {
     const [isOver, setIsOver] = useState(false);
     let markerIcon = cafeId === targetCafe ? clickedMarkerImg : markerImg;
     let markerSize = isOver ? OVER_SIZE : BASIC_SIZE;
-
     const onMarkerClick = (marker, cafeId) => {
-      if (!recruitingInfo[cafeId]) addRecruitingData(cafeId);
       map.panTo(marker.getPosition());
       setTimeout(() => setTargetCafe(cafeId));
     };
@@ -97,7 +80,7 @@ export default function KakaoMap() {
     <Map
       center={regionCoordinate[region]}
       style={{
-        width: '800px',
+        width: '900px',
         height: '700px',
       }}
       level={5}>
@@ -112,16 +95,6 @@ export default function KakaoMap() {
             recruitingNum={cafe.recruitingNum}
           />
         ))}
-      {cafeMockData.map((cafe) => (
-        <MarkerContainer
-          key={cafe.cafeId}
-          cafeId={cafe.cafeId}
-          setTargetCafe={setTargetCafe}
-          position={{ lat: cafe.lat, lng: cafe.lng }}
-          cafeName={cafe.cafeName}
-          recruitingNum={cafe.recruitingNum}
-        />
-      ))}
     </Map>
   );
 }

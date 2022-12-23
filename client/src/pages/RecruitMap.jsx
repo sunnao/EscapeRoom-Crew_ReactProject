@@ -5,6 +5,7 @@ import Background from '../components/common/Background';
 import Navigators from '../components/common/Navigators';
 import { RegionButton } from '../components/buttons/Buttons';
 import KakaoMap from '../components/recruit-map/KakaoMap';
+import RecruitPostList from '../components/recruit-map/RecruitPostList';
 
 const RecruitMap = () => {
   return (
@@ -19,8 +20,9 @@ const RecruitMap = () => {
           </RegionButtonsContainer>
         </UpperPart>
         <LowerPart className='flex flex-col px-[10vw] mt-8'>
-          <ViewSection className='overflow-hidden'>
+          <ViewSection className='overflow-hidden flex'>
             <KakaoMap></KakaoMap>
+            <RecruitPostList></RecruitPostList>
           </ViewSection>
         </LowerPart>
       </div>
