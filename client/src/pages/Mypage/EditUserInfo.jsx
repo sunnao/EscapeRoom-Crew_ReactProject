@@ -9,29 +9,31 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPen } from '@fortawesome/free-solid-svg-icons';
 import Modal from 'react-modal';
 import Navigators from '../../components/common/Navigators';
+import { useImmer } from 'use-immer';
+import { patch } from '../../utils/api';
 
 const EditUserInfo = () => {
   const [showWithdraw, setShowWithdraw] = useState(false);
   const [showAddProfileIcon, setShowAddProfileIcon] = useState(false);
   const USER_BASIC_DATA = [
-    { name: '이름', placeHolder: '김탈출', type: 'text' },
-    { name: '닉네임', placeHolder: '위기탈출넘버원', type: 'text' },
-    { name: '휴대전화 번호', placeHolder: '010-1234-5678', type: 'text' },
-    { name: '이메일', placeHolder: 'example@escape.elice', type: 'email' },
-    { name: '새 비밀번호', placeHolder: '영문, 숫자, 특수문자 조합 최소 8자', type: 'password' },
+    { inputName: '이름', placeHolder: '김탈출', type: 'text', name: 'userName' },
+    { inputName: '닉네임', placeHolder: '위기탈출넘버원', type: 'text', name: 'nickName' },
+    { inputName: '휴대전화 번호', placeHolder: '010-1234-5678', type: 'text', name: 'mobileNumber' },
+    { inputName: '이메일', placeHolder: 'example@escape.elice', type: 'email', name: 'email' },
+    { inputName: '새 비밀번호', placeHolder: '영문, 숫자, 특수문자 조합 최소 8자', type: 'password', name: 'password' },
     {
-      name: '비밀번호 확인',
+      inputName: '비밀번호 확인',
       placeHolder: '비밀번호를 다시 한번 입력해주세요',
       type: 'password',
     },
   ];
   const USER_ADD_DATA = [
-    { name: '한줄소개', placeHolder: '한 줄 소개', type: 'text' },
-    { name: '성별', options: ['남자', '여자'], type: 'radio' },
-    { name: '나이', options: ['10대', '20대', '30대 이상'], type: 'radio' },
-    { name: '선호 지역', options: ['강남', '건대', '홍대'], type: 'radio' },
+    { inputName: '한줄소개', placeHolder: '한 줄 소개', type: 'text', name: 'userIntro' },
+    { inputName: '성별', options: ['남자', '여자'], type: 'radio', name: 'gender' },
+    { inputName: '나이', options: ['10대', '20대', '30대 이상'], type: 'radio', name: 'age' },
+    { inputName: '선호 지역', options: ['강남', '건대', '홍대'], type: 'radio', name: 'preferenceLocation' },
     {
-      name: 'MBTI',
+      inputName: 'MBTI',
       options: [
         '선택',
         'ISTJ',
@@ -52,9 +54,10 @@ const EditUserInfo = () => {
         'ENTJ',
       ],
       type: 'select',
+      name: 'mbti',
     },
     {
-      name: '선호 테마',
+      inputName: '선호 테마',
       options: [
         '없음',
         '추리',
@@ -72,9 +75,10 @@ const EditUserInfo = () => {
         '19금',
       ],
       type: 'select',
+      name: 'preferenceTheme',
     },
     {
-      name: '비선호 테마',
+      inputName: '비선호 테마',
       options: [
         '없음',
         '추리',
@@ -92,8 +96,20 @@ const EditUserInfo = () => {
         '19금',
       ],
       type: 'select',
+      name: 'nonPreferenceTheme',
     },
   ];
+
+  const [userBasicData, setUserBasicData] = useImmer({});
+  const [userAddData, setUserAddData] = useImmer({});
+
+  //token에서 userId를 꺼내서 넣어주기
+  const editBasicInfo = () => {
+    patch('localhost:3008/api/Users/1', { ...userBasicData, userId: null });
+  };
+  const editAddInfo = () => {
+    patch('localhost:3008/api/Users/1', { ...userAddData, userId: null });
+  };
   return (
     <BackgroundScroll img={'bg3'} className='relative'>
       <Navigators />
@@ -104,14 +120,14 @@ const EditUserInfo = () => {
       {showWithdraw && <Withdraw setShowWithdraw={setShowWithdraw} />}
 
       <div className='h-[80%] w-1/2 flex flex-col mx-auto justify-center items-center'>
-        <EditBox title={'기본정보 수정'} data={USER_BASIC_DATA}>
+        <EditBox title={'기본정보 수정'} data={USER_BASIC_DATA} setData={setUserBasicData} userData={userBasicData}>
           <button className='text-gray-500 underline hover:text-black' onClick={() => setShowWithdraw(true)}>
             탈퇴하기
           </button>
-          <EditBtn>변경</EditBtn>
+          <EditBtn onClick={editBasicInfo}>변경</EditBtn>
         </EditBox>
-        <EditBox title={'추가정보 수정'} data={USER_ADD_DATA}>
-          <EditBtn>변경</EditBtn>
+        <EditBox title={'추가정보 수정'} data={USER_ADD_DATA} setData={setUserAddData} userData={userAddData}>
+          <EditBtn onClick={editAddInfo}>변경</EditBtn>
         </EditBox>
       </div>
     </BackgroundScroll>
@@ -173,21 +189,39 @@ const EditProfileIcon = ({ showAddProfileIcon, setShowAddProfileIcon }) => {
     </Modal>
   );
 };
-const EditInput = ({ inputData }) => {
+const EditInput = ({ inputData, setData, userData }) => {
   return (
     <div className='w-full h-8 mb-6 flex'>
-      <div className='w-1/5 flex justify-start items-center text-gray-500'>{inputData.name}</div>
+      <div className='w-1/5 flex justify-start items-center text-gray-500'>{inputData.inputName}</div>
       <div className='w-[80%] flex'>
         {inputData.options ? (
           inputData.type === 'radio' ? (
             inputData.options.map((option) => (
               <div className='ml-2 text-center' key={inputData.name + option}>
                 <label value={option}>{option}</label>
-                <input type='radio' name={inputData.name} value={option} />
+                <input
+                  type='radio'
+                  name={inputData.inputName}
+                  value={option}
+                  onChange={(e) => {
+                    setData((data) => {
+                      data[inputData.name] = e.target.value;
+                      console.log(userData);
+                    });
+                  }}
+                />
               </div>
             ))
           ) : (
-            <select className='border border-black' name={inputData.name}>
+            <select
+              className='border border-black'
+              name={inputData.name}
+              onChange={(e) => {
+                setData((data) => {
+                  data[inputData.name] = e.target.value;
+                  console.log(userData);
+                });
+              }}>
               {inputData.options.map((option) => (
                 <option key={option} value={option}>
                   {option}
@@ -200,19 +234,25 @@ const EditInput = ({ inputData }) => {
             className='w-full h-full rounded-full pl-3'
             type={inputData.type}
             placeholder={inputData.placeHolder}
+            onChange={(e) => {
+              setData((data) => {
+                data[inputData.name] = e.target.value;
+                console.log(userData);
+              });
+            }}
           />
         )}
       </div>
     </div>
   );
 };
-const EditBox = ({ data, children, title }) => {
+const EditBox = ({ data, children, title, setData, userData }) => {
   return (
     <div className='flex flex-col w-full h-1/2 '>
       <div className='border-b-2 border-black  text-2xl'>{title}</div>
       <div className='w-4/5 px-[5%] h-3/4 my-auto bg-red-100 mx-auto rounded-3xl flex flex-col justify-center'>
         {data.map((inputData) => (
-          <EditInput key={inputData.name} inputData={inputData} />
+          <EditInput key={inputData.name} inputData={inputData} setData={setData} userData={userData} />
         ))}
         <div className='flex justify-end'>{children}</div>
       </div>

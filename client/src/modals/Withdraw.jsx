@@ -52,9 +52,9 @@ const Withdraw = ({ setShowWithdraw }) => {
 
 const WithdrawModal = tw.div`
   flex
-  rounded-xl border border-black   w-[26%] h-[55%]
+  rounded-xl border border-black   w-[26%] h-[30%]
   bg-[#F2F2F2]
-  absolute left-[37%] top-[30%]
+  absolute left-[37%] top-[26%]
 
 
 `;
