@@ -22,7 +22,7 @@ const RecruitMap = () => {
         <LowerPart className='flex flex-col px-[10vw] mt-8'>
           <ViewSection className=' overflow-hidden flex'>
             <KakaoMap></KakaoMap>
-            <RecruitListWrapper className='overflow-y-auto overflow-x-hidden'>
+            <RecruitListWrapper className='overflow-y-auto overflow-x-hidden scrollbar-hide'>
               <RecruitPostList />
             </RecruitListWrapper>
           </ViewSection>
