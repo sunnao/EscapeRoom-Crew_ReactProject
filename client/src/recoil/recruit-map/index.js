@@ -1,1 +1,1 @@
-export { regionAtom } from './atom';
+export { regionAtom, targetCafeAtom } from './atom';

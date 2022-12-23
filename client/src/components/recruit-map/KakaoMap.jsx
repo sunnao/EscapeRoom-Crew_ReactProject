@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { useRecoilValue } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 import { Map, MapMarker, useMap, CustomOverlayMap } from 'react-kakao-maps-sdk';
 
-import { regionAtom } from '../../recoil/recruit-map';
+import { regionAtom, targetCafeAtom } from '../../recoil/recruit-map';
 import { InfoWindow } from './InfoWindow';
 import { regionCoordinate } from '../../constants/regionCoordinate';
 import { ApiUrl } from '../../constants/ApiUrl';
@@ -30,10 +30,10 @@ async function getRecruitingInfo(cafeId) {
 }
 
 export default function KakaoMap() {
-  const region = useRecoilValue(regionAtom);
   const BASIC_SIZE = 40;
   const OVER_SIZE = 42;
-  const [target, setTarget] = useState(null);
+  const region = useRecoilValue(regionAtom);
+  const [targetCafe, setTargetCafe] = useRecoilState(targetCafeAtom);
   const [cafeInfo, setCafeInfo] = useState({});
   const [recruitingInfo, setRecruitingInfo] = useState({});
 
@@ -50,16 +50,16 @@ export default function KakaoMap() {
     if (!cafeInfo[region]) addRegionCafeData();
   }, [region]);
 
-  const MarkerContainer = ({ cafeId, setTarget, position, cafeName, recruitingNum }) => {
+  const MarkerContainer = ({ cafeId, setTargetCafe, position, cafeName, recruitingNum }) => {
     const map = useMap();
     const [isOver, setIsOver] = useState(false);
-    let markerIcon = cafeId === target ? clickedMarkerImg : markerImg;
+    let markerIcon = cafeId === targetCafe ? clickedMarkerImg : markerImg;
     let markerSize = isOver ? OVER_SIZE : BASIC_SIZE;
 
     const onMarkerClick = (marker, cafeId) => {
       if (!recruitingInfo[cafeId]) addRecruitingData(cafeId);
       map.panTo(marker.getPosition());
-      setTimeout(() => setTarget(cafeId));
+      setTimeout(() => setTargetCafe(cafeId));
     };
     return (
       <MapMarker
@@ -106,7 +106,7 @@ export default function KakaoMap() {
           <MarkerContainer
             key={cafe.cafeId}
             cafeId={cafe.cafeId}
-            setTarget={setTarget}
+            setTargetCafe={setTargetCafe}
             position={{ lat: cafe.lat, lng: cafe.lng }}
             cafeName={cafe.cafeName}
             recruitingNum={cafe.recruitingNum}
@@ -116,7 +116,7 @@ export default function KakaoMap() {
         <MarkerContainer
           key={cafe.cafeId}
           cafeId={cafe.cafeId}
-          setTarget={setTarget}
+          setTargetCafe={setTargetCafe}
           position={{ lat: cafe.lat, lng: cafe.lng }}
           cafeName={cafe.cafeName}
           recruitingNum={cafe.recruitingNum}
