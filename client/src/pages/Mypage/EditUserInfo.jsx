@@ -8,6 +8,7 @@ import { profileImgAtom } from '../../recoil/register';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPen } from '@fortawesome/free-solid-svg-icons';
 import Modal from 'react-modal';
+import Navigators from '../../components/common/Navigators';
 
 const EditUserInfo = () => {
   const [showWithdraw, setShowWithdraw] = useState(false);
@@ -95,7 +96,11 @@ const EditUserInfo = () => {
   ];
   return (
     <BackgroundScroll img={'bg3'} className='relative'>
+<<<<<<< HEAD
       <div className='w-full h-[5%]'></div>
+=======
+      <Navigators />
+>>>>>>> 0e18fe081e5ac094dd31a264409473e095c73f6a
       <div className='h-[15%] justify-center items-center flex flex-col'>
         <EditProfileIcon showAddProfileIcon={showAddProfileIcon} setShowAddProfileIcon={setShowAddProfileIcon} />
         <UserProfile setShowAddProfileIcon={setShowAddProfileIcon} />
