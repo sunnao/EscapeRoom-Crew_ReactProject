@@ -1,17 +1,17 @@
-import React, { Fragment, useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import tw from 'tailwind-styled-components';
-import { useRecoilState, useRecoilValue } from 'recoil';
+import { useRecoilState } from 'recoil';
 import { screenLevelAtom, showUserProfileModalAtom } from '../../recoil/recruit-list/index';
 
 import userArray from '../../assets/images/user-profile/profile';
-import completeRibon from '../../assets/images/icon/complete-ribon.png';
+import completeRibbon from '../../assets/images/icon/complete-ribbon.png';
 
 const RecuitPostContainer = ({ postData }) => {
-  const screenLevel = useRecoilValue(screenLevelAtom);
+  const [screenLevel, setScreenLevel] = useRecoilState(screenLevelAtom);
   const [showUserProfileModal, setShowUserProfileModal] = useRecoilState(showUserProfileModalAtom);
   const [showTeamModal, setShowTeamModal] = useState(false);
   const [currentUserId, setCurrentUserId] = useState('');
-  const { title, content, view, matchingTime, count, matchStatus, matchingLocation, createdAt, userId } = postData;
+  const { title, content, view, matchingTime, matchStatus, matchingLocation, createdAt, userId } = postData;
 
   const parseDateFunc = (date) => {
     const stringifiedDate = date.toString();
@@ -22,6 +22,37 @@ const RecuitPostContainer = ({ postData }) => {
     const minute = stringifiedDate.slice(8, 10);
     return `${year}년 ${month}월 ${day}일 ${hour}:${minute} 예정`;
   };
+
+  const changeDate = () => {
+    const postedDate = new Date(createdAt);
+    const today = new Date();
+    // [221224] memo 재웅:
+    // today 상수를 console.log를 통해 확인해보면 총 16개의 로그가 뜬다.
+    // 과한 리렌더링을 거친다. 리소스의 낭비가 매우 심한 거 같아 원인을 찾고있다.
+
+    const relativeFormatter = new Intl.RelativeTimeFormat('ko', {
+      numeric: 'always',
+    });
+
+    let timeDiff = Math.ceil((postedDate.getTime() - today.getTime()) / (1000 * 60 * 60));
+    if (timeDiff === 0) {
+      timeDiff = Math.ceil((postedDate.getTime() - today.getTime()) / (1000 * 60));
+      return relativeFormatter.format(timeDiff, 'minute');
+    }
+    return relativeFormatter.format(timeDiff, 'hour');
+  };
+
+  const handleResize = () => {
+    window.innerHeight < 985 ? setScreenLevel(2) : setScreenLevel(1);
+  };
+
+  useEffect(() => {
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
 
   const UserProfileContainer = () => {
     return (
@@ -47,13 +78,13 @@ const RecuitPostContainer = ({ postData }) => {
       className={`${screenLevel === 1 ? 'h-[340px]' : 'h-[260px]'}
       w-[280px] p-5 relative rounded-xl drop-shadow-xl border-[1.5px] border-solid border-black-500
   bg-gray-400 text-white`}>
-      <CompleteRibon src={completeRibon} className={matchStatus ? '' : 'hidden'} />
-      <p className='pt-5 text-lg font-semibold h-[70px] cursor-pointer'>
+      <CompleteRibbon src={completeRibbon} className={matchStatus ? '' : 'hidden'} />
+      <p className='pt-5 mb-3 text-lg font-semibold h-[70px] cursor-pointer'>
         {title}
         <span className='text-blue-4 stroke-cyan-50 stroke-width-1'> (7/7)</span>
       </p>
       <div className='flex flex-row'>
-        <span className='mb-2'>1시간 전</span>
+        <span className='mb-2'>{changeDate()}</span>
         <span className='mx-1.5'>・</span>
         <svg
           className='align-middle'
@@ -100,9 +131,6 @@ const RecuitPostContainer = ({ postData }) => {
             className='drop-shadow-xl h-9 w-[70px] border-solid border-[1.5px] border-white cursor-pointer'>
             팀원보기
           </button>
-          <button className='drop-shadow-xl h-9 w-[70px] border-solid border-[1.5px] border-white cursor-pointer'>
-            참여하기
-          </button>
           {showTeamModal && (
             <div className='w-[300px] h-[170px] -right-[34px] bottom-12 px-4 absolute bg-white rounded-[10px] border-solid border-[1.5px] border-white'>
               <UserProfileContainer />
@@ -114,7 +142,7 @@ const RecuitPostContainer = ({ postData }) => {
   );
 };
 
-const CompleteRibon = tw.img`
+const CompleteRibbon = tw.img`
   absolute w-[71px] h-[84.5px] top-[-6px] right-[-6px]
 `;
 
