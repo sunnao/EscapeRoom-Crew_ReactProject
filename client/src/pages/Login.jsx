@@ -6,7 +6,9 @@ import Forgot from '../modals/Forgot';
 import Background from '../components/common/Background';
 import Navigators from '../components/common/Navigators';
 import { Keys } from '../constants/Keys';
-import { getCookieValue } from '../utils/cookie';
+import { setCookie } from '../utils/cookie';
+import { post } from '../utils/api';
+import jwt_decode from 'jwt-decode';
 
 const Login = () => {
   const navigate = useNavigate();
@@ -21,28 +23,22 @@ const Login = () => {
     e.preventDefault();
     navigate('/register');
   };
+  const loginRequest = async () => {
+    try {
+      const response = await post('/api/Users/login', { email, password });
+      const accessToken = response.accessToken;
+      const userId = jwt_decode(accessToken).userId;
+      setCookie(Keys.LOGIN_TOKEN, accessToken);
+      setCookie(Keys.USER_ID, userId);
+      navigate('/');
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   const onSubmit = async (e) => {
     e.preventDefault();
-
-    const res = await fetch('http://localhost:3008/api/Users/login', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${getCookieValue(Keys.LOGIN_TOKEN)}`,
-      },
-      body: JSON.stringify({ email, password }),
-    });
-    if (!res.ok) {
-      const error = await res.json();
-      alert(error.reason);
-    } else {
-      const result = await res.json();
-      const accessToken = result.accessToken;
-      // const refreshToken = result.refreshToken;
-      sessionStorage.setItem('accessToken', accessToken);
-      navigate('/');
-    }
+    loginRequest();
   };
 
   return (

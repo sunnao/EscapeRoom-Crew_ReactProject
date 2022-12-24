@@ -7,9 +7,9 @@ import { useNavigate, Link } from 'react-router-dom';
 import { useState, useRef, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowDown, faArrowUp } from '@fortawesome/free-solid-svg-icons';
-
+import { getCookieValue, deleteCookie } from '../utils/cookie';
 const Home = () => {
-  const loginToken = sessionStorage.getItem('accessToken');
+  const loginToken = getCookieValue('token');
   const navigate = useNavigate();
   const onScrollDown = () => {
     window.scrollTo({
@@ -45,15 +45,6 @@ const Home = () => {
   const [scale, setScale] = useState(1);
 
   useEffect(() => {
-    //   const interval = setInterval(() => {
-    //     setScale((scale) => scale * 1.1);
-    //   }, 700);
-    //   const interval2 = setInterval(() => {
-    //     setScale((scale) => scale / 1.1);
-    //   }, 1400);
-
-    //   return () => clearInterval(interval);
-    // }, []);
     const interval = setInterval(() => {
       setScale((scale) => scale * 1.08);
     }, 700);
@@ -61,6 +52,11 @@ const Home = () => {
       setScale((scale) => scale / (1.08 * 1.08));
     }, 1400);
   }, []);
+  const onLogout = () => {
+    deleteCookie('token');
+    deleteCookie('userId');
+    window.location.reload();
+  };
 
   return (
     <BackgroundScroll img={'bg1'}>
@@ -83,7 +79,7 @@ const Home = () => {
           </div>
           <div className='w-full h-2/5 flex justify-center items-center'>
             {loginToken ? (
-              <LoginBtn onClick={() => (sessionStorage.clear(), window.location.reload())}>로그아웃</LoginBtn>
+              <LoginBtn onClick={onLogout}>로그아웃</LoginBtn>
             ) : (
               <Link to='/login'>
                 <LoginBtn>로그인</LoginBtn>

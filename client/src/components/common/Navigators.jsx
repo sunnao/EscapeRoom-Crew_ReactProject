@@ -1,39 +1,32 @@
 import React from 'react';
-import { NavLink, useNavigate } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import tw from 'tailwind-styled-components';
 import DropdownMenu from './DropdownMenu';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHouse, faTableList, faMap, faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 import { get } from '../../utils/api';
 import { useEffect } from 'react';
+import { getCookieValue } from '../../utils/cookie';
+import { useState } from 'react';
 const Navigators = () => {
-  const get = async (url) => {
-    const res = await fetch(url, {
-      headers: {
-        Authorization: `Bearer ${sessionStorage.getItem('accessToken')}`,
-      },
-    });
-
-    if (!res.ok) {
-      const error = await res.json();
-      throw new Error(error.reason);
+  const [myManner, setMyManner] = useState(null);
+  const [myTier, setMyTier] = useState(null);
+  const getUserInfo = async () => {
+    try {
+      const res = await get('/api/users/user');
+      const { mannerScore, tier } = res;
+      setMyManner(mannerScore);
+      setMyTier(tier);
+    } catch (err) {
+      console.log(err);
     }
-
-    const result = await res.json();
-    return result;
   };
-  const test = async () => {
-    console.log('실행됨');
 
-    const res = await get('http://localhost:3008/api/users/user');
-    console.log(res);
-  };
   useEffect(() => {
-    console.log('useEffect');
-    test();
+    getUserInfo();
   }, []);
-  const navigate = useNavigate();
-  const loginToken = sessionStorage.getItem('accessToken');
+
+  const loginToken = getCookieValue('token');
 
   return (
     <div className='flex w-full'>
@@ -44,7 +37,7 @@ const Navigators = () => {
         <div className='w-1/3 flex justify-center items-center'>
           {loginToken && (
             <span className='bg-black w-4/5 h-9 pl-2 relative rounded-full flex justify-center items-center'>
-              <span className='text-white text-xl font-extrabold'>silver</span>
+              <span className='text-white text-xl font-extrabold'>{myTier}</span>
               <span className='absolute w-12 h-12 left-[-18px] top-[-8px]'>
                 <img src={`${process.env.PUBLIC_URL}/images/icon/gold-medal.png`} className='w-full h-full' alt='' />
               </span>
@@ -54,7 +47,7 @@ const Navigators = () => {
         <div className='w-1/3 flex justify-center items-center'>
           {loginToken && (
             <span className='bg-black w-4/5 h-9 pl-2 relative rounded-full flex justify-center items-center'>
-              <span className='text-white text-xl font-extrabold'>70</span>
+              <span className='text-white text-xl font-extrabold'>{myManner}</span>
               <span className='absolute w-12 h-12 left-[-14px] top-[-12px] text-[42px]'>😊</span>
             </span>
           )}

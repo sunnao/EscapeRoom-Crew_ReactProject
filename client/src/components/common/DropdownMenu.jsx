@@ -3,11 +3,13 @@ import { Fragment } from 'react';
 import { Menu, Transition } from '@headlessui/react';
 import tw from 'tailwind-styled-components';
 import { Link } from 'react-router-dom';
+import { deleteCookie, getCookieValue } from '../../utils/cookie';
 
 export default function DropdownMenu() {
-  const loginToken = sessionStorage.getItem('accessToken');
+  const loginToken = getCookieValue('token');
   const onLogout = () => {
-    sessionStorage.clear();
+    deleteCookie('token');
+    deleteCookie('userId');
     window.location.reload();
   };
   return (
