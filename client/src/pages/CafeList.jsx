@@ -18,8 +18,7 @@ const CafeList = () => {
   const [list, setList] = useState([]);
   const getAllCafeData = async () => {
     try {
-      //'/api/cafe-infos/cafeDetail/홍대'
-      const data = await Api.get('/api/cafe-infos/All');
+      const data = await Api.get('/api/cafe-infos/cafeAll');
       console.log(data);
       setList(data);
     } catch (e) {
@@ -172,9 +171,9 @@ const CafeList = () => {
         </div>
 
         <div className='border border-red-600 w-[1200px] h-[500px] grid grid-cols-3 grid-rows-3 gap-x-4 gap-y-6'>
-          {list.map((data, idx) => {
+          {list.map((data) => {
             return (
-              <div className='border flex px-[27px] items-center' key={idx}>
+              <div className='border flex px-[27px] items-center' key={data.cafeId}>
                 <div className='border w-[100px] h-[100px]'>
                   <img></img>
                 </div>
