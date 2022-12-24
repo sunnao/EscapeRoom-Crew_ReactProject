@@ -5,10 +5,12 @@ import Login from '../pages/Login';
 import MyPage from '../pages/MyPage';
 import MatchingList from '../pages/MatchingList';
 import NotFound from '../pages/NotFound';
+import RecruitMap from '../pages/RecruitMap';
 import Register from '../pages/Register';
 import MypageEdit from '../pages/MypageEdit';
 import CafeList from '../pages/CafeList';
 import RecruitList from '../pages/recruit-list/RecruitList';
+import RecruitDetail from '../pages/RecruitDetail';
 
 const Router = () => {
   return (
@@ -16,7 +18,8 @@ const Router = () => {
       <Routes>
         <Route path='/' element={<Home />} />
         <Route path='/recruit-list' element={<RecruitList />} />
-        <Route path='/recruit-map' element={<RecruitList />} />
+        <Route path='/recruit-map' element={<RecruitMap />} />
+        <Route path='/recruit-detail' element={<RecruitDetail />} />
         <Route path='/cafelist' element={<CafeList />} />
         <Route path='/mypage' element={<MyPage />} />
         <Route path='/matching-list' element={<MatchingList />} />
