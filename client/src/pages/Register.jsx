@@ -1,6 +1,7 @@
 import React from 'react';
 import tw from 'tailwind-styled-components';
 import Celebrate from '../modals/Celebrate';
+import { useNavigate } from 'react-router-dom';
 import RegisterProfile from '../modals/RegisterProfile';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { showCelebrateAtom, showRegisterProfileAtom } from '../recoil/register';
@@ -10,12 +11,17 @@ import Background from '../components/common/Background';
 import Navigators from '../components/common/Navigators';
 import { post } from '../utils/api';
 import { useImmer } from 'use-immer';
+import { Keys } from '../constants/Keys';
+import { getCookieValue } from '../utils/cookie';
 
 const Register = () => {
+  const navigate = useNavigate();
   const [showCelebrate, setShowCelebrate] = useRecoilState(showCelebrateAtom);
   const showRegisterProfile = useRecoilValue(showRegisterProfileAtom);
   const [error, setError] = useState(null);
   const [userData, setUserData] = useImmer({});
+  const [userId, setUserId] = useState('');
+
   const USER_INPUT_DATA = [
     { name: '이름', placeHolder: '김탈출', type: 'text', info: 'userName' },
     { name: '닉네임', placeHolder: '위기탈출넘버원', type: 'text', info: 'nickName' },
@@ -30,7 +36,7 @@ const Register = () => {
     },
   ];
 
-  const onSubmitRegisterBtn = (e) => {
+  const onSubmitRegisterBtn = async (e) => {
     e.preventDefault();
     console.log(userData);
     if (!validator.isName(userData.userName)) {
@@ -58,7 +64,25 @@ const Register = () => {
       return;
     }
     setError('');
-    const result = post('/api/Users', userData);
+    // const result = post('http://localhost:3008/api/users', userData);
+    // console.log(result);
+    const res = await fetch('http://localhost:3008/api/users', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${getCookieValue(Keys.LOGIN_TOKEN)}`,
+      },
+      body: JSON.stringify(userData),
+    });
+    if (!res.ok) {
+      const error = await res.json();
+      alert(error.reason);
+    } else {
+      const result = await res.json();
+      console.log(result.userId);
+      setUserId(result.userId);
+      setShowCelebrate(true);
+    }
     //result.success? -> setShowCelebrate(true);
   };
 
@@ -68,7 +92,7 @@ const Register = () => {
       <Title>회원가입</Title>
       <InputContainer>
         {showCelebrate && <Celebrate />}
-        {showRegisterProfile && <RegisterProfile />}
+        {showRegisterProfile && <RegisterProfile userId={userId} />}
         <InnerContainer>
           <form onSubmit={onSubmitRegisterBtn}>
             {USER_INPUT_DATA.map((inputData) => (
