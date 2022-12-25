@@ -4,10 +4,11 @@ import { Listbox, Transition } from '@headlessui/react';
 import { CheckIcon, ChevronUpDownIcon } from '@heroicons/react/20/solid';
 import Background from '../components/common/Background';
 import Navigators from '../components/common/Navigators';
-// import { RegionButton } from '../components/buttons/Buttons';
-// import Pagination from '../components/common/Pagination';
+// import Paging from '../components/common/Pagination';
 import * as Api from '../utils/api';
 import { useEffect } from 'react';
+import Pagination from 'react-js-pagination';
+import './CafeList.css';
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ');
@@ -15,7 +16,57 @@ function classNames(...classes) {
 
 const CafeList = () => {
   const detailRegion = ['전체', '홍대', '강남', '건대'];
+
+  // ---------
+  const [page, setPage] = useState(1);
+
+  const handlePageChange = (page) => {
+    setPage(page);
+  };
+
   const [list, setList] = useState([]);
+  // const[pageCount, setPageCount]=useState(0);
+  // const [itemOffset, setItemOffset] = useState(0);
+  const [pagePerList, setPagePerList] = useState([]);
+  const slicedList = () => {
+    // 1->0,9 | 2-> 9,18 | 3->18,27 |
+    setPagePerList(list.slice(9 * (page - 1), page * 9));
+  };
+  useEffect(() => {
+    slicedList();
+  }, [page, list]);
+  // const itemsPerPage = 9;
+
+  // useEffect(() => {
+  //   const endOffset = itemOffset + itemsPerPage;
+  //   setPageCount(Math.ceil(list.length / itemsPerPage));
+  //   setPagePerList(list.slice(itemOffset, endOffset));
+  // }, [itemOffset, itemsPerPage, cafeData]);
+
+  // const handlePageClick = (event) => {
+  //   const newOffset = (event.selected * itemsPerPage) % list.length;
+
+  //   setItemOffset(newOffset);
+  // };
+  // // ------------
+
+  // const getAllMokData = () => {
+  //   setList(cafeData);
+  // };
+  // ---우찬----------
+  // const showSlicedList = () => {
+  //   if (pageCount === 1) {
+  //     setPagePerList(list.slice(0, 8 * pageCount));
+  //   } else {
+  //     setPagePerList(list.slice(8 * (pageCount - 1), 8 * pageCount));
+  //   }
+  // };
+  // const handlePageClick = (pageCount) => {
+  //   setPageCount(pageCount);
+  // };
+  // console.log('페이지카운트', pageCount);
+  // ------------우찬---------
+
   const getAllCafeData = async () => {
     try {
       const data = await Api.get('/api/cafe-infos/cafeAll');
@@ -62,7 +113,16 @@ const CafeList = () => {
       <Navigators />
       <div className='flex flex-row justify-center mx-auto my-5'>
         {detailRegion.map((region, index) => (
-          <button className='purpleButton mx-1' role='button' key={index} name={region} onClick={() => getRegionCafeData(region)}>
+          <button
+            className='purpleButton mx-1'
+            role='button'
+            key={index}
+            name={region}
+            onClick={() => {
+              getRegionCafeData(region);
+              setPage(1);
+              setSelected('정렬기준')
+            }}>
             {region}
           </button>
         ))}
@@ -171,7 +231,7 @@ const CafeList = () => {
         </div>
 
         <div className='border border-red-600 w-[1200px] h-[500px] grid grid-cols-3 grid-rows-3 gap-x-4 gap-y-6'>
-          {list.map((data) => {
+          {pagePerList.map((data) => {
             return (
               <div className='border flex px-[27px] items-center' key={data.cafeId}>
                 <div className='border w-[100px] h-[100px]'>
@@ -200,15 +260,20 @@ const CafeList = () => {
             );
           })}
         </div>
-        <div className='border w-[1200px] h-[50px] flex justify-center items-center'>
+        {/* <div className='border w-[1200px] h-[50px] flex justify-center items-center'>
           <button className='w-[25px] h-[25px] text-sm mx-1 text-white bg-blue-1 border-solid border-[0.5px] rounded border-white'>
             1
           </button>
-          <button className='w-[25px] h-[25px] text-sm mx-1 text-white bg-blue-1 border-solid border-[0.5px] rounded border-white'>
-            2
-          </button>
-        </div>
-        {/* <Pagination/> */}
+        </div> */}
+        <Pagination
+          activePage={page}
+          itemsCountPerPage={9}
+          totalItemsCount={list.length}
+          pageRangeDisplayed={5}
+          // prevPageText={'‹'}
+          // nextPageText={'›'}
+          onChange={handlePageChange}
+        />
       </div>
     </Background>
   );
