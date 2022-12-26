@@ -61,10 +61,10 @@ const Home = () => {
     }, 700);
   };
 
-  useEffect(() => {
-    btnBeat();
-    return () => clearInterval(btnBeat);
-  }, []);
+  // useEffect(() => {
+  //   btnBeat();
+  //   return () => clearInterval(btnBeat);
+  // }, []);
   const onLogout = () => {
     deleteCookie('token');
     deleteCookie('userId');
@@ -151,7 +151,7 @@ const InnerTrapezoid = tw.button`
   border-r-[25px] 
   border-x-transparent
   text-white
-  text-[70px]
+  text-[67px]
   top-[-130px]
   left-[-2.5%]
   absolute
@@ -159,9 +159,8 @@ const InnerTrapezoid = tw.button`
   hover:text-[#E150A9]
 `;
 const MatchingBtn = tw.button`
-  absolute top-[-110px] left-[60px]
+  absolute top-[-110px] left-[45px]
 `;
-
 const LoginRegisterContainer = tw.div`
   w-full h-[35%] flex justify-center items-center
 `;
