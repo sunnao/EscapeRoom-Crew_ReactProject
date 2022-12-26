@@ -33,6 +33,7 @@ export default function KakaoMap() {
 
   useEffect(() => {
     if (!cafeInfo[region]) addRegionCafeData();
+    setTargetCafe(undefined);
   }, [region]);
 
   const MarkerContainer = ({ cafeId, setTargetCafe, position, cafeName, recruitingNum }) => {
