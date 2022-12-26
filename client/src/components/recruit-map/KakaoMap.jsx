@@ -3,6 +3,7 @@ import { useRecoilState, useRecoilValue } from 'recoil';
 import { Map, MapMarker, useMap, CustomOverlayMap } from 'react-kakao-maps-sdk';
 
 import { regionAtom, targetCafeAtom } from '../../recoil/recruit-map';
+import { ResizeButtonContainer } from './ResizeButtonContainer';
 import { InfoWindow } from './InfoWindow';
 import { regionCoordinate } from '../../constants/regionCoordinate';
 import { ApiUrl } from '../../constants/ApiUrl';
@@ -25,6 +26,7 @@ export default function KakaoMap() {
   const region = useRecoilValue(regionAtom);
   const [targetCafe, setTargetCafe] = useRecoilState(targetCafeAtom);
   const [cafeInfo, setCafeInfo] = useState({});
+  const [level, setLevel] = useState(5);
 
   const addRegionCafeData = async () => {
     const regionCafeInfoArr = await getCafeInfo(region);
@@ -78,24 +80,27 @@ export default function KakaoMap() {
   };
 
   return (
-    <Map
-      center={regionCoordinate[region]}
-      style={{
-        width: '900px',
-        height: '700px',
-      }}
-      level={5}>
-      {cafeInfo?.[region] &&
-        cafeInfo[region].map((cafe) => (
-          <MarkerContainer
-            key={cafe.cafeId}
-            cafeId={cafe.cafeId}
-            setTargetCafe={setTargetCafe}
-            position={{ lat: cafe.lat, lng: cafe.lng }}
-            cafeName={cafe.cafeName}
-            recruitingNum={cafe.recruitingNum}
-          />
-        ))}
-    </Map>
+    <div className='relative'>
+      <Map
+        center={regionCoordinate[region]}
+        style={{
+          width: '900px',
+          height: '700px',
+        }}
+        level={level}>
+        <ResizeButtonContainer level={level} setLevel={setLevel}></ResizeButtonContainer>
+        {cafeInfo?.[region] &&
+          cafeInfo[region].map((cafe) => (
+            <MarkerContainer
+              key={cafe.cafeId}
+              cafeId={cafe.cafeId}
+              setTargetCafe={setTargetCafe}
+              position={{ lat: cafe.lat, lng: cafe.lng }}
+              cafeName={cafe.cafeName}
+              recruitingNum={cafe.recruitingNum}
+            />
+          ))}
+      </Map>
+    </div>
   );
 }
