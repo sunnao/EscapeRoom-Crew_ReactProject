@@ -7,10 +7,8 @@ import * as Api from '../utils/api';
 import { useEffect } from 'react';
 import Pagination from 'react-js-pagination';
 import './CafeList.css';
+import SelectOption from '../components/common/SelectOption';
 
-function classNames(...classes) {
-  return classes.filter(Boolean).join(' ');
-}
 
 const CafeList = () => {
   const detailRegion = ['전체', '홍대', '강남', '건대'];
@@ -32,7 +30,7 @@ const CafeList = () => {
 
   const getAllCafeData = async () => {
     try {
-      const data = await Api.get('/api/cafe-infos/cafeAll');
+      const data = await Api.get('/api/cafe-infos/all');
       console.log(data);
       setList(data);
     } catch (e) {
@@ -59,6 +57,7 @@ const CafeList = () => {
     getAllCafeData();
   }, []);
 
+  const [selected, setSelected] = useState('정렬기준');
   const sortByStarRate = () => {
     const newList = [...list];
     newList.sort((a, b) => b.starRate - a.starRate);
@@ -69,8 +68,10 @@ const CafeList = () => {
     newList.sort((a, b) => b.reviewsSum - a.reviewsSum);
     setList(newList);
   };
-  const [selected, setSelected] = useState('정렬기준');
-
+  const optionsArray = [
+    { optionName: '평점순', cbFunc: () => sortByStarRate() },
+    { optionName: '리뷰 많은 순', cbFunc: () => sortByReviewsSum() },
+  ];
   return (
     <Background img={'bg2'}>
       <Navigators />
@@ -84,7 +85,7 @@ const CafeList = () => {
             onClick={() => {
               getRegionCafeData(region);
               setPage(1);
-              setSelected('정렬기준')
+              setSelected('정렬기준');
             }}>
             {region}
           </button>
@@ -93,7 +94,13 @@ const CafeList = () => {
 
       <div className='border-4 border-blue-500 w-[1200px] h-[600px] flex flex-col '>
         <div className='w-[1200px] h-[50px] flex items-start justify-end'>
-          <Listbox value={selected} onChange={setSelected}>
+          <SelectOption
+            selectedOption={selected}
+            setSelectedOption={setSelected}
+            cbFuncObjs={optionsArray}
+            width={'w-40'}
+          />
+          {/* <Listbox value={selected} onChange={setSelected}>
             {({ open }) => (
               <>
                 <div className='relative w-40'>
@@ -122,6 +129,7 @@ const CafeList = () => {
                         }
                         value='평점순'
                         onClick={() => {
+                          setPage(1)
                           sortByStarRate();
                         }}>
                         {({ selected, active }) => (
@@ -157,6 +165,7 @@ const CafeList = () => {
                         }
                         value='리뷰 많은 순'
                         onClick={() => {
+                          setPage(1)
                           sortByReviewsSum();
                         }}>
                         {({ selected, active }) => (
@@ -188,13 +197,13 @@ const CafeList = () => {
                 </div>
               </>
             )}
-          </Listbox>
+          </Listbox> */}
         </div>
 
         <div className='border border-red-600 w-[1200px] h-[500px] grid grid-cols-3 grid-rows-3 gap-x-4 gap-y-6'>
-          {pagePerList.map(({cafeId, cafeName, address, homePage, starRate, reviewsSum}) => {
+          {pagePerList.map(({ cafeId, cafeName, address, homePage, starRate, reviewsSum }, i) => {
             return (
-              <div className='border flex px-[27px] items-center' key={cafeId}>
+              <div className='border flex px-[27px] items-center' key={cafeId + i}>
                 <div className='border w-[100px] h-[100px]'>
                   <img></img>
                 </div>
@@ -230,7 +239,7 @@ const CafeList = () => {
           activePage={page}
           itemsCountPerPage={9}
           totalItemsCount={list.length}
-          pageRangeDisplayed={5}
+          pageRangeDisplayed={3}
           prevPageText={'‹'}
           nextPageText={'›'}
           onChange={handlePageChange}
