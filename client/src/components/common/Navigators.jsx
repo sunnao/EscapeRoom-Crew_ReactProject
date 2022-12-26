@@ -13,7 +13,7 @@ const Navigators = () => {
   const [myTier, setMyTier] = useState(null);
   const getUserInfo = async () => {
     try {
-      const res = await get('/api/users/user');
+      const res = await get('/api/user');
       const { mannerScore, tier } = res;
       setMyManner(mannerScore);
       setMyTier(tier);
@@ -27,9 +27,8 @@ const Navigators = () => {
   }, []);
 
   const loginToken = getCookieValue('token');
-
   return (
-    <div className='flex w-full'>
+    <NavContainer>
       <div className='w-1/3 flex justify-center ml-auto'>
         <NavMenu />
       </div>
@@ -48,15 +47,15 @@ const Navigators = () => {
           {loginToken && (
             <span className='bg-black w-4/5 h-9 pl-2 relative rounded-full flex justify-center items-center'>
               <span className='text-white text-xl font-extrabold'>{myManner}</span>
-              <span className='absolute w-12 h-12 left-[-14px] top-[-12px] text-[42px]'>😊</span>
+              <span className='absolute w-12 h-12 left-[-14px] top-[-12px] text-[42px]'>
+                {myManner > 80 ? ' 🥰' : myManner > 60 ? '😊' : myManner > 40 ? '🙂' : myManner > 20 ? '🥲' : '🙃'}
+              </span>
             </span>
           )}
         </div>
-        <div className='w-1/3 flex justify-end'>
-          <DropdownMenu />
-        </div>
+        <div className='w-1/3 flex justify-end'>{loginToken && <DropdownMenu />}</div>
       </div>
-    </div>
+    </NavContainer>
   );
 };
 
@@ -88,6 +87,10 @@ const NavMenu = () => {
     </NavbarBg>
   );
 };
+
+const NavContainer = tw.div`
+  flex w-full h-[12vh]
+`;
 
 const NavbarBg = tw.div`
   w-[390px]

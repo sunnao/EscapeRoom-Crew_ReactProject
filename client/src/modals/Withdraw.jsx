@@ -4,9 +4,9 @@ import { useNavigate } from 'react-router-dom';
 const Withdraw = ({ setShowWithdraw }) => {
   const navigate = useNavigate();
   const onWithdraw = () => {
-    const yes = confirm('정말 탈퇴를 진행하시겠습니까?');
+    const willWithdraw = confirm('정말 탈퇴를 진행하시겠습니까?');
     {
-      yes ? (alert('탈퇴가 완료되었습니다'), navigate('/')) : alert('탈퇴가 취소되었습니다');
+      willWithdraw ? (alert('탈퇴가 완료되었습니다'), navigate('/')) : alert('탈퇴가 취소되었습니다');
     }
     setShowWithdraw(false);
   };
@@ -55,8 +55,6 @@ const WithdrawModal = tw.div`
   rounded-xl border border-black   w-[26%] h-[30%]
   bg-[#F2F2F2]
   absolute left-[37%] top-[26%]
-
-
 `;
 
 const WithdrawBtn = tw.button`
