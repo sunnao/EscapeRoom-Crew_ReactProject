@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { Map, MapMarker, useMap, CustomOverlayMap } from 'react-kakao-maps-sdk';
 
-import { regionAtom, targetCafeAtom } from '../../recoil/recruit-map';
+import { regionAtom, targetCafeAtom, scopeAtom, cafesWithinScopeAtom } from '../../recoil/recruit-map';
 import { ResizeButtonContainer } from './ResizeButtonContainer';
 import { InfoWindow } from './InfoWindow';
 import { regionCoordinate } from '../../constants/regionCoordinate';
@@ -25,6 +25,8 @@ export default function KakaoMap() {
   const OVER_SIZE = 42;
   const region = useRecoilValue(regionAtom);
   const [targetCafe, setTargetCafe] = useRecoilState(targetCafeAtom);
+  const [scope, setScope] = useRecoilState(scopeAtom);
+  const [cafesWithinScope, setcafesWithinScope] = useRecoilState(cafesWithinScopeAtom);
   const [cafeInfo, setCafeInfo] = useState({});
   const [level, setLevel] = useState(5);
 
@@ -33,9 +35,14 @@ export default function KakaoMap() {
     setCafeInfo({ ...cafeInfo, [region]: regionCafeInfoArr });
   };
 
-  useEffect(() => {
-    if (!cafeInfo[region]) addRegionCafeData();
+  const handleRegionChange = async () => {
+    if (!cafeInfo[region]) await addRegionCafeData();
     setTargetCafe(undefined);
+    setcafesWithinScope(cafeInfo[region]);
+  };
+
+  useEffect(() => {
+    handleRegionChange();
   }, [region]);
 
   const MarkerContainer = ({ cafeId, setTargetCafe, position, cafeName, recruitingNum }) => {
@@ -87,6 +94,18 @@ export default function KakaoMap() {
           width: '900px',
           height: '700px',
         }}
+        onBoundsChanged={(map) =>
+          setScope({
+            swLatLng: {
+              lat: map.getBounds().getSouthWest().getLat(),
+              lng: map.getBounds().getSouthWest().getLng(),
+            },
+            neLatLng: {
+              lat: map.getBounds().getNorthEast().getLat(),
+              lng: map.getBounds().getNorthEast().getLng(),
+            },
+          })
+        }
         level={level}>
         <ResizeButtonContainer level={level} setLevel={setLevel}></ResizeButtonContainer>
         {cafeInfo?.[region] &&
