@@ -99,12 +99,16 @@ const RegisterProfile = ({ userId, userPWD }) => {
             )}
           </div>
           <form onSubmit={onSubmitProfileImg}>
-            <input type='file' onChange={onChangeProfileImg} />
+            <input type='file' name='imgFile' onChange={onChangeProfileImg} />
             <div className='w-full flex justify-center mt-4'>
               <EditBtn type='submit'>저장하기</EditBtn>
               <EditBtn onClick={onCancelProfileImg}>취소하기</EditBtn>
             </div>
           </form>
+          {/* <form  method='POST' encType='multipart/form-data' action='/api/img-upload'>
+            <input type='file' name='imgFile' /> <br />
+            <input type='submit' value='업로드' />
+          </form> */}
         </Modal>
       </div>
       <form className='h-3/4' action='post' onSubmit={onSubmitAddData}>

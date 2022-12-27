@@ -8,6 +8,7 @@ export const USER_BASIC_DATA = [
     name: '비밀번호 확인',
     placeHolder: '새 비밀번호를 다시 입력해주세요',
     type: 'password',
+    dataName: 'pwdConfirm',
   },
   {
     name: '현재 비밀번호',
