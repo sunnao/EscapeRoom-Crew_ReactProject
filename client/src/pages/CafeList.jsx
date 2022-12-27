@@ -1,11 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import React, { useState, useEffect } from 'react';
 import Background from '../components/common/Background';
 import Navigators from '../components/common/Navigators';
 import * as Api from '../utils/api';
 import Pagination from 'react-js-pagination';
 import './CafeList.css';
-import SelectOption from '../components/common/SelectOption';
 import SelectOption from '../components/common/SelectOption';
 
 const CafeList = () => {
@@ -93,7 +91,6 @@ const CafeList = () => {
               getRegionCafeData(region);
               setPage(1);
               setSelected('정렬기준');
-              setSelected('정렬기준');
             }}>
             {region}
           </button>
@@ -154,7 +151,6 @@ const CafeList = () => {
           activePage={page}
           itemsCountPerPage={9}
           totalItemsCount={list.length}
-          pageRangeDisplayed={3}
           pageRangeDisplayed={3}
           prevPageText={'‹'}
           nextPageText={'›'}
