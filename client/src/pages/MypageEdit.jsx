@@ -121,7 +121,9 @@ const MypageEdit = () => {
           setData={setUserBasicData}
           onSubmit={onSubmitBasicData}
           userData={userBasicData}>
-          <WithdrawBtn onClick={() => setShowWithdraw(true)}>탈퇴하기</WithdrawBtn>
+          <WithdrawBtn type='button' onClick={() => setShowWithdraw(true)}>
+            탈퇴하기
+          </WithdrawBtn>
           <EditBtn type='submit'>변경</EditBtn>
         </EditBox>
         <EditBox
