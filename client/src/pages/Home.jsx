@@ -45,10 +45,11 @@ const Home = () => {
   };
 
   const divRef = useRef(null);
-  const btnBeat = () => {
-    let size = 1;
-    let direction = 'increase';
-    setInterval(() => {
+
+  let size = 1;
+  let direction = 'increase';
+  useEffect(() => {
+    const btnBeat = setInterval(() => {
       if (direction === 'increase') {
         size *= 1.1;
         direction = 'decrease';
@@ -59,12 +60,8 @@ const Home = () => {
       divRef.current.style.transform = `scale(${size})`;
       divRef.current.style.transition = `transform 1.5s`;
     }, 700);
-  };
-
-  // useEffect(() => {
-  //   btnBeat();
-  //   return () => clearInterval(btnBeat);
-  // }, []);
+    return () => clearInterval(btnBeat);
+  }, []);
   const onLogout = () => {
     deleteCookie('token');
     deleteCookie('userId');
