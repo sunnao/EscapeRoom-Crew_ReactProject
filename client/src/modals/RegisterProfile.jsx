@@ -7,7 +7,7 @@ import { faPen } from '@fortawesome/free-solid-svg-icons';
 import { useNavigate } from 'react-router-dom';
 import { useRecoilState, useSetRecoilState } from 'recoil';
 import { showRegisterProfileAtom, showAddProfileIconAtom, profileImgAtom } from '../recoil/register';
-import { patch } from '../utils/api';
+import { patch, postImg } from '../utils/api';
 import { REGISTER_USER_ADD_DATA } from '../constants/registerUserAddData';
 
 const RegisterProfile = ({ userId, userPWD }) => {
@@ -16,6 +16,23 @@ const RegisterProfile = ({ userId, userPWD }) => {
   const [showAddProfileIcon, setShowAddProfileIcon] = useRecoilState(showAddProfileIconAtom);
   const [profileImg, setProfileImg] = useRecoilState(profileImgAtom);
   const [userAddInfo, setUserAddInfo] = useImmer({});
+
+  const onChangeProfileImg = (e) => {
+    setTempProfileImg(e.target.files[0]);
+  };
+
+  const onSubmitProfileImg = async (e) => {
+    e.preventDefault();
+
+    if (tempProfileImg) {
+      console.log(tempProfileImg);
+      const formData = new FormData();
+      formData.append('file', tempProfileImg);
+      console.log(formData);
+      await postImg('http://localhost:5001/api/img-upload', formData);
+      setShowAddProfileIcon(false);
+    }
+  };
 
   const navigate = useNavigate();
   const onCancelBtn = () => {
@@ -43,15 +60,6 @@ const RegisterProfile = ({ userId, userPWD }) => {
     addUserAddInfo();
   };
 
-  const onChangeProfileImg = (e) => {
-    setTempProfileImg(e.target.files[0]);
-  };
-
-  const onSubmitProfileImg = (e) => {
-    e.preventDefault();
-    setProfileImg(tempProfileImg);
-    setShowAddProfileIcon(false);
-  };
   const onCancelProfileImg = (e) => {
     e.preventDefault();
     setShowAddProfileIcon(false);
@@ -105,10 +113,6 @@ const RegisterProfile = ({ userId, userPWD }) => {
               <EditBtn onClick={onCancelProfileImg}>취소하기</EditBtn>
             </div>
           </form>
-          {/* <form  method='POST' encType='multipart/form-data' action='/api/img-upload'>
-            <input type='file' name='imgFile' /> <br />
-            <input type='submit' value='업로드' />
-          </form> */}
         </Modal>
       </div>
       <form className='h-3/4' action='post' onSubmit={onSubmitAddData}>

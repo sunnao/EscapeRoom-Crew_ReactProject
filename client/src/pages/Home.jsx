@@ -9,7 +9,26 @@ import { useRef, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowDown, faArrowUp } from '@fortawesome/free-solid-svg-icons';
 import { getCookieValue, deleteCookie } from '../utils/cookie';
+import './Home.css';
+import { useState } from 'react';
 const Home = () => {
+  const [snow, setSnow] = useState([]);
+  useEffect(() => {
+    const letItSnow = setInterval(() => {
+      setSnow([
+        ...snow,
+        <Snow
+          style={{
+            animation: 'fall 8s linear',
+            opacity: `${1 - Math.random() * 0.5}`,
+            left: `${Math.random() * window.screen.width * 0.9}px`,
+          }}
+          key={snow.length}
+        />,
+      ]);
+    }, 100);
+    return () => clearInterval(letItSnow);
+  }, [snow]);
   const loginToken = getCookieValue('token');
   const navigate = useNavigate();
   const onScrollDown = () => {
@@ -70,6 +89,7 @@ const Home = () => {
 
   return (
     <BackgroundScroll img={'bg1'}>
+      {snow}
       <HomeFirstPage>
         <Navigators />
         <MatchingBtnContainer>
@@ -189,5 +209,10 @@ const ScrollBtn = tw.button`
   px-4 py-2 border-b-8 rounded-xl border-white
   bg-[#3F51A2] hover:text-[#3F51A2] hover:border-[#3F51A2] hover:bg-white
 
+`;
+
+const Snow = tw.div`
+  w-2 h-2 rounded-full bg-white absolute
+  top-[-8px] fall 
 `;
 export default Home;

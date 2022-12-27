@@ -1,0 +1,8 @@
+@keyframes fall {
+  from {
+  }
+  to {
+    transform: translateY(200vh);
+    opacity: 0;
+  }
+}
