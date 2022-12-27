@@ -14,9 +14,9 @@ const classNames = (...classes) => {
   return classes.filter(Boolean).join(' ');
 };
 
-const SelectOption = ({ selectedOption, setSelectedOption, cbFuncObjs, width }) => {
+const SelectOption = ({ selectedOption, setSelectedOption, pageReset, cbFuncObjs, width }) => {
   return (
-    <Listbox value={selectedOption} onChange={setSelectedOption}>
+    <Listbox value={selectedOption} onChange={(setSelectedOption, pageReset)}>
       {({ open }) => (
         <>
           <div className={`relative ${width}`}>
