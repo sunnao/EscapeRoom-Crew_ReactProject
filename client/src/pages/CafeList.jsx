@@ -26,7 +26,7 @@ const CafeList = () => {
 
   const getAllCafeData = async () => {
     try {
-      const data = await Api.get('/api/cafe-infos/all');
+      const data = await Api.get('/api/cafe-infos/cafeAll');
       console.log(data);
       setList(data);
     } catch (e) {
@@ -64,14 +64,23 @@ const CafeList = () => {
     newList.sort((a, b) => b.reviewsSum - a.reviewsSum);
     setList(newList);
   };
+  const sortByName = () => {
+    const newList = [...list];
+    newList.sort((a, b) => {
+      return a.cafeName < b.cafeName ? -1 : a.cafeName > b.cafeName ? 1 : 0;
+    });
+
+    setList(newList);
+  };
   const optionsArray = [
+    { optionName: '카페 이름순', cbFunc: () => sortByName() },
     { optionName: '평점순', cbFunc: () => sortByStarRate() },
     { optionName: '리뷰 많은 순', cbFunc: () => sortByReviewsSum() },
   ];
   return (
     <Background img={'bg2'}>
       <Navigators />
-      <div className='flex flex-row justify-center mx-auto my-5'>
+      <div className='flex flex-row justify-center mx-auto my-5 font '>
         {detailRegion.map((region, index) => (
           <button
             className='purpleButton mx-1 font-custum_heading'
@@ -88,20 +97,23 @@ const CafeList = () => {
         ))}
       </div>
 
-      <div className='border-4 border-blue-500 w-[1200px] h-[600px] flex flex-col '>
+      <div className='w-[1200px] h-[600px] flex flex-col '>
         <div className='w-[1200px] h-[50px] flex items-start justify-end'>
           <SelectOption
             selectedOption={selected}
             setSelectedOption={setSelected}
+            pageReset={() => setPage(1)}
             cbFuncObjs={optionsArray}
             width={'w-40'}
           />
         </div>
 
-        <div className='border border-red-600 w-[1200px] h-[500px] grid grid-cols-3 grid-rows-3 gap-x-4 gap-y-6'>
+        <div className='w-[1200px] h-[500px] grid grid-cols-3 grid-rows-3 gap-x-4 gap-y-6 '>
           {pagePerList.map(({ cafeId, cafeName, address, homePage, starRate, reviewsSum }, i) => {
             return (
-              <div className='border flex px-[27px] items-center' key={cafeId + i}>
+              <div
+                className='rounded-lg bg-gray-300 shadow-md flex px-[27px] items-center hover:bg-gray-400'
+                key={`${cafeId}` + `${i}`}>
                 <div className='border w-[100px] h-[100px]'>
                   <img></img>
                 </div>
@@ -119,7 +131,9 @@ const CafeList = () => {
                     </a>
                   </p>
                   <p>{address}</p>
-                  <p>{homePage}</p>
+                  <a href={`${homePage}`} target='_blank' rel='noopener noreferrer nofollow'>
+                    {homePage}
+                  </a>
                   <p>
                     평점 {starRate}/10 | 리뷰 {reviewsSum}개
                   </p>
