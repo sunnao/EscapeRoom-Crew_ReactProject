@@ -109,17 +109,18 @@ const CafeList = () => {
         </div>
 
         <div className='w-[1200px] h-[500px] grid grid-cols-3 grid-rows-3 gap-x-4 gap-y-6 '>
-          {pagePerList.map(({ cafeId, cafeName, address, homePage, starRate, reviewsSum }, i) => {
+          {pagePerList.map(({ cafeId, cafeName, address, homePage, starRate, reviewsSum, cafeImg }, i) => {
+            console.log(cafeId, cafeName, address, homePage, starRate, reviewsSum, cafeImg);
             return (
               <div
                 className='rounded-lg bg-gray-300 shadow-md flex px-[27px] items-center hover:bg-gray-400'
                 key={`${cafeId}` + `${i}`}>
-                <div className='border w-[100px] h-[100px]'>
-                  <img></img>
+                <div className='flex justify-center items-center min-w-[100px] min-h-[100px] relative overflow-hidden'>
+                  <img className='rounded-lg absolute w-full ' src={process.env.PUBLIC_URL + `${cafeImg}`}></img>
                 </div>
                 <div className='ml-3'>
                   <p className='flex w-full justify-start align-center'>
-                    <div>{cafeName}</div>
+                    <p className='font-bold'>{cafeName}</p>
                     <a
                       href={`https://search.naver.com/search.naver?&query=${cafeName}`}
                       target='_blank'
@@ -130,8 +131,8 @@ const CafeList = () => {
                       />
                     </a>
                   </p>
-                  <p>{address}</p>
-                  <a href={`${homePage}`} target='_blank' rel='noopener noreferrer nofollow'>
+                  <p className='text-sm'>{address}</p>
+                  <a className='text-sm' href={`${homePage}`} target='_blank' rel='noopener noreferrer nofollow'>
                     {homePage}
                   </a>
                   <p>

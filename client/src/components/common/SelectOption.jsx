@@ -16,7 +16,7 @@ const classNames = (...classes) => {
 
 const SelectOption = ({ selectedOption, setSelectedOption, pageReset, cbFuncObjs, width }) => {
   return (
-    <Listbox value={selectedOption} onChange={(setSelectedOption, pageReset)}>
+    <Listbox value={selectedOption} onChange={setSelectedOption}>
       {({ open }) => (
         <>
           <div className={`relative ${width}`}>
@@ -35,7 +35,9 @@ const SelectOption = ({ selectedOption, setSelectedOption, pageReset, cbFuncObjs
               leave='transition ease-in duration-100'
               leaveFrom='opacity-100'
               leaveTo='opacity-0'>
-              <Listbox.Options className='absolute z-10 mt-1 max-h-56 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm'>
+              <Listbox.Options
+                className='absolute z-10 mt-1 max-h-56 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm'
+                onClick={pageReset}>
                 {cbFuncObjs.map(({ optionName }, i) => (
                   <Listbox.Option
                     key={i}
