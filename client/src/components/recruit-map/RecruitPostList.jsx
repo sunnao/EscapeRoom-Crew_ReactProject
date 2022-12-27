@@ -57,14 +57,20 @@ export default function RecruitPostList() {
   };
 
   if (targetCafe && !recruitingInfo[targetCafe]) addRecruitingData(targetCafe);
+  console.log(recruitingInfo[targetCafe]);
+  console.log(targetCafe);
 
-  return (
-    <div>
-      <CafeDescription />
-      {recruitingInfo[targetCafe] &&
-        recruitingInfo[targetCafe]['recruitingInfo'].map((recruitPost) => (
-          <RecuitPostContainer key={recruitPost.matchingPostsId} postData={recruitPost} />
-        ))}
-    </div>
-  );
+  const TargetCafeDescription = () => {
+    return (
+      <div>
+        <CafeDescription />
+        {recruitingInfo[targetCafe] &&
+          recruitingInfo[targetCafe]['recruitingInfo'].map((recruitPost) => (
+            <RecuitPostContainer key={recruitPost.matchingPostsId} postData={recruitPost} />
+          ))}
+      </div>
+    );
+  };
+
+  return <TargetCafeDescription></TargetCafeDescription>;
 }
