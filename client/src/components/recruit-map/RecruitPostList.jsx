@@ -34,7 +34,6 @@ export default function RecruitPostList() {
 
   const filterCafesWithinScope = () => {
     if (!scope.length) return;
-    console.log(cafesWithinScope);
     // scope 안에 들어오는 애들만 setCafesWithinScope (cafesWithinScope를 필터링)
   };
 
@@ -57,8 +56,6 @@ export default function RecruitPostList() {
   };
 
   if (targetCafe && !recruitingInfo[targetCafe]) addRecruitingData(targetCafe);
-  console.log(recruitingInfo[targetCafe]);
-  console.log(targetCafe);
 
   const TargetCafeDescription = () => {
     return (
