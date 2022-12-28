@@ -3,7 +3,7 @@ import tw from 'tailwind-styled-components';
 
 import Background from '../components/common/Background';
 import Navigators from '../components/common/Navigators';
-import { RegionButton } from '../components/buttons/Buttons';
+import { RegionButton } from '../components/buttons/RegionButton';
 import KakaoMap from '../components/recruit-map/KakaoMap';
 import RecruitPostList from '../components/recruit-map/RecruitPostList';
 
