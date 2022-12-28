@@ -45,10 +45,11 @@ const Home = () => {
   };
 
   const divRef = useRef(null);
-  const btnBeat = () => {
-    let size = 1;
-    let direction = 'increase';
-    setInterval(() => {
+
+  let size = 1;
+  let direction = 'increase';
+  useEffect(() => {
+    const btnBeat = setInterval(() => {
       if (direction === 'increase') {
         size *= 1.1;
         direction = 'decrease';
@@ -59,10 +60,6 @@ const Home = () => {
       divRef.current.style.transform = `scale(${size})`;
       divRef.current.style.transition = `transform 1.5s`;
     }, 700);
-  };
-
-  useEffect(() => {
-    btnBeat();
     return () => clearInterval(btnBeat);
   }, []);
   const onLogout = () => {
@@ -151,7 +148,7 @@ const InnerTrapezoid = tw.button`
   border-r-[25px] 
   border-x-transparent
   text-white
-  text-[70px]
+  text-[67px]
   top-[-130px]
   left-[-2.5%]
   absolute
@@ -159,9 +156,8 @@ const InnerTrapezoid = tw.button`
   hover:text-[#E150A9]
 `;
 const MatchingBtn = tw.button`
-  absolute top-[-110px] left-[60px]
+  absolute top-[-110px] left-[45px]
 `;
-
 const LoginRegisterContainer = tw.div`
   w-full h-[35%] flex justify-center items-center
 `;
@@ -194,4 +190,5 @@ const ScrollBtn = tw.button`
   bg-[#3F51A2] hover:text-[#3F51A2] hover:border-[#3F51A2] hover:bg-white
 
 `;
+
 export default Home;

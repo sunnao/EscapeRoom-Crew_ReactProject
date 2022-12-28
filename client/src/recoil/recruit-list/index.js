@@ -4,4 +4,10 @@ export {
   screenLevelAtom,
   showUserProfileModalAtom,
   currentPageAtom,
+  maxPageNumAtom,
+  recruitPostDataAtom,
+  currentRegionAtom,
+  currentPostIdAtom,
+  currentUserIndexAtom,
+  currentUserDataAtom,
 } from './atom';

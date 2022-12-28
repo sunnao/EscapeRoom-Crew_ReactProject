@@ -1,45 +1,77 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import tw from 'tailwind-styled-components';
-import { useRecoilState } from 'recoil';
-import { screenLevelAtom, showUserProfileModalAtom } from '../../recoil/recruit-list/index';
 
-import userArray from '../../assets/images/user-profile/profile';
+import { useRecoilState, useRecoilValue } from 'recoil';
+import { screenLevelAtom, currentRegionAtom, currentPageAtom } from '../../recoil/recruit-list/index';
+
+import { get } from '../../utils/api';
+import { ApiUrl } from '../../constants/ApiUrl';
 import completeRibbon from '../../assets/images/icon/complete-ribbon.png';
+import UserProfileContainer from './UserProfileContainer';
 
 const RecuitPostContainer = ({ postData }) => {
-  const [screenLevel, setScreenLevel] = useRecoilState(screenLevelAtom);
-  const [showUserProfileModal, setShowUserProfileModal] = useRecoilState(showUserProfileModalAtom);
-  const [showTeamModal, setShowTeamModal] = useState(false);
-  const [currentUserId, setCurrentUserId] = useState('');
-  const { title, content, view, matchingTime, matchStatus, matchingLocation, createdAt, userId } = postData;
+  const navigate = useNavigate();
+  const {
+    title,
+    view,
+    matchingTime,
+    matchStatus,
+    matchingLocation,
+    cafeName,
+    matchingPostsId,
+    peopleNum,
+    createdAt,
+    themeName,
+  } = postData;
 
-  const parseDateFunc = (date) => {
-    const stringifiedDate = date.toString();
-    const year = stringifiedDate.slice(0, 2);
-    const month = stringifiedDate.slice(2, 4);
-    const day = stringifiedDate.slice(4, 6);
-    const hour = stringifiedDate.slice(6, 8);
-    const minute = stringifiedDate.slice(8, 10);
+  const [screenLevel, setScreenLevel] = useRecoilState(screenLevelAtom);
+  const currentRegion = useRecoilValue(currentRegionAtom);
+  const currentPage = useRecoilValue(currentPageAtom);
+  const [showTeamModal, setShowTeamModal] = useState(false);
+
+  useEffect(() => {
+    setShowTeamModal(false);
+  }, [currentRegion, currentPage]);
+
+  const moveToDetailPage = async (e) => {
+    await get(ApiUrl.MATCHING_POST_READ_POST, e.currentTarget.id);
+    navigate(`/recruit-detail/${matchingPostsId}`);
+  };
+
+  const convertDate = () => {
+    const stringifiedDate = matchingTime.toString();
+    const result = [];
+
+    for (let i = 0; i < 10; i += 2) {
+      result.push(stringifiedDate.slice(i, i + 2));
+    }
+
+    const [year, month, day, hour, minute] = result;
+
     return `${year}년 ${month}월 ${day}일 ${hour}:${minute} 예정`;
   };
 
-  const changeDate = () => {
+  const convertRemainDate = () => {
     const postedDate = new Date(createdAt);
     const today = new Date();
-    // [221224] memo 재웅:
-    // today 상수를 console.log를 통해 확인해보면 총 16개의 로그가 뜬다.
-    // 과한 리렌더링을 거친다. 리소스의 낭비가 매우 심한 거 같아 원인을 찾고있다.
 
     const relativeFormatter = new Intl.RelativeTimeFormat('ko', {
       numeric: 'always',
     });
 
-    let timeDiff = Math.ceil((postedDate.getTime() - today.getTime()) / (1000 * 60 * 60));
-    if (timeDiff === 0) {
-      timeDiff = Math.ceil((postedDate.getTime() - today.getTime()) / (1000 * 60));
-      return relativeFormatter.format(timeDiff, 'minute');
+    let timeDiffDay = Math.ceil((postedDate.getTime() - today.getTime()) / (1000 * 60 * 60 * 24));
+    let timeDiffHour = Math.ceil((postedDate.getTime() - today.getTime()) / (1000 * 60 * 60));
+
+    if (timeDiffHour === 0) {
+      timeDiffHour = Math.ceil((postedDate.getTime() - today.getTime()) / (1000 * 60));
+      return relativeFormatter.format(timeDiffHour, 'minute');
     }
-    return relativeFormatter.format(timeDiff, 'hour');
+    if (timeDiffDay === 0) {
+      return relativeFormatter.format(timeDiffHour, 'hour');
+    } else {
+      return relativeFormatter.format(timeDiffDay, 'day');
+    }
   };
 
   const handleResize = () => {
@@ -54,37 +86,23 @@ const RecuitPostContainer = ({ postData }) => {
     };
   }, []);
 
-  const UserProfileContainer = () => {
-    return (
-      <div>
-        <span className='text-2xl ml-[13px]'>👑</span>
-        <div className='grid gap-3 grid-cols-4 grid-rows-2'>
-          {userArray.map((user, index) => (
-            <img
-              onClick={() => setShowUserProfileModal(!showUserProfileModal)}
-              className='w-[50px] h-[50px] drop-shadow-xl object-cover rounded-full border-solid border-[0.5px] border-gray-500 cursor-pointer'
-              src={user['url']}
-              alt='유저 프로필'
-              key={index}
-            />
-          ))}
-        </div>
-      </div>
-    );
-  };
-
   return (
     <div
       className={`${screenLevel === 1 ? 'h-[340px]' : 'h-[260px]'}
       w-[280px] p-5 relative rounded-xl drop-shadow-xl border-[1.5px] border-solid border-black-500
   bg-gray-400 text-white`}>
-      <CompleteRibbon src={completeRibbon} className={matchStatus ? '' : 'hidden'} />
-      <p className='pt-5 mb-3 text-lg font-semibold h-[70px] cursor-pointer'>
-        {title}
-        <span className='text-blue-4 stroke-cyan-50 stroke-width-1'> (7/7)</span>
-      </p>
+      <CompleteRibbon src={completeRibbon} className={!matchStatus && 'hidden'} />
+      <div className='flex w-[240px] mt-5'>
+        <p
+          onClick={(e) => moveToDetailPage(e)}
+          className='w-[190px] mr-1 text-lg font-semibold cursor-pointer truncate'
+          id={matchingPostsId}>
+          {title}
+        </p>
+        <p className='text-blue-4 font-semibold'> (1/{peopleNum})</p>
+      </div>
       <div className='flex flex-row'>
-        <span className='mb-2'>{changeDate()}</span>
+        <span className='mb-2'>{convertRemainDate()}</span>
         <span className='mx-1.5'>・</span>
         <svg
           className='align-middle'
@@ -115,13 +133,14 @@ const RecuitPostContainer = ({ postData }) => {
         </svg>
         <span className='ml-0.5'>0</span>
       </div>
-      <div className='cursor-pointer'>
-        <p>{content}</p>
-        <p className='mb-1'>{parseDateFunc(matchingTime)}</p>
+      <div>
+        <p className='truncate'>{`${matchingLocation} ${cafeName}`}</p>
+        <p className='truncate'>{themeName}</p>
+        <p className='mt-2 mb-1'>{convertDate()}</p>
       </div>
 
       {screenLevel === 1 ? (
-        <UserProfileContainer />
+        <UserProfileContainer postId={matchingPostsId} />
       ) : (
         <div className='flex mt-7 justify-end gap-3 relative'>
           <button
@@ -132,8 +151,29 @@ const RecuitPostContainer = ({ postData }) => {
             팀원보기
           </button>
           {showTeamModal && (
-            <div className='w-[300px] h-[170px] -right-[34px] bottom-12 px-4 absolute bg-white rounded-[10px] border-solid border-[1.5px] border-white'>
-              <UserProfileContainer />
+            <div className='w-[285px] h-[265px] -right-[26px] -bottom-3 px-4 absolute bg-white rounded-[10px] border-solid border-[1.5px] border-white'>
+              <svg
+                onClick={() => setShowTeamModal(false)}
+                className='absolute right-2 top-2 cursor-pointer'
+                width='24'
+                height='24'
+                viewBox='0 0 24 24'
+                fill='none'
+                xmlns='http://www.w3.org/2000/svg'>
+                <g clipPath='url(#clip0_16_1336)'>
+                  <path
+                    d='M11.9997 10.586L16.9497 5.63599L18.3637 7.04999L13.4137 12L18.3637 16.95L16.9497 18.364L11.9997 13.414L7.04974 18.364L5.63574 16.95L10.5857 12L5.63574 7.04999L7.04974 5.63599L11.9997 10.586Z'
+                    fill='black'
+                  />
+                </g>
+                <defs>
+                  <clipPath id='clip0_16_1336'>
+                    <rect width='24' height='24' fill='white' />
+                  </clipPath>
+                </defs>
+              </svg>
+
+              <UserProfileContainer postId={matchingPostsId} />
             </div>
           )}
         </div>
