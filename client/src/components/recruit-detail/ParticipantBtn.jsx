@@ -18,9 +18,7 @@ const ParticipantBtn = ({ postId, userId, participantList, memberListData }) => 
     // memberListData();
   }, [participantList]);
 
-  const handleClick = async (e) => {
-    e.preventDefault();
-
+  const handleClick = async () => {
     if (isSignUp) {
       // 참가 취소
       const deleteData = async () => {
@@ -29,6 +27,7 @@ const ParticipantBtn = ({ postId, userId, participantList, memberListData }) => 
       };
       deleteData();
       setIsSignUp(false);
+      memberListData();
     } else {
       // 참가 신청
       const postData = async () => {
@@ -37,6 +36,7 @@ const ParticipantBtn = ({ postId, userId, participantList, memberListData }) => 
       };
       postData();
       setIsSignUp(true);
+      memberListData();
     }
   };
 

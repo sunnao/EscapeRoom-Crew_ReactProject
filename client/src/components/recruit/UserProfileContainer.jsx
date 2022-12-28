@@ -3,13 +3,13 @@ import { useEffect } from 'react';
 import { useRecoilState } from 'recoil';
 import { showUserProfileModalAtom } from '../../recoil/recruit-list/index';
 import { get } from '../../utils/api';
+import { ApiUrl } from '../../constants/ApiUrl';
 
 const UserProfileContainer = ({ postId }) => {
   const [showUserProfileModal, setShowUserProfileModal] = useRecoilState(showUserProfileModalAtom);
 
   const userArray = async () => {
-    const data = await get('/api/matching-situation/post', postId);
-    console.log(data);
+    const data = await get(ApiUrl.MATCHING_POST_INFO, postId);
 
     return data;
   };

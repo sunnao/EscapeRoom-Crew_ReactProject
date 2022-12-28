@@ -13,18 +13,15 @@ import jwt_decode from 'jwt-decode';
 
 const RecruitDetail = () => {
   const params = useParams();
-  // const postId = params.matchingPostsId;
-  // 재웅님한테 받아오기 (params)
-  const postId = 1; // 참가자인 경우
-  // const postId = 50; // 방장인 경우
+  const postId = params.postId;
   const [isLeader, setIsLeader] = useState(undefined); // user 리더인지 확인
   const [leaderList, setLeaderList] = useState({});
   const [participantList, setParticipantList] = useState([]);
-  const [matchingList, setMatchingList] = useState([]); // ✅
 
   // userId 가져오기
   const loginToken = getCookieValue('token');
   const userId = jwt_decode(loginToken).userId;
+  console.log('내 아이디', userId);
 
   // 모집글 참가자 명단 가져오기
   const memberListData = async () => {
@@ -35,20 +32,9 @@ const RecruitDetail = () => {
     data[0].userId === userId ? setIsLeader(true) : setIsLeader(false);
   };
 
-  // 클릭한 게시글 조회 (조회수) ✅
-  const matchingPostData = async () => {
-    const data = await get(`/api/matching-posts/read-post/${postId}`);
-    setMatchingList('matchingPostData', data);
-  };
-
   useEffect(() => {
     memberListData();
-    matchingPostData();
   }, []);
-
-  // useEffect(() => {
-  //   memberListData();
-  // }, [participantList]);
 
   return (
     <Background img={'bg2'} className='relative'>
@@ -57,7 +43,14 @@ const RecruitDetail = () => {
         <div style={{ whiteSpace: 'nowrap', overflowX: 'auto' }}>
           <>
             {leaderList && <Leader leaderList={leaderList} />}
-            {participantList && <Participant isLeader={isLeader} participantList={participantList} postId={postId} />}
+            {participantList && (
+              <Participant
+                isLeader={isLeader}
+                participantList={participantList}
+                postId={postId}
+                memberListData={memberListData}
+              />
+            )}
           </>
         </div>
         {isLeader ? (

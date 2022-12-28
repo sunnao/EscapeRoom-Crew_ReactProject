@@ -1,26 +1,19 @@
 import React from 'react';
 import detective from '../../assets/images/icon/detective.png';
 import closeBtn from '../../assets/images/icon/close.png';
-import { patch, post } from '../../utils/api';
+import { post } from '../../utils/api';
 import tw from 'tailwind-styled-components';
 
-const Participant = ({ isLeader, participantList, postId }) => {
-  console.log('participantList', participantList);
+const Participant = ({ isLeader, participantList, postId, memberListData }) => {
   const deleteData = async (userId) => {
-    const data = await post('/api/matching-situation/leader', { matchingPostsId: postId, userId });
-    console.log('취소', data);
+    await post('/api/matching-situation/leader', { matchingPostsId: postId, userId });
+    memberListData();
   };
 
   const handleKickOut = (participant) => {
     const userId = participant.userId;
-    // console.log('나가라', userId)
-
     // 참가 취소
     deleteData(userId);
-
-    // e.preventDefault();
-    console.log('aaaa', participant);
-    // console.log('aaaa', e.target);
   };
 
   return (
