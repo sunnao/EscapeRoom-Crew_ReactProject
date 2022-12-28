@@ -4,7 +4,6 @@ import crown from '../../assets/images/icon/crown.png';
 import tw from 'tailwind-styled-components';
 
 const Leader = ({ leaderList }) => {
-  console.log('leaderList', leaderList);
   return (
     <Container>
       <Count>
