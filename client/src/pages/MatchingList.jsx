@@ -13,31 +13,39 @@ const MatchingList = () => {
   const [visible, setVisible] = useState(false);
   const [selectedList, setSelectedList] = useState([]);
 
-  const [recruitingList, setRecruitingList] = useState([]);
-  const [recruitedList, setRecruitedList] = useState([]);
+  // const [recruitingList, setRecruitingList] = useState([]);
+  // const [recruitedList, setRecruitedList] = useState([]);
+  const [recruitList, setRecruitList] = useState([]);
+  const [pagePerList, setPagePerList] = useState([]);
 
-  const [openTab, setOpenTab] = React.useState(1);
+  const [openTab, setOpenTab] = useState(1);
   const [page, setPage] = useState(1);
   const navigate = useNavigate();
 
   const handlePageChange = (page) => {
     setPage(page);
   };
+  
+  const slicedList = () => {
+    setPagePerList(recruitList.slice(5 * (page - 1), page * 5));
+  };
+  useEffect(() => {
+    slicedList();
+  }, [page, recruitList]);
 
-  const [list, setList] = useState([]);
 
   // 진행중:참가한 모집글 정보 - 날짜 최신순 정렬
   const getRecruitingData = async () => {
     const data = await get(ApiUrl.RECRUIT_USER_INFO);
     console.log('recruitingData', data);
-    setRecruitingList(data.reverse());
+    setRecruitList(data.reverse());
   };
 
   // 매칭완료:참가한 모집글 정보 - 날짜 최신순 정렬
   const getRecruitedData = async () => {
     const data = await get(ApiUrl.RECRUIT_INFO);
     console.log('recruitedData', data);
-    setRecruitedList(data.reverse());
+    setRecruitList(data.reverse());
   };
 
   useEffect(() => {
@@ -59,6 +67,7 @@ const MatchingList = () => {
                 e.preventDefault();
                 setOpenTab(1);
                 getRecruitingData();
+                setPage(1);
               }}
               data-toggle='tab'
               href='#link1'
@@ -76,6 +85,7 @@ const MatchingList = () => {
                 e.preventDefault();
                 setOpenTab(2);
                 getRecruitedData();
+                setPage(1);
               }}
               data-toggle='tab'
               href='#link2'
@@ -99,8 +109,8 @@ const MatchingList = () => {
                       </tr>
                     </thead>
 
-                    {recruitingList.length !== 0 ? (
-                      recruitingList.map((list) => (
+                    {recruitList.length !== 0 ? (
+                      pagePerList.map((list) => (
                         <tbody key={list.matching_log_id}>
                           <tr>
                             <Td>{list.createdAt.slice(0, 10).replaceAll('-', '.')}</Td>
@@ -132,15 +142,18 @@ const MatchingList = () => {
                     <Pagination
                       activePage={page}
                       itemsCountPerPage={5}
-                      totalItemsCount={list.length}
+                      totalItemsCount={recruitList.length}
                       pageRangeDisplayed={3}
                       prevPageText={'‹'}
                       nextPageText={'›'}
+                      hideDisabled={true}
+                      hideFirstLastPages={true}
                       onChange={handlePageChange}
                     />
                   </table>
                 </Container>
               </div>
+
               <div className={openTab === 2 ? 'block' : 'hidden'} id='link2'>
                 <Container>
                   <table className='w-[700px] text-xl text-left border-collapse'>
@@ -152,8 +165,8 @@ const MatchingList = () => {
                       </tr>
                     </thead>
 
-                    {recruitedList.length !== 0 ? (
-                      recruitedList.map((list) => (
+                    {recruitList.length !== 0 ? (
+                      pagePerList.map((list) => (
                         <tbody key={list.matching_log_id}>
                           <tr>
                             <Td>{list.createdAt.slice(0, 10).replaceAll('-', '.')}</Td>
@@ -187,10 +200,12 @@ const MatchingList = () => {
                     <Pagination
                       activePage={page}
                       itemsCountPerPage={5}
-                      totalItemsCount={list.length}
+                      totalItemsCount={recruitList.length}
                       pageRangeDisplayed={3}
                       prevPageText={'‹'}
                       nextPageText={'›'}
+                      hideDisabled={true}
+                      hideFirstLastPages={true}
                       onChange={handlePageChange}
                     />
                   </table>
