@@ -5,12 +5,13 @@ import userArray from '../../assets/images/user-profile/profile';
 
 import UserScore from '../mypage/UserScore';
 import { get } from '../../utils/api';
+import { ApiUrl } from '../../constants/ApiUrl';
 
 const UserProfileModal = () => {
   const setShowUserProfileModal = useSetRecoilState(showUserProfileModalAtom);
 
   const fetchPostInfo = async () => {
-    const data = await get('api/matching-situation/post/1');
+    const data = await get(ApiUrl.MATCHING_POST_INFO, 1);
   };
 
   return (
