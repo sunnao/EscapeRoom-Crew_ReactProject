@@ -10,10 +10,4 @@ export const USER_BASIC_DATA = [
     type: 'password',
     dataName: 'pwdConfirm',
   },
-  {
-    name: '현재 비밀번호',
-    placeHolder: '확인을 위해 현재 비밀번호를 다시 입력해주세요',
-    type: 'password',
-    dataName: 'checkPassword',
-  },
 ];

@@ -14,8 +14,17 @@ import { useEffect } from 'react';
 import { patch, get } from '../utils/api';
 import { USER_BASIC_DATA } from '../constants/mypageEditUserBasicData';
 import { USER_ADD_DATA } from '../constants/mypageEditUserAddData';
+import { useNavigate } from 'react-router-dom';
 const MypageEdit = () => {
   const userId = getCookieValue('userId');
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!userId) {
+      alert('로그인이 필요한 페이지입니다');
+      navigate('/');
+    }
+  }, []);
   const [showWithdraw, setShowWithdraw] = useState(false);
   const [showAddProfileIcon, setShowAddProfileIcon] = useState(false);
   const [userBasicData, setUserBasicData] = useImmer({});
@@ -25,6 +34,8 @@ const MypageEdit = () => {
       const res = await get('/api/user');
       return res;
     } catch (err) {
+      // alert('잘못된 접근입니다');
+      // navigate('/');
       console.log(err);
     }
   };

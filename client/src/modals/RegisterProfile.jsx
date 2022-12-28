@@ -16,22 +16,33 @@ const RegisterProfile = ({ userId, userPWD }) => {
   const [showAddProfileIcon, setShowAddProfileIcon] = useRecoilState(showAddProfileIconAtom);
   const [profileImg, setProfileImg] = useRecoilState(profileImgAtom);
   const [userAddInfo, setUserAddInfo] = useImmer({});
+  const [imgUrl, setImgUrl] = useState('');
 
-  const onChangeProfileImg = (e) => {
-    setTempProfileImg(e.target.files[0]);
+  const patchProfileUrl = async () => {
+    try {
+      await patch('/api/user', userId, { profileImg: imgUrl });
+      alert('프로필 사진이 정상적으로 업로드되었습니다');
+    } catch (err) {
+      alert(err);
+    }
   };
 
-  const onSubmitProfileImg = async (e) => {
-    e.preventDefault();
-
-    if (tempProfileImg) {
-      console.log(tempProfileImg);
-      const formData = new FormData();
-      formData.append('file', tempProfileImg);
-      console.log(formData);
-      await postImg('http://localhost:5001/api/img-upload', formData);
-      setShowAddProfileIcon(false);
+  const uploadProfileImg = async () => {
+    const formData = new FormData();
+    formData.append('imgFile', tempProfileImg);
+    try {
+      const response = await postImg('/api/img-upload', formData);
+      console.log(response.path);
+      setImgUrl(response.path);
+    } catch (err) {
+      console.log(err);
     }
+  };
+  const handleSubmit = async (e) => {
+    await e.preventDefault();
+    await uploadProfileImg();
+    await patchProfileUrl();
+    setShowAddProfileIcon(false);
   };
 
   const navigate = useNavigate();
@@ -60,11 +71,6 @@ const RegisterProfile = ({ userId, userPWD }) => {
     addUserAddInfo();
   };
 
-  const onCancelProfileImg = (e) => {
-    e.preventDefault();
-    setShowAddProfileIcon(false);
-  };
-
   const modalStyle = {
     content: {
       top: '35%',
@@ -89,7 +95,7 @@ const RegisterProfile = ({ userId, userPWD }) => {
           )}
         </div>
         <div className='absolute w-10 h-10  top-0 left-[90%]'>
-          <button onClick={() => setShowAddProfileIcon(true)}>
+          <button onClick={() => (setShowAddProfileIcon(true), console.log('clicked'))}>
             <FontAwesomeIcon icon={faPen} />
           </button>
         </div>
@@ -106,16 +112,16 @@ const RegisterProfile = ({ userId, userPWD }) => {
               <div className='rounded-full bg-gray-400 w-full h-3/4'></div>
             )}
           </div>
-          <form onSubmit={onSubmitProfileImg}>
-            <input type='file' name='imgFile' onChange={onChangeProfileImg} />
+          <form onSubmit={handleSubmit} encType='multipart/form-data'>
+            <input type='file' name='imgFile' onChange={(e) => setTempProfileImg(e.target.files[0])} />
             <div className='w-full flex justify-center mt-4'>
-              <EditBtn type='submit'>저장하기</EditBtn>
-              <EditBtn onClick={onCancelProfileImg}>취소하기</EditBtn>
+              <EditBtn type='submit'>업로드</EditBtn>
+              <EditBtn onClick={() => setShowAddProfileIcon(false)}>닫기</EditBtn>
             </div>
           </form>
         </Modal>
       </div>
-      <form className='h-3/4' action='post' onSubmit={onSubmitAddData}>
+      <form className='h-3/4' onSubmit={onSubmitAddData}>
         {REGISTER_USER_ADD_DATA.map((data) => (
           <EditInputDiv key={data.name}>
             <EditInputName>{data.name}</EditInputName>
