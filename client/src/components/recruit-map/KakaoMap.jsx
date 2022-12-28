@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { useRecoilState, useRecoilValue } from 'recoil';
+import React, { useState, useEffect, useRef } from 'react';
+import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import { Map, MapMarker, useMap } from 'react-kakao-maps-sdk';
 
 import { regionAtom, targetCafeAtom, scopeAtom, cafesWithinScopeAtom } from '../../recoil/recruit-map';
@@ -19,14 +19,27 @@ async function getCafeInfo(region) {
     alert(err.message);
   }
 }
+const getMapScreenScope = (map) => {
+  return {
+    swLatLng: {
+      lat: map.getBounds().getSouthWest().getLat(),
+      lng: map.getBounds().getSouthWest().getLng(),
+    },
+    neLatLng: {
+      lat: map.getBounds().getNorthEast().getLat(),
+      lng: map.getBounds().getNorthEast().getLng(),
+    },
+  };
+};
 
 export default function KakaoMap() {
+  const mapRef = useRef();
   const BASIC_SIZE = 40;
   const OVER_SIZE = 42;
   const region = useRecoilValue(regionAtom);
+  const setScope = useSetRecoilState(scopeAtom);
+  const setcafesWithinScope = useSetRecoilState(cafesWithinScopeAtom);
   const [targetCafe, setTargetCafe] = useRecoilState(targetCafeAtom);
-  const [scope, setScope] = useRecoilState(scopeAtom);
-  const [cafesWithinScope, setcafesWithinScope] = useRecoilState(cafesWithinScopeAtom);
   const [cafeInfo, setCafeInfo] = useState({});
   const [level, setLevel] = useState(5);
 
@@ -38,12 +51,15 @@ export default function KakaoMap() {
   const handleRegionChange = async () => {
     if (!cafeInfo[region]) await addRegionCafeData();
     setTargetCafe(undefined);
-    setcafesWithinScope(cafeInfo[region]);
   };
 
   useEffect(() => {
     handleRegionChange();
   }, [region]);
+
+  useEffect(() => {
+    setcafesWithinScope(cafeInfo[region]);
+  }, [cafeInfo, region]);
 
   const MarkerContainer = ({ cafeId, setTargetCafe, position, cafeName, recruitingNum }) => {
     const map = useMap();
@@ -87,20 +103,15 @@ export default function KakaoMap() {
           width: '900px',
           height: '700px',
         }}
-        onBoundsChanged={(map) =>
-          setScope({
-            swLatLng: {
-              lat: map.getBounds().getSouthWest().getLat(),
-              lng: map.getBounds().getSouthWest().getLng(),
-            },
-            neLatLng: {
-              lat: map.getBounds().getNorthEast().getLat(),
-              lng: map.getBounds().getNorthEast().getLng(),
-            },
-          })
-        }
-        level={level}>
-        <ResizeButtonContainer level={level} setLevel={setLevel}></ResizeButtonContainer>
+        onBoundsChanged={(map) => setScope(getMapScreenScope(map))}
+        level={level}
+        ref={mapRef}>
+        <ResizeButtonContainer
+          level={level}
+          setLevel={setLevel}
+          setScope={setScope}
+          getMapScreenScope={getMapScreenScope}
+          map={mapRef.current}></ResizeButtonContainer>
         {cafeInfo?.[region] &&
           cafeInfo[region].map((cafe) => (
             <MarkerContainer
