@@ -13,7 +13,7 @@ export default function DropdownMenu({ imgUrl }) {
   };
 
   return (
-    <Menu as='div' className='ml-auto w-1/3 flex justify-end'>
+    <Menu as='div' className='w-1/3 flex justify-end'>
       <Menu.Button className='w-20 h-20'>
         <ProfileImg
           src={`http://localhost:5001/server/bangabanga/server/uploads/1672118463447-test.png`}
