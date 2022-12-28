@@ -32,11 +32,9 @@ export default function DropdownMenu({ imgUrl }) {
           <div className='py-1'>
             {MENUS.map((menu) => (
               <Menu.Item key={menu.name}>
-                <MenuItemDiv>
-                  <Link to={menu.link} onClick={menu.name === '로그아웃' && onLogout}>
-                    {menu.name}
-                  </Link>
-                </MenuItemDiv>
+                <Link to={menu.link} onClick={menu.name === '로그아웃' && onLogout}>
+                  <MenuItemDiv>{menu.name}</MenuItemDiv>
+                </Link>
               </Menu.Item>
             ))}
           </div>
