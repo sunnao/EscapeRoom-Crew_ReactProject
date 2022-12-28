@@ -7,6 +7,7 @@ import Evaluation from '../modals/Evaluation';
 import tw from 'tailwind-styled-components';
 import Pagination from 'react-js-pagination';
 import './CafeList.css';
+import { ApiUrl } from '../constants/ApiUrl';
 
 const MatchingList = () => {
   const [visible, setVisible] = useState(false);
@@ -27,14 +28,14 @@ const MatchingList = () => {
 
   // 진행중:참가한 모집글 정보 - 날짜 최신순 정렬
   const getRecruitingData = async () => {
-    const data = await get('http://localhost:5002/api/matching-situation/posts');
+    const data = await get(ApiUrl.RECRUIT_USER_INFO);
     console.log('recruitingData', data);
     setRecruitingList(data.reverse());
   };
 
   // 매칭완료:참가한 모집글 정보 - 날짜 최신순 정렬
   const getRecruitedData = async () => {
-    const data = await get('http://localhost:5002/api/matching-situation');
+    const data = await get(ApiUrl.RECRUIT_INFO);
     console.log('recruitedData', data);
     setRecruitedList(data.reverse());
   };
@@ -109,8 +110,7 @@ const MatchingList = () => {
                                 <button
                                   className='text-white bg-blue-500 shadow-lg shadow-blue-500/50 px-[15px] py-[1px] rounded-lg'
                                   onClick={() => {
-                                    navigate(`/recruit-detail/${list.matchingPostsId
-                                    }`)
+                                    navigate(`/recruit-detail/${list.matchingPostsId}`);
                                   }}>
                                   이동
                                 </button>
