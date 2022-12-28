@@ -41,7 +41,7 @@ const CafeList = () => {
       if (str === '전체') {
         getAllCafeData();
       } else {
-        const data = await Api.get(ApiUrl.REGION_CAFE_DATA, str);
+        const data = await Api.get(ApiUrl.REGION_CAFE_DATA, decodeURI(str));
         console.log(data);
         setList(data);
       }
@@ -157,6 +157,8 @@ const CafeList = () => {
           prevPageText={'‹'}
           nextPageText={'›'}
           onChange={handlePageChange}
+          hideDisabled={true}
+          hideNavigation={true}
         />
       </div>
     </Background>
