@@ -42,17 +42,25 @@ const RecruitList = () => {
   useEffect(() => {
     if (currentRegion === '전체') {
       const fetchRecruitData = (async () => {
-        const data = await get(ApiUrl.MATCHING_POSTS);
-        const asendedData = data.reverse();
+        try {
+          const data = await get(ApiUrl.MATCHING_POSTS);
+          const asendedData = data.reverse();
 
-        setFetchedData(asendedData);
+          setFetchedData(asendedData);
+        } catch (err) {
+          alert(err);
+        }
       })();
     } else {
       const fetchRecruitData = (async () => {
-        const data = await get(ApiUrl.MATCHING_POSTS, currentRegion);
-        const asendedData = data.reverse();
+        try {
+          const data = await get(ApiUrl.MATCHING_POSTS, currentRegion);
+          const asendedData = data.reverse();
 
-        setFetchedData(asendedData);
+          setFetchedData(asendedData);
+        } catch (err) {
+          alert(err);
+        }
       })();
     }
   }, [currentRegion]);
@@ -123,14 +131,13 @@ const RecruitList = () => {
               onClick={() => {
                 loginToken ? setShowRecruitPost(true) : alert('로그인이 필요합니다.');
               }}
-              className='h-10 border-solid border-[1px] p-1.5 border-gray-500 bg-white'>
+              className='h-10 border-solid rounded-md border-[1px] p-1.5 border-gray-500 bg-white'>
               글쓰기
             </button>
           </div>
           <ListItemContainer>
-            {currentPageData.map((post, index) => (
-              <RecuitPostContainer postData={post} key={index} />
-            ))}
+            {currentPageData &&
+              currentPageData.map((post, index) => <RecuitPostContainer postData={post} key={index} />)}
             {showUserProfileModal && <UserProfileModal />}
             {showRecruitPost && <PostModal />}
           </ListItemContainer>
