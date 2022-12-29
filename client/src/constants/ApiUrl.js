@@ -15,7 +15,7 @@ export const ApiUrl = Object.freeze({
   RECRUIT_USER_INFO: '/api/matching-situation/post',
 
   ALL_CAFE_DATA: '/api/cafe-infos/all',
-  REGION_CAFE_DATA: '/api/cafe-infos/cafeDetail/',
+  REGION_CAFE_DATA: '/api/cafe-infos/cafeDetail',
 
   SHORT_EVALUATE_INFO: '/api/evaluate/shortevaluate',
   TEAM_EVALUATE: '/api/evaluate/post',
