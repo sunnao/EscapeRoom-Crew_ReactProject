@@ -63,7 +63,7 @@ const Navigators = () => {
           </MyStat>
           <MyStat myStat={myManner}>
             <span className='absolute w-12 h-12 left-[-18px] top-[-8px]'>
-              <img src={myMannerImg(myManner)} className='w-full h-full' alt='' />
+              <img src={!myManner ? mn3 : myMannerImg(myManner)} className='w-full h-full' alt='' />
             </span>
           </MyStat>
           <DropdownMenu imgUrl={imgUrl} />
