@@ -142,19 +142,21 @@ const MatchingList = () => {
                         <div>진행 중인 매칭 이력이 없습니다.</div>
                       </tbody>
                     )}
+                  </table>
+                  <div className='h-20 w-full place-content-center'>
                     <Pagination
                       activePage={page}
                       itemsCountPerPage={5}
                       totalItemsCount={recruitList.length}
                       pageRangeDisplayed={3}
-                      prevPageText={'‹'}
-                      nextPageText={'›'}
+                      prevPageText={'<'}
+                      nextPageText={'>'}
                       hideDisabled={false}
                       hideFirstLastPages={false}
                       onChange={handlePageChange}
                       disabledClass={'cursor:not-allowed'}
                     />
-                  </table>
+                  </div>
                 </Container>
               </div>
 
@@ -186,7 +188,9 @@ const MatchingList = () => {
                                   평가 남기기
                                 </button>
                               ) : (
-                                <button className='text-blue-500 border-bg-blue-500 px-[15px] py-[1px] rounded-lg' disabled>
+                                <button
+                                  className='text-blue-500 border-bg-blue-500 px-[15px] py-[1px] rounded-lg'
+                                  disabled>
                                   평가 완료
                                 </button>
                               )}
@@ -204,19 +208,20 @@ const MatchingList = () => {
                         <div>완료된 매칭 이력이 없습니다.</div>
                       </tbody>
                     )}
-
+                  </table>
+                  <div className='h-20 w-full place-content-center'>
                     <Pagination
                       activePage={page}
                       itemsCountPerPage={5}
                       totalItemsCount={recruitList.length}
                       pageRangeDisplayed={3}
-                      prevPageText={'‹'}
-                      nextPageText={'›'}
+                      prevPageText={'<'}
+                      nextPageText={'>'}
                       hideDisabled={false}
                       hideFirstLastPages={false}
                       onChange={handlePageChange}
                     />
-                  </table>
+                  </div>
                 </Container>
               </div>
             </div>
@@ -243,8 +248,10 @@ const Container = tw.div`
   pt-[40px]
 
   flex
-  justify-center
+  flex-col
+  justify-between
   items-start
+
 `;
 
 const Th = tw.th`
