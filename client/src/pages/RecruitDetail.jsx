@@ -28,13 +28,16 @@ const RecruitDetail = () => {
   // 모집글 참가자 명단 가져오기
   const memberListData = async () => {
     const data = await api.get(ApiUrl.RECRUIT_USER_INFO, postId);
-    setLeaderList(data[0]); // 방장 명단은 항상 0번째 위치
-    setParticipantList(data.slice(1));
+    const leader = data[0];
+    const participant = data.slice(1);
 
-    data[0].userId === userId ? setIsLeader(true) : setIsLeader(false);
-    data[0].matchStatus ? setIsRecruitCompleted(true) : setIsRecruitCompleted(false);
-    setTotalParticipantNumber(data[0].peopleNum);
-    setParticipantNumber(data.slice(1).length + 1);
+    setLeaderList(leader); // 방장 명단은 항상 0번째 위치
+    setParticipantList(participant);
+
+    leader.userId === userId ? setIsLeader(true) : setIsLeader(false);
+    leader.matchStatus ? setIsRecruitCompleted(true) : setIsRecruitCompleted(false);
+    setTotalParticipantNumber(leader.peopleNum);
+    setParticipantNumber(participant.length + 1);
   };
 
   useEffect(() => {
@@ -44,12 +47,12 @@ const RecruitDetail = () => {
   return (
     <Background img={'bg2'} className='relative'>
       <Navigators />
-      <h3>
-        모집 인원 {participantNumber} / {totalParticipantNumber}
-      </h3>
-      <div style={{ width: '100%', height: '800px', margin: '0 auto' }}>
-        <div style={{ whiteSpace: 'nowrap', overflowX: 'auto' }}>
-          <>
+      <div>
+        <h3 className='font-bold text-5xl text-white mt-[40px] ml-[50px]'>
+          모집 인원 {participantNumber} / {totalParticipantNumber}
+        </h3>
+        <div style={{ width: '100%' }}>
+          <div className='mt-[40px]' style={{ whiteSpace: 'nowrap', overflowX: 'auto' }}>
             {leaderList && <Leader leaderList={leaderList} />}
             {participantList && (
               <Participant
@@ -60,27 +63,27 @@ const RecruitDetail = () => {
                 memberListData={memberListData}
               />
             )}
-          </>
+          </div>
+          {isLeader ? (
+            <LeaderBtn
+              postId={postId}
+              isRecruitCompleted={isRecruitCompleted}
+              setIsRecruitCompleted={setIsRecruitCompleted}
+              leaderList={leaderList}
+              participantList={participantList}
+            />
+          ) : (
+            <ParticipantBtn
+              postId={postId}
+              userId={userId}
+              participantList={participantList}
+              isRecruitCompleted={isRecruitCompleted}
+              memberListData={memberListData}
+              participantNumber={participantNumber}
+              totalParticipantNumber={totalParticipantNumber}
+            />
+          )}
         </div>
-        {isLeader ? (
-          <LeaderBtn
-            postId={postId}
-            isRecruitCompleted={isRecruitCompleted}
-            setIsRecruitCompleted={setIsRecruitCompleted}
-            leaderList={leaderList}
-            participantList={participantList}
-          />
-        ) : (
-          <ParticipantBtn
-            postId={postId}
-            userId={userId}
-            participantList={participantList}
-            isRecruitCompleted={isRecruitCompleted}
-            memberListData={memberListData}
-            participantNumber={participantNumber}
-            totalParticipantNumber={totalParticipantNumber}
-          />
-        )}
       </div>
     </Background>
   );
