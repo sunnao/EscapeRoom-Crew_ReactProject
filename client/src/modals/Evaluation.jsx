@@ -14,6 +14,7 @@ import tw from 'tailwind-styled-components';
 import { useImmer } from 'use-immer';
 import { get, post } from '../utils/api';
 import { useEffect } from 'react';
+import { ApiUrl } from '../constants/ApiUrl';
 
 const Evaluation = ({ selectedList, setVisible }) => {
   const matchingPostId = selectedList.matchingPostsId;

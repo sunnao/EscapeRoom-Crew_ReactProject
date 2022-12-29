@@ -15,6 +15,8 @@ import jwt_decode from 'jwt-decode';
 import { Keys } from '../constants/Keys';
 import { setCookie } from '../utils/cookie';
 import { useNavigate } from 'react-router-dom';
+import { ApiUrl } from '../constants/ApiUrl';
+
 const Register = () => {
   const navigate = useNavigate();
   const [showCelebrate, setShowCelebrate] = useRecoilState(showCelebrateAtom);
@@ -25,10 +27,10 @@ const Register = () => {
 
   const registerUser = async (email, password) => {
     try {
-      const result = await post('/api/user', userData);
+      const result = await post(ApiUrl.USER, userData);
       setUserId(result.userId);
       setShowCelebrate(true);
-      const response = await post('/api/user/login', { email, password });
+      const response = await post(ApiUrl.LOGIN, { email, password });
       const accessToken = response.accessToken;
       const userId = jwt_decode(accessToken).userId;
       setCookie(Keys.LOGIN_TOKEN, accessToken);
