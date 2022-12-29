@@ -113,8 +113,8 @@ const CafeList = () => {
           {pagePerList.map(({ cafeId, cafeName, address, homePage, starRate, reviewsSum, cafeImg }, i) => {
             console.log(cafeId, cafeName, address, homePage, starRate, reviewsSum, cafeImg);
             return (
-              <div
-                className='rounded-lg bg-gray-300 shadow-md flex px-[27px] items-center hover:bg-gray-400'
+              <div onClick={()=>window.open(homePage)} 
+                className='cursor-pointer rounded-lg bg-gray-300 shadow-md flex px-[27px] items-center hover:bg-gray-400'
                 key={`${cafeId}` + `${i}`}>
                 <div className='flex justify-center items-center min-w-[100px] min-h-[100px] relative overflow-hidden'>
                   <img className='rounded-lg absolute w-full ' src={process.env.PUBLIC_URL + `${cafeImg}`}></img>
@@ -122,10 +122,10 @@ const CafeList = () => {
                 <div className='ml-3'>
                   <p className='flex w-full justify-start align-center'>
                     <p className='font-bold'>{cafeName}</p>
-                    <a
+                    <a 
                       href={`https://search.naver.com/search.naver?&query=${cafeName}`}
                       target='_blank'
-                      rel='noopener noreferrer nofollow'>
+                      rel='noopener noreferrer nofollow' onClick={(e)=>e.stopPropagation()}>
                       <img
                         className='w-5 h-5 rounded-[4px] ml-2'
                         src={process.env.PUBLIC_URL + '/images/icon/naver-icon.png'}
