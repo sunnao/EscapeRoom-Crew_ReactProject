@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import { Map, MapMarker, useMap } from 'react-kakao-maps-sdk';
 
-import { regionAtom, targetCafeAtom, scopeAtom, cafesWithinScopeAtom } from '../../recoil/recruit-map';
+import { regionAtom, targetCafeAtom, scopeAtom, cafeInfoAtom } from '../../recoil/recruit-map';
 import { ResizeButtonContainer } from './ResizeButtonContainer';
 import { InfoWindow } from './InfoWindow';
 import { regionCoordinate } from '../../constants/regionCoordinate';
@@ -19,6 +19,7 @@ async function getCafeInfo(region) {
     alert(err.message);
   }
 }
+
 const getMapScreenScope = (map) => {
   return {
     swLatLng: {
@@ -37,10 +38,9 @@ export default function KakaoMap() {
   const BASIC_SIZE = 40;
   const OVER_SIZE = 42;
   const region = useRecoilValue(regionAtom);
-  const setScope = useSetRecoilState(scopeAtom);
-  const setcafesWithinScope = useSetRecoilState(cafesWithinScopeAtom);
   const [targetCafe, setTargetCafe] = useRecoilState(targetCafeAtom);
-  const [cafeInfo, setCafeInfo] = useState({});
+  const [cafeInfo, setCafeInfo] = useRecoilState(cafeInfoAtom);
+  const setScope = useSetRecoilState(scopeAtom);
   const [level, setLevel] = useState(5);
 
   const addRegionCafeData = async () => {
@@ -56,10 +56,6 @@ export default function KakaoMap() {
   useEffect(() => {
     handleRegionChange();
   }, [region]);
-
-  useEffect(() => {
-    setcafesWithinScope(cafeInfo[region]);
-  }, [cafeInfo, region]);
 
   const MarkerContainer = ({ cafeId, setTargetCafe, position, cafeName, recruitingNum }) => {
     const map = useMap();
