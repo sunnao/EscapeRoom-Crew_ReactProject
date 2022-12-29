@@ -31,7 +31,6 @@ const ParticipantBtn = ({
       };
       deleteData();
       setIsSignUp(false);
-      memberListData();
     } else {
       const postData = async () => {
         await api.post(ApiUrl.RECRUIT_INFO, { matchingPostsId: postId });
@@ -39,7 +38,6 @@ const ParticipantBtn = ({
       };
       postData();
       setIsSignUp(true);
-      memberListData();
     }
   };
 
