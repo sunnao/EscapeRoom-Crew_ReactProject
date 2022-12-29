@@ -52,8 +52,7 @@ const Container = tw.div`
   h-[350px]
   inline-block
   mx-[20px]
-  mt-[140px]
-  mb-[80px]
+  
   rounded-[15px]
   bg-gradient-to-b
   from-[#3e7dab]
