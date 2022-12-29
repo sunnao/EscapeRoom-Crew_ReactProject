@@ -25,7 +25,7 @@ const MatchingList = () => {
   const handlePageChange = (page) => {
     setPage(page);
   };
-
+  
   const slicedList = () => {
     setPagePerList(recruitList.slice(5 * (page - 1), page * 5));
   };
@@ -152,9 +152,8 @@ const MatchingList = () => {
                       prevPageText={'<'}
                       nextPageText={'>'}
                       hideDisabled={false}
-                      hideFirstLastPages={false}
+                      hideFirstLastPages={true}
                       onChange={handlePageChange}
-                      disabledClass={'cursor:not-allowed'}
                     />
                   </div>
                 </Container>
@@ -218,7 +217,7 @@ const MatchingList = () => {
                       prevPageText={'<'}
                       nextPageText={'>'}
                       hideDisabled={false}
-                      hideFirstLastPages={false}
+                      hideFirstLastPages={true}
                       onChange={handlePageChange}
                     />
                   </div>
