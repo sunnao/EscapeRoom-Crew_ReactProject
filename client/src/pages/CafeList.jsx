@@ -154,11 +154,9 @@ const CafeList = () => {
           itemsCountPerPage={9}
           totalItemsCount={list.length}
           pageRangeDisplayed={3}
-          prevPageText={'‹'}
-          nextPageText={'›'}
+          prevPageText={'<'}
+          nextPageText={'>'}
           onChange={handlePageChange}
-          hideDisabled={true}
-          hideNavigation={true}
         />
       </div>
     </Background>
