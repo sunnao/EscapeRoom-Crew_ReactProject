@@ -19,7 +19,7 @@ const Review = ({ setVisible, reviewData }) => {
                 <div className='flex'>
                   <Profile img={process.env.REACT_APP_SERVER_URL + review.profileImg} size={80} />
                   <div className='mt-[5px] ml-[10px]'>
-                    <span className='text-lg'>{review.nickName}</span>
+                    <span className='text-lg'>{review.nick_name}</span>
                     <div className='text-xl bg-amber-200 bg-opacity-70'>{review.shortEvaluate}</div>
                   </div>
                 </div>

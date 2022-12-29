@@ -13,13 +13,9 @@ const UserProfileContainer = ({ postId }) => {
   const [currentTeamInfo, setCurrentTeamInfo] = useState([]);
 
   const userArray = async () => {
-    try {
-      const data = await get(ApiUrl.RECRUIT_USER_INFO, postId);
-      setCurrentPostId(postId);
-      setCurrentTeamInfo(data);
-    } catch (err) {
-      alert(err);
-    }
+    const data = await get(ApiUrl.RECRUIT_USER_INFO, postId);
+    setCurrentPostId(postId);
+    setCurrentTeamInfo(data);
   };
 
   useEffect(() => {
