@@ -19,8 +19,10 @@ import mn3 from '../../assets/images/icon/manner3.png';
 import mn4 from '../../assets/images/icon/manner4.png';
 import mn5 from '../../assets/images/icon/manner5.png';
 import { ApiUrl } from '../../constants/ApiUrl';
-
+import { useSetRecoilState } from 'recoil';
+import { profileImgAtom } from '../../recoil/register';
 const Navigators = () => {
+  const setProfileImg = useSetRecoilState(profileImgAtom);
   const [myManner, setMyManner] = useState(null);
   const [myTier, setMyTier] = useState(null);
   const [imgUrl, setImgUrl] = useState(null);
@@ -31,6 +33,7 @@ const Navigators = () => {
       setMyManner(mannerScore);
       setMyTier(escapeScore);
       setImgUrl(profileImg);
+      setProfileImg(profileImg);
     } catch (err) {
       console.log(err);
     }
