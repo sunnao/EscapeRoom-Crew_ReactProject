@@ -144,11 +144,7 @@ const CafeList = () => {
             );
           })}
         </div>
-        {/* <div className='border w-[1200px] h-[50px] flex justify-center items-center'>
-          <button className='w-[25px] h-[25px] text-sm mx-1 text-white bg-blue-1 border-solid border-[0.5px] rounded border-white'>
-            1
-          </button>
-        </div> */}
+
         <Pagination
           activePage={page}
           itemsCountPerPage={9}
@@ -156,6 +152,8 @@ const CafeList = () => {
           pageRangeDisplayed={3}
           prevPageText={'<'}
           nextPageText={'>'}
+          hideDisabled={true}
+          hideFirstLastPages={true}
           onChange={handlePageChange}
         />
       </div>

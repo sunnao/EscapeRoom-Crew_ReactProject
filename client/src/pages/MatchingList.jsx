@@ -144,9 +144,9 @@ const MatchingList = () => {
                       itemsCountPerPage={5}
                       totalItemsCount={recruitList.length}
                       pageRangeDisplayed={3}
-                      prevPageText={'‹'}
-                      nextPageText={'›'}
-                      hideDisabled={true}
+                      prevPageText={'<'}
+                      nextPageText={'>'}
+                      hideDisabled={false}
                       hideFirstLastPages={true}
                       onChange={handlePageChange}
                     />
@@ -202,9 +202,9 @@ const MatchingList = () => {
                       itemsCountPerPage={5}
                       totalItemsCount={recruitList.length}
                       pageRangeDisplayed={3}
-                      prevPageText={'‹'}
-                      nextPageText={'›'}
-                      hideDisabled={true}
+                      prevPageText={'<'}
+                      nextPageText={'>'}
+                      hideDisabled={false}
                       hideFirstLastPages={true}
                       onChange={handlePageChange}
                     />
