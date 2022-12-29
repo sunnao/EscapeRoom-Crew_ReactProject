@@ -29,7 +29,6 @@ const Navigators = () => {
       setMyManner(mannerScore);
       setMyTier(escapeScore);
       setImgUrl(profileImg);
-      console.log(profileImg);
     } catch (err) {
       console.log(err);
     }
@@ -104,7 +103,7 @@ const NavMenu = () => {
 };
 
 const NavContainer = tw.div`
-  flex w-full h-[12vh]
+  flex w-full h-[12vh] z-20
 `;
 
 const NavbarBg = tw.div`
