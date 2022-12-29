@@ -32,7 +32,6 @@ const Evaluation = ({ selectedList, setVisible }) => {
         });
       });
       setEvalRes(team);
-      console.log(team);
     } catch (err) {
       console.log(err);
     }
@@ -41,12 +40,25 @@ const Evaluation = ({ selectedList, setVisible }) => {
     getMembers();
   }, []);
 
-  // const date = selectedList.date;
+  const mockMembers = [
+    { nickName: '서나서나', evaluateTargetId: 13, profileImg: null },
+    { nickName: '보라돌이', evaluateTargetId: 8, profileImg: null },
+  ];
+
+  const TEAM_MEMBERS = [
+    { nick_name: '프로 탈옥수', profile_image: teamMember1 },
+    { nick_name: '햄토리', profile_image: teamMember2 },
+    { nick_name: '비둘기', profile_image: teamMember3 },
+    { nick_name: '다람쥐', profile_image: teamMember4 },
+    { nick_name: '몬스터', profile_image: teamMember5 },
+    { nick_name: '김승빈', profile_image: teamMember6 },
+  ];
+
+  const date = selectedList.date;
   // const [YEAR, MONTH, DATE] = date.split('.');
   const postEvaluation = async () => {
     try {
       const res = await post('/api/evaluate', evalRes);
-      console.log(res);
     } catch (err) {
       console.log(err);
     }
@@ -70,7 +82,6 @@ const Evaluation = ({ selectedList, setVisible }) => {
             <img className='w-5 h-5' src={closeBtn} alt='닫기 버튼' />
           </button>
         </div>
-        {/* <h3 className='text-2xl text-center mx-[100px] my-[15px]'>{`${YEAR}년 ${MONTH}월 ${DATE}일 매칭된 방가인들은 어떠셨나요?`}</h3> */}
         <h3 className='text-2xl text-center mx-[100px] my-[15px]'>{`일 매칭된 방가인들은 어떠셨나요?`}</h3>
         <form onSubmit={submitEvaluation}>
           <div>
@@ -102,7 +113,6 @@ const Evaluation = ({ selectedList, setVisible }) => {
                                 const userIndex = evalRes.findIndex((user) => user['nickName'] == nickName);
                                 evalRes[userIndex] = { ...evalRes[userIndex], mannerEvaluate };
                               });
-                              console.log(evalRes);
                             }}
                           />
                         ))}
@@ -132,7 +142,6 @@ const Evaluation = ({ selectedList, setVisible }) => {
                                     : (evalRes[userIndex] = { ...evalRes[userIndex], escapeEvaluate });
                                 }
                               });
-                              console.log(evalRes);
                             }}
                           />
                         ))}
@@ -166,7 +175,6 @@ const Evaluation = ({ selectedList, setVisible }) => {
           </button>
         </form>
       </div>
-      s
     </div>
   );
 };
