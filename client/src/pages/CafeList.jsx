@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Background from '../components/common/Background';
 import Navigators from '../components/common/Navigators';
-import * as Api from '../utils/api';
+import { get } from '../utils/api';
 import Pagination from 'react-js-pagination';
 import './CafeList.css';
 import SelectOption from '../components/common/SelectOption';
@@ -27,7 +27,7 @@ const CafeList = () => {
 
   const getAllCafeData = async () => {
     try {
-      const data = await Api.get(ApiUrl.ALL_CAFE_DATA);
+      const data = await get(ApiUrl.ALL_CAFE_DATA);
       console.log(data);
       setList(data);
     } catch (e) {
@@ -41,7 +41,7 @@ const CafeList = () => {
       if (str === '전체') {
         getAllCafeData();
       } else {
-        const data = await Api.get(ApiUrl.REGION_CAFE_DATA, str);
+        const data = await get(ApiUrl.REGION_CAFE_DATA, str);
         console.log(data);
         setList(data);
       }
