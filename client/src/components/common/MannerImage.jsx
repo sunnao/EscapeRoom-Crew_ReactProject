@@ -5,7 +5,7 @@ import manner3 from '../../assets/images/icon/manner3.png';
 import manner4 from '../../assets/images/icon/manner4.png';
 import manner5 from '../../assets/images/icon/manner5.png';
 
-const mannerImage = ({ score, size }) => {
+const MannerImage = ({ score, size }) => {
   if (score >= 80) {
     return <img src={manner5} style={{ width: size, height: size, display: 'inline-block' }} alt='이모지' />;
   } else if (score >= 60) {
@@ -19,4 +19,4 @@ const mannerImage = ({ score, size }) => {
   }
 };
 
-export default mannerImage;
+export default MannerImage;
