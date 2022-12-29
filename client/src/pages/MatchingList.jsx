@@ -25,14 +25,13 @@ const MatchingList = () => {
   const handlePageChange = (page) => {
     setPage(page);
   };
-  
+
   const slicedList = () => {
     setPagePerList(recruitList.slice(5 * (page - 1), page * 5));
   };
   useEffect(() => {
     slicedList();
   }, [page, recruitList]);
-
 
   // 진행중:참가한 모집글 정보 - 날짜 최신순 정렬
   const getRecruitingData = async () => {
@@ -51,6 +50,10 @@ const MatchingList = () => {
   useEffect(() => {
     getRecruitingData();
   }, []);
+
+  useEffect(() => {
+    getRecruitedData();
+  }, [visible]);
 
   return (
     <Background img={'bg3'}>
@@ -146,9 +149,10 @@ const MatchingList = () => {
                       pageRangeDisplayed={3}
                       prevPageText={'‹'}
                       nextPageText={'›'}
-                      hideDisabled={true}
-                      hideFirstLastPages={true}
+                      hideDisabled={false}
+                      hideFirstLastPages={false}
                       onChange={handlePageChange}
+                      disabledClass={'cursor:not-allowed'}
                     />
                   </table>
                 </Container>
@@ -161,7 +165,7 @@ const MatchingList = () => {
                       <tr className='border-b-2 border-b-gray-300'>
                         <Th>매칭 날짜</Th>
                         <Th>매칭 제목</Th>
-                        <Th>평가하기</Th>
+                        <Th>팀원 평가</Th>
                       </tr>
                     </thead>
 
@@ -172,14 +176,18 @@ const MatchingList = () => {
                             <Td>{list.createdAt.slice(0, 10).replaceAll('-', '.')}</Td>
                             <Td>{list.title}</Td>
                             <Td>
-                              {!list.isEvaluated && (
+                              {!list.isEvaluate == 1 ? (
                                 <button
                                   className='text-white bg-blue-500 shadow-lg shadow-blue-500/50 px-[15px] py-[1px] rounded-lg'
                                   onClick={() => {
                                     setVisible(!visible);
                                     setSelectedList(list);
                                   }}>
-                                  팀원
+                                  평가 남기기
+                                </button>
+                              ) : (
+                                <button className='text-blue-500 border-bg-blue-500 px-[15px] py-[1px] rounded-lg' disabled>
+                                  평가 완료
                                 </button>
                               )}
                             </Td>
@@ -204,8 +212,8 @@ const MatchingList = () => {
                       pageRangeDisplayed={3}
                       prevPageText={'‹'}
                       nextPageText={'›'}
-                      hideDisabled={true}
-                      hideFirstLastPages={true}
+                      hideDisabled={false}
+                      hideFirstLastPages={false}
                       onChange={handlePageChange}
                     />
                   </table>
@@ -215,7 +223,9 @@ const MatchingList = () => {
           </div>
         </div>
       </div>
-      {visible && <Evaluation selectedList={selectedList} setVisible={setVisible} />}
+      {visible && (
+        <Evaluation getRecruitedData={getRecruitedData} selectedList={selectedList} setVisible={setVisible} />
+      )}
     </Background>
   );
 };
