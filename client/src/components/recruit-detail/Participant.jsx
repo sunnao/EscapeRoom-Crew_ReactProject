@@ -31,7 +31,7 @@ const Participant = ({ isLeader, isRecruitCompleted, participantList, postId, me
               </button>
             )}
           </div>
-          <ProfileImg src={detective} alt='프로필 이미지' />
+          <ProfileImg src={process.env.REACT_APP_SERVER_URL + participant.profileImg} alt='프로필 이미지' />
           <NickName>{participant.nickName}</NickName>
           <div className='flex justify-between mx-[40px]'>
             <Score>{participant.escapeScore}</Score>
