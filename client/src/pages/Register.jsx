@@ -85,9 +85,6 @@ const Register = () => {
             {error && <p className='text-red-500'>{error}</p>}
             <div className='flex justify-center'>
               <RegisterBtn type='submit'>가입하기</RegisterBtn>
-              <RegisterBtn onClick={() => setShowCelebrate(true)} type='submit'>
-                임시
-              </RegisterBtn>
             </div>
           </form>
         </InnerContainer>
