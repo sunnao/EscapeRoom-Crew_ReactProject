@@ -9,7 +9,7 @@ import RecruitPostList from '../components/recruit-map/RecruitPostList';
 
 const RecruitMap = () => {
   return (
-    <Background img={'bg3'}>
+    <Background img={'bg1'}>
       <Navigators />
       <div className='my-auto'>
         <UpperPart className='flex flex-col '>
