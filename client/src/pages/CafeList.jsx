@@ -81,7 +81,7 @@ const CafeList = () => {
   return (
     <Background img={'bg2'}>
       <Navigators />
-      <div className='flex flex-row justify-center mx-auto my-5 font '>
+      <div className='flex flex-row justify-center mx-auto my-0 '>
         {detailRegion.map((region, index) => (
           <button
             className='purpleButton mx-1 font-custum_heading'
