@@ -66,7 +66,7 @@ const Navigators = () => {
               <img src={!myManner ? mn3 : myMannerImg(myManner)} className='w-full h-full' alt='' />
             </span>
           </MyStat>
-          <DropdownMenu imgUrl={imgUrl} />
+          <DropdownMenu />
         </MyStatContainer>
       )}
     </NavContainer>
