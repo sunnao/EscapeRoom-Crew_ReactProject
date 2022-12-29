@@ -114,7 +114,8 @@ const CafeList = () => {
             console.log(cafeId, cafeName, address, homePage, starRate, reviewsSum, cafeImg);
             return (
               <div onClick={()=>window.open(homePage)} 
-                className='cursor-pointer rounded-lg bg-gray-300 shadow-md flex px-[27px] items-center hover:bg-gray-400'
+                className='cursor-pointer rounded-lg bg-gray-300 shadow-md flex px-[27px] items-center hover:-translate-y-1 duration-100 rounded-[15px] border-opacity-10	  drop-shadow-xl border-[3px] border-solid border-black-500
+                bg-gradient-to-b  from-[#7740a7] to-[#4644d3] text-white'
                 key={`${cafeId}` + `${i}`}>
                 <div className='flex justify-center items-center min-w-[100px] min-h-[100px] relative overflow-hidden'>
                   <img className='rounded-lg absolute w-full ' src={process.env.PUBLIC_URL + `${cafeImg}`}></img>
@@ -136,7 +137,7 @@ const CafeList = () => {
                   <a className='text-sm' href={`${homePage}`} target='_blank' rel='noopener noreferrer nofollow'>
                     {homePage}
                   </a>
-                  <p>
+                  <p className='text-sm'>
                     평점 {starRate}/10 | 리뷰 {reviewsSum}개
                   </p>
                 </div>
