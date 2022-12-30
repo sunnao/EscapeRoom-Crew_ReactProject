@@ -11,7 +11,7 @@ const RecruitMap = () => {
   return (
     <Background img={'bg1'}>
       <Navigators />
-      <div className='my-auto'>
+      <div className='my-auto h-[88vh]'>
         <UpperPart className='flex flex-col '>
           <RegionButtonsContainer>
             <RegionButton title={'홍대'}></RegionButton>
@@ -33,7 +33,7 @@ const RecruitMap = () => {
 };
 
 const ViewSection = tw.div`
-  w-[1250px] h-[700px] bg-white bg-opacity-60 rounded-2xl
+  w-[1250px] h-[70vh] bg-white bg-opacity-60 rounded-2xl
 `;
 
 const UpperPart = tw.div`
