@@ -3,7 +3,7 @@ import React from 'react';
 const DecreaseButton = ({ level, setLevel, setScope, getMapScreenScope, map }) => {
   const MAX_LEVEL = 6;
   return (
-    <div className='w-[35px] h-[35px] p-1 rounded-lg bg-white border-dotted border-2 shadow-xl mr-1'>
+    <div className='w-[35px] h-[35px] p-1 rounded-lg bg-white border-solid border-2 shadow-xl mr-1'>
       <button
         type='button'
         onClick={() => {
@@ -18,7 +18,7 @@ const DecreaseButton = ({ level, setLevel, setScope, getMapScreenScope, map }) =
 
 const IncreaseButton = ({ level, setLevel, setScope, getMapScreenScope, map }) => {
   return (
-    <div className='w-[35px] h-[35px] p-1 rounded-lg bg-white border-dotted border-2 shadow-xl'>
+    <div className='w-[35px] h-[35px] p-1 rounded-lg bg-white border-solid border-2 shadow-xl'>
       <button
         type='button'
         onClick={() => {
