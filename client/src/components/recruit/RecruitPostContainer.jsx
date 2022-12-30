@@ -91,18 +91,17 @@ const RecuitPostContainer = ({ postData }) => {
 
   return (
     <div
-      className='h-[260px] w-[280px] p-5 relative rounded-xl drop-shadow-xl border-[1.5px] border-solid border-black-500
-  bg-gray-400 text-white'>
+      className='h-[240px] w-[270px] p-5 relative rounded-[20px] border-opacity-10	  drop-shadow-xl border-[3px] border-solid border-black-500
+      bg-gradient-to-b  from-[#4057A7] to-[#4496D3] text-white'>
       <CompleteRibbon src={completeRibbon} className={!matchStatus && 'hidden'} />
-      <div className='flex w-[240px] mt-5'>
+      <div className='flex w-full mt-2 border-b border-white'>
         <p
           onClick={(e) => moveToDetailPage(e)}
           className='w-[190px] mr-1 text-lg font-semibold cursor-pointer truncate'
           id={matchingPostsId}>
           {title}
         </p>
-        <p className='text-blue-4 font-semibold'>
-          {' '}
+        <p className='text-blue-300 font-semibold'>
           ({matchingSituationUserSum}/{peopleNum})
         </p>
       </div>
@@ -143,17 +142,18 @@ const RecuitPostContainer = ({ postData }) => {
         <p className='truncate'>{themeName}</p>
         <p className='mt-2 mb-1'>{convertDate()}</p>
       </div>
-
-      <div className='flex mt-7 justify-end gap-3 relative'>
+      <div className='flex mt-3 justify-end gap-3 relative'>
         <button
           onClick={() => {
             setShowTeamModal(!showTeamModal);
           }}
-          className='drop-shadow-xl h-9 w-[70px] border-solid border-[1.5px] border-white cursor-pointer'>
+          className='drop-shadow-xl h-9 w-[70px] border-solid rounded-[5px]  border-[1.5px] border-white cursor-pointer'>
           팀원보기
         </button>
         {showTeamModal && (
-          <div className='w-[287px] h-[270px] -right-[26px] -bottom-5 px-4 absolute bg-white rounded-[10px] border-solid border-[1.5px] border-white'>
+          <div
+            onMouseLeave={() => setShowTeamModal(false)}
+            className='w-[287px] h-[270px] -right-[26px] -bottom-5 px-4 absolute bg-white rounded-[10px] border-solid border-[1.5px] border-white'>
             <svg
               onClick={() => setShowTeamModal(false)}
               className='absolute right-2 top-2 cursor-pointer'
