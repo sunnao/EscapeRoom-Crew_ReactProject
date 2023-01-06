@@ -9,6 +9,10 @@ import { useRecoilValue } from 'recoil';
 import { profileImgAtom } from '../../recoil/register';
 export default function DropdownMenu() {
   const profileImg = useRecoilValue(profileImgAtom);
+import { useRecoilValue } from 'recoil';
+import { profileImgAtom } from '../../recoil/register';
+export default function DropdownMenu() {
+  const profileImg = useRecoilValue(profileImgAtom);
   const onLogout = () => {
     deleteCookie('token');
     deleteCookie('userId');

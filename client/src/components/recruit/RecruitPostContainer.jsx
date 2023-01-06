@@ -40,6 +40,7 @@ const RecuitPostContainer = ({ postData }) => {
 
     if ((loginToken == '') | !loginToken) {
       alert('로그인이 필요한 서비스입니다.');
+      navigate('/login');
     } else {
       try {
         await get(ApiUrl.MATCHING_POST_READ_POST, e.currentTarget.id);
@@ -151,7 +152,9 @@ const RecuitPostContainer = ({ postData }) => {
           팀원보기
         </button>
         {showTeamModal && (
-          <div className='w-[287px] h-[270px] -right-[26px] -bottom-5 px-4 absolute bg-white rounded-[10px] border-solid border-[1.5px] border-white'>
+          <div
+            onMouseLeave={() => setShowTeamModal(false)}
+            className='w-[287px] h-[270px] -right-[26px] -bottom-5 px-4 absolute bg-white rounded-[10px] border-solid border-[1.5px] border-white'>
             <svg
               onClick={() => setShowTeamModal(false)}
               className='absolute right-2 top-2 cursor-pointer'

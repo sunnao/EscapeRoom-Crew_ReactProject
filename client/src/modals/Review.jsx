@@ -23,7 +23,7 @@ const Review = ({ setVisible, reviewData }) => {
                     <div className='text-xl bg-amber-200 bg-opacity-70'>{review.shortEvaluate}</div>
                   </div>
                 </div>
-                <div>{review.createdAt.slice(0, 10).replaceAll('-', '.')}</div>
+                <div>{review.updatedAt.slice(0, 10).replaceAll('-', '.')}</div>
               </section>
             </div>
           ))}
