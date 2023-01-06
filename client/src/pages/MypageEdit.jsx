@@ -15,6 +15,10 @@ import { patch, get } from '../utils/api';
 import { USER_BASIC_DATA } from '../constants/mypageEditUserBasicData';
 import { USER_ADD_DATA } from '../constants/mypageEditUserAddData';
 import { useNavigate } from 'react-router-dom';
+import { ApiUrl } from '../constants/ApiUrl';
+import { useSetRecoilState } from 'recoil';
+import { profileImgAtom } from '../recoil/register';
+
 const MypageEdit = () => {
   const userId = getCookieValue('userId');
   const navigate = useNavigate();
@@ -29,9 +33,10 @@ const MypageEdit = () => {
   const [showAddProfileIcon, setShowAddProfileIcon] = useState(false);
   const [userBasicData, setUserBasicData] = useImmer({});
   const [userAddData, setUserAddData] = useImmer({});
+  const setUserProfile = useSetRecoilState(profileImgAtom);
   const getUserInfo = async () => {
     try {
-      const res = await get('/api/user');
+      const res = await get(ApiUrl.USER);
       return res;
     } catch (err) {
       // alert('잘못된 접근입니다');
@@ -53,7 +58,9 @@ const MypageEdit = () => {
       mbti,
       preferenceTheme,
       nonPreferenceTheme,
+      profileImg,
     } = res;
+    setUserProfile(profileImg);
     setUserBasicData({ userName, nickName, mobileNumber, email });
     setUserAddData({ userIntro, gender, age, preferenceLocation, mbti, preferenceTheme, nonPreferenceTheme });
   };
@@ -87,7 +94,7 @@ const MypageEdit = () => {
       return;
     }
     try {
-      const response = await patch('/api/user', userId, userBasicData);
+      const response = await patch(ApiUrl.USER, userId, userBasicData);
       alert('기본정보가 정상적으로 수정되었습니다');
     } catch (err) {
       alert(err);
@@ -95,7 +102,7 @@ const MypageEdit = () => {
   };
   const editUserAddData = async () => {
     try {
-      const response = await patch('/api/user', userId, userAddData);
+      const response = await patch(ApiUrl.USER, userId, userAddData);
       alert('추가정보가 정상적으로 수정되었습니다');
     } catch (err) {
       alert(err);
@@ -113,7 +120,7 @@ const MypageEdit = () => {
   };
 
   return (
-    <BackgroundScroll img={'bg3'} className='relative'>
+    <BackgroundScroll img={'bg3-long'} className='relative'>
       <Navigators />
       <UserProfileContainer>
         <EditProfileIcon showAddProfileIcon={showAddProfileIcon} setShowAddProfileIcon={setShowAddProfileIcon} />
