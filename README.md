@@ -31,11 +31,46 @@
 - 모집 중인 게시글 리스트, 지도로 확인 가능
 - 방탈출 카페에 대한 정보 지역별 조회 기능
 
+## 💁 페이지 별 시연 영상
+<details><summary>홈화면</summary>
+<img src="/uploads/ae22f7335b11268a9c998588b2085867/홈화면.gif" width="960">
+</details>
+<details><summary>모집글 리스트로 보기</summary>
+<img src="/uploads/c10d50cdc68ecc0dc7e76a66473818f8/모집글_리스트로_보기.gif" width="960">
+</details>
+<details><summary>모집글 지도로 보기</summary>
+<img src="/uploads/85de3c8f1b2516bcd9aed3ea90eafa6a/지도로_보기.gif" width="960">
+</details>
+<details><summary>모집글 상세보기 - 방장</summary>
+<img src="https://user-images.githubusercontent.com/89888075/210947134-e578aeca-7b7f-43b5-8293-9a22d701a452.gif" width="960">
+</details>
+<details><summary>모집글 상세보기 - 참가자</summary>
+<img src="https://user-images.githubusercontent.com/89888075/210947101-5b14b22d-82a2-4668-8209-35f6494ef943.gif" width="960">
+</details>
+<details><summary>카페리스트보기</summary>
+<img src="/uploads/6ddc4954fb24147187e15cb0a84ff09a/카페리스트.gif" width="960">
+</details>
+<details><summary>회원가입</summary>
+<img src="/uploads/499108edfe1d0d47d9ef37b1f7e8a8d8/회원가입.gif" width="960">
+</details>
+<details><summary>로그인</summary>
+<img src="/uploads/c96bd89590148944b236ec9e2ec7d34f/로그인.gif" width="960">
+</details>
+<details><summary>마이페이지 - 회원정보수정</summary>
+<img src="/uploads/d236af0a0d6c2e818c22133c4b559af8/회원정보수정.gif" width="960">
+</details>
+<details><summary>마이페이지 - 팀원평가</summary>
+<img src="/uploads/117d746a59efecc32002371039b58955/team_evaluation.gif" width="960">
+</details>
+<details><summary>마이페이지 - 매칭이력</summary>
+<img src="/uploads/70e0c8b10349beab266e8e4b1ca563a8/매칭이력.gif" width="960">
+</details>
+
 ## 🪪 테스트 계정
   ```
   ID: test@elice.com
   PW: qwer1234! 
-  ```
+ ```
 
 ## 👨‍👩‍👦‍👦 Responsibility
 | 담당자명(GitHub) | 담당 파트 |
