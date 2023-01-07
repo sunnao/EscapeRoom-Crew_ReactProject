@@ -13,8 +13,6 @@ const MatchingList = () => {
   const [visible, setVisible] = useState(false);
   const [selectedList, setSelectedList] = useState([]);
 
-  // const [recruitingList, setRecruitingList] = useState([]);
-  // const [recruitedList, setRecruitedList] = useState([]);
   const [recruitList, setRecruitList] = useState([]);
   const [pagePerList, setPagePerList] = useState([]);
 
@@ -25,7 +23,7 @@ const MatchingList = () => {
   const handlePageChange = (page) => {
     setPage(page);
   };
-  
+
   const slicedList = () => {
     setPagePerList(recruitList.slice(5 * (page - 1), page * 5));
   };
@@ -36,13 +34,13 @@ const MatchingList = () => {
   // 진행중:참가한 모집글 정보 - 날짜 최신순 정렬
   const getRecruitingData = async () => {
     const data = await get(ApiUrl.RECRUIT_USER_INFO_ALL);
-    setRecruitList(data.reverse());
+    setRecruitList(data.sort((a,b)=>b.matchingTime-a.matchingTime));
   };
 
   // 매칭완료:참가한 모집글 정보 - 날짜 최신순 정렬
   const getRecruitedData = async () => {
     const data = await get(ApiUrl.RECRUIT_INFO);
-    setRecruitList(data.reverse());
+    setRecruitList(data.sort((a,b)=>b.matchingTime-a.matchingTime));
   };
 
   useEffect(() => {
@@ -56,13 +54,13 @@ const MatchingList = () => {
   return (
     <Background img={'bg3'}>
       <Navigators />
-      <div className=' flex flex-wrap w-[700px] mt-10'>
+      <div className='flex flex-wrap w-[930px] mt-10'>
         <ul className='flex list-none flex-wrap pt-3 px-[15px] flex-row' role='tablist'>
           <li className='-mb-px mr-1 last:mr-0 flex-auto text-center'>
             <a
               className={
                 'text-xs font-bold uppercase px-5 pt-3 rounded-t-[10px] block' +
-                (openTab === 1 ? 'text-black bg-white pb-3' : 'text-gray-400 bg-white bg-opacity-50 pb-[9px]')
+                (openTab === 1 ? 'text-black bg-white pb-5' : 'text-gray-400 bg-white bg-opacity-50 pb-[9px]')
               }
               onClick={(e) => {
                 e.preventDefault();
@@ -80,7 +78,7 @@ const MatchingList = () => {
             <a
               className={
                 'text-xs font-bold uppercase px-5 pt-3 rounded-t-[10px]  block' +
-                (openTab === 2 ? 'text-black bg-white pb-3' : 'text-gray-400 bg-white bg-opacity-50 pb-[9px]')
+                (openTab === 2 ? 'text-black bg-white pb-5' : 'text-gray-400 bg-white bg-opacity-50 pb-[9px]')
               }
               onClick={(e) => {
                 e.preventDefault();
@@ -95,26 +93,26 @@ const MatchingList = () => {
             </a>
           </li>
         </ul>
-        {/* className='relative flex flex-col min-w-0 break-words bg-white w-full mb-6 shadow-lg rounded' */}
         <div>
           <div className='px-4 flex-auto'>
             <div className='tab-content tab-space'>
               <div className={openTab === 1 ? 'block' : 'hidden'} id='link1'>
                 <Container>
-                  <table className='w-[700px] text-xl text-left border-collapse'>
+                  <table className='w-[800px] text-xl text-left border-collapse'>
                     <thead>
                       <tr className='border-b-2 border-b-gray-300'>
-                        <Th>매칭 날짜</Th>
+                        <Th>매칭 예정일</Th>
                         <Th>매칭 제목</Th>
-                        <Th>게시글 보러가기</Th>
+                        <Th>모집글 보러가기</Th>
                       </tr>
                     </thead>
 
                     {recruitList.length !== 0 ? (
                       pagePerList.map((list) => (
+                        
                         <tbody key={list.matching_log_id}>
                           <tr>
-                            <Td>{list.createdAt.slice(0, 10).replaceAll('-', '.')}</Td>
+                            <Td>{list.matchingTime.toString().slice(0, 2)}.{list.matchingTime.toString().slice(2, 4)}.{list.matchingTime.toString().slice(4, 6)}</Td>
                             <Td>{list.title}</Td>
                             <Td>
                               {!list.isEvaluated && (
@@ -152,6 +150,7 @@ const MatchingList = () => {
                       hideDisabled={false}
                       hideFirstLastPages={true}
                       onChange={handlePageChange}
+                      disabledClass={'cursor:not-allowed'}
                     />
                   </div>
                 </Container>
@@ -159,7 +158,7 @@ const MatchingList = () => {
 
               <div className={openTab === 2 ? 'block' : 'hidden'} id='link2'>
                 <Container>
-                  <table className='w-[700px] text-xl text-left border-collapse'>
+                  <table className='w-[800px] text-xl text-left border-collapse'>
                     <thead>
                       <tr className='border-b-2 border-b-gray-300'>
                         <Th>매칭 날짜</Th>
@@ -172,7 +171,7 @@ const MatchingList = () => {
                       pagePerList.map((list) => (
                         <tbody key={list.matching_log_id}>
                           <tr>
-                            <Td>{list.createdAt.slice(0, 10).replaceAll('-', '.')}</Td>
+                            <Td>{list.matchingTime.toString().slice(0, 2)}.{list.matchingTime.toString().slice(2, 4)}.{list.matchingTime.toString().slice(4, 6)}</Td>
                             <Td>{list.title}</Td>
                             <Td>
                               {!list.isEvaluate == 1 ? (
@@ -185,11 +184,10 @@ const MatchingList = () => {
                                   평가 남기기
                                 </button>
                               ) : (
-                                <button
-                                  className='text-blue-500 border-bg-blue-500 px-[15px] py-[1px] rounded-lg'
-                                  disabled>
+                                <div
+                                  className='text-blue-500 border-bg-blue-500 px-[15px] py-[1px] rounded-lg font-medium'>
                                   평가 완료
-                                </button>
+                                </div>
                               )}
                             </Td>
                           </tr>
@@ -235,7 +233,7 @@ const MatchingList = () => {
 export default MatchingList;
 
 const Container = tw.div`
-  w-[800px]
+  w-[900px]
   h-[500px]
   mt-[0.7rem]
   bg-white
@@ -247,12 +245,11 @@ const Container = tw.div`
   flex
   flex-col
   justify-between
-  items-start
-
+  items-center
 `;
 
 const Th = tw.th`
-  pb-[8px]
+  p-[8px]
 `;
 
 const Td = tw.td`
