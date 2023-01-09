@@ -1,2 +1,9 @@
 import { rest } from 'msw';
-export const handlers = [rest.post('/login', null), rest.get('/user', null)];
+import { ApiUrl } from '../constants/ApiUrl';
+import { MapMatchingPost } from './data/map/MapMatchingPost';
+
+export const handlers = [
+  rest.get(process.env.REACT_APP_SERVER_URL + ApiUrl.CAFE_INFO + '/:region', async (req, res, ctx) => {
+    return res(ctx.status(200), ctx.json(MapMatchingPost[req.params.region]));
+  }),
+];
