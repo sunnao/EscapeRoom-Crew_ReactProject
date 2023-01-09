@@ -1,4 +1,4 @@
-export const MapMatchingPost = Object.freeze({
+export const MapMarker = Object.freeze({
   홍대: [
     {
       recruitingNum: 1,
@@ -35,6 +35,14 @@ export const MapMatchingPost = Object.freeze({
       locationDetail: '건대',
       lat: '37.5413895',
       lng: '127.0678324',
+    },
+    {
+      recruitingNum: 1,
+      cafeId: 20,
+      cafeName: '마스터키 건대점',
+      locationDetail: '건대',
+      lat: '37.54112152',
+      lng: '127.0636727',
     },
   ],
 });
