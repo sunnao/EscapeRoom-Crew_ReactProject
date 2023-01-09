@@ -1,7 +1,7 @@
 import { rest } from 'msw';
-import { ApiUrl } from '../constants/ApiUrl';
-import { MapMarker } from './data/map/MapMarker';
-import { MapCafeInfo } from './data/map/MapCafeInfo';
+import { ApiUrl } from '../../constants/ApiUrl';
+import { MapMarker } from '../data/map/MapMarker';
+import { MapCafeInfo } from '../data/map/MapCafeInfo';
 
 export const mapHandler = [
   rest.get(process.env.REACT_APP_SERVER_URL + ApiUrl.MAP_MATCHING_POSTS + '/:region', async (req, res, ctx) => {
