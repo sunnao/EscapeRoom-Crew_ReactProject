@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import tw from 'tailwind-styled-components';
 import LevelImage from '../common/LevelImage';
 import MannerImage from '../common/MannerImage';
@@ -8,14 +8,6 @@ import { useRecoilValue } from 'recoil';
 
 const UserProfileModalInner = () => {
   const currentUserData = useRecoilValue(currentUserDataAtom);
-
-  useEffect(() => {
-    const isEmpty = Object.keys(currentUserData);
-    if (isEmpty.length > 0) {
-      console.log(currentUserData);
-    }
-  }, [currentUserData]);
-
   const { gender, age, mbti, preferenceTheme, nonPreferenceTheme, preferenceLocation, tier, mannerScore, escapeScore } =
     currentUserData;
 
@@ -36,23 +28,27 @@ const UserProfileModalInner = () => {
       <div>
         <section>
           <h3>매너점수💖</h3>
-          <Wrapper style={{ whiteSpace: 'nowrap' }}>
-            <MannerProgress style={{ width: mannerProgressWith }}>
-              <span>{mannerScore}점</span>
-              <MannerImage score={mannerScore} size={20} />
-            </MannerProgress>
-          </Wrapper>
+          {!isNaN(mannerScore) && (
+            <Wrapper style={{ whiteSpace: 'nowrap' }}>
+              <MannerProgress style={{ width: mannerProgressWith }}>
+                <span className='mr-1'>{mannerScore}점</span>
+                <MannerImage score={mannerScore} size={20} />
+              </MannerProgress>
+            </Wrapper>
+          )}
           <div style={{ paddingLeft: mannerProgressWith - 15 }}>{mannerScore}점</div>
         </section>
 
         <section>
           <h3>탈출레벨🔑</h3>
-          <Wrapper style={{ whiteSpace: 'nowrap' }}>
-            <EscapeProgress style={{ width: escapeProgressWith }}>
-              <span>{tier}</span>
-              <LevelImage score={escapeScore} size={20} />
-            </EscapeProgress>
-          </Wrapper>
+          {!isNaN(escapeScore) && (
+            <Wrapper style={{ whiteSpace: 'nowrap' }}>
+              <EscapeProgress style={{ width: escapeProgressWith }}>
+                <span className='mr-1'>{tier}</span>
+                <LevelImage score={escapeScore} size={20} />
+              </EscapeProgress>
+            </Wrapper>
+          )}
           <div style={{ paddingLeft: escapeProgressWith - 15 }}>{escapeScore}점</div>
         </section>
       </div>

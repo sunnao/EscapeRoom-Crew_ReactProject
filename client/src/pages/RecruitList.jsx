@@ -7,8 +7,7 @@ import {
   currentPageAtom,
   currentRegionAtom,
 } from '../recoil/recruit-list/index';
-import { useRecoilState, useSetRecoilState, useRecoilValue } from 'recoil';
-import jwt_decode from 'jwt-decode';
+import { useRecoilState, useSetRecoilState } from 'recoil';
 
 import { get } from '../utils/api';
 import { getCookieValue } from '../utils/cookie';
@@ -19,15 +18,15 @@ import UserProfileModal from '../components/recruit/UserProfileModal';
 import Navigators from '../components/common/Navigators';
 import Background from '../components/common/Background';
 import { ApiUrl } from '../constants/ApiUrl';
-
-document.title = '방가방가 모집글 리스트';
+import { useNavigate } from 'react-router-dom';
 
 const RecruitList = () => {
+  const navigate = useNavigate();
   const [showRecruitPost, setShowRecruitPost] = useRecoilState(showRecruitPostAtom);
   const [currentRegion, setCurrentRegion] = useRecoilState(currentRegionAtom);
   const [currentPage, setCurrentPage] = useRecoilState(currentPageAtom);
+  const [showUserProfileModal, setShowUserProfileModal] = useRecoilState(showUserProfileModalAtom);
   const setMaxPageNum = useSetRecoilState(maxPageNumAtom);
-  const showUserProfileModal = useRecoilValue(showUserProfileModalAtom);
 
   const [fetchedData, setFetchedData] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
@@ -41,6 +40,7 @@ const RecruitList = () => {
 
   useEffect(() => {
     if (currentRegion === '전체') {
+      // eslint-disable-next-line
       const fetchRecruitData = (async () => {
         try {
           const data = await get(ApiUrl.MATCHING_POSTS);
@@ -52,6 +52,7 @@ const RecruitList = () => {
         }
       })();
     } else {
+      // eslint-disable-next-line
       const fetchRecruitData = (async () => {
         try {
           const data = await get(ApiUrl.MATCHING_POSTS, currentRegion);
@@ -98,6 +99,10 @@ const RecruitList = () => {
     }
   }, [slicedData, currentPage]);
 
+  useEffect(() => {
+    setShowUserProfileModal(false);
+  }, [currentRegion]);
+
   return (
     <Background img={'bg1'}>
       <Navigators />
@@ -128,7 +133,7 @@ const RecruitList = () => {
           </FilterContainer>
           <button
             onClick={() => {
-              loginToken ? setShowRecruitPost(true) : alert('로그인이 필요합니다.');
+              loginToken ? setShowRecruitPost(true) : (alert('로그인이 필요합니다.'), navigate('/login'));
             }}
             className='h-10 border-solid border-[1px] p-1.5 border-gray-500 bg-white'>
             글쓰기
