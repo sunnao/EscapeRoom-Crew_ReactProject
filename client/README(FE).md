@@ -1,11 +1,14 @@
-## 🏃 실행 방법
+## 🏃 프론트 실행 방법
 
 1. 레포지토리 클론
 
    ```bash
-   git clone "https://kdt-gitlab.elice.io/sw_track/class_03/web_project_2/team15/initialization"
+   git clone "https://github.com/sunnao/EscapeRoom-Crew_ReactProject.git"
    ```
-
+2. 디렉토리 이동
+   ```bash
+   cd client
+   ```
 2. 필요한 module 설치
 
    ```bash
@@ -19,13 +22,19 @@
     REACT_APP_SERVER_URL=<백 서버 url>
     ```
     ```bash
-    REACT_APP_NODE_ENV=development # 선택, development로 설정시 msw 작동
+    #선택사항 - msw(Mock Service Worker)
+    REACT_APP_NODE_ENV=development # development로 설정 시 적용
     ```
-    
-4. express 앱을 실행
-   ```
+
+4. react 앱 실행
+
+   ```bash
    yarn start
    ```
+<br/>
+
+---
+<br/>
 
 ## 🗂 디렉토리 구조
 ```markdown
